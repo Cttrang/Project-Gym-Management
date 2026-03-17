@@ -1,0 +1,117 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|c:\\users\\admin\\source\\repos\\desktopapp_gym\\gui\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|solutionrelative:gui\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|c:\\users\\admin\\source\\repos\\desktopapp_gym\\ucgymintro.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|solutionrelative:ucgymintro.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|c:\\users\\admin\\source\\repos\\desktopapp_gym\\ucmemberstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|solutionrelative:ucmemberstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|c:\\users\\admin\\source\\repos\\desktopapp_gym\\ucrevenuecard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|solutionrelative:ucrevenuecard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\gui\\frmguest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D253FE7-DA27-47C0-9476-9EDFDB865906}|desktopapp_GYM.csproj|solutionrelative:gui\\frmguest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ucGymIntro.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\ucGymIntro.cs",
+              "RelativeDocumentMoniker": "ucGymIntro.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\ucGymIntro.cs [Design]",
+              "RelativeToolTip": "ucGymIntro.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T15:53:04.87Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ucRevenueCard.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\ucRevenueCard.cs",
+              "RelativeDocumentMoniker": "ucRevenueCard.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\ucRevenueCard.cs [Design]",
+              "RelativeToolTip": "ucRevenueCard.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T15:40:56.18Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "frmMain.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\GUI\\frmMain.cs",
+              "RelativeDocumentMoniker": "GUI\\frmMain.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\GUI\\frmMain.cs [Design]*",
+              "RelativeToolTip": "GUI\\frmMain.cs [Design]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T15:40:22.606Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ucMemberStats.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\ucMemberStats.cs",
+              "RelativeDocumentMoniker": "ucMemberStats.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\ucMemberStats.cs [Design]",
+              "RelativeToolTip": "ucMemberStats.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T14:10:31.961Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "frmGuest.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\GUI\\frmGuest.cs",
+              "RelativeDocumentMoniker": "GUI\\frmGuest.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\GUI\\frmGuest.cs",
+              "RelativeToolTip": "GUI\\frmGuest.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-15T09:43:13.927Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\desktopapp_GYM\\Form1.cs [Design]",
+              "RelativeToolTip": "Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-15T09:14:00.526Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
