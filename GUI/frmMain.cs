@@ -28,7 +28,21 @@ namespace desktopapp_GYM.GUI
             //    btnDeleteMember.Visible = false;
             //    btnRevenueStats.Enabled = false;
             //}
+            //ucMemberStats1.RefreshData();
+            //ucRevenueCard1.RefreshData();
+            ucRevenueChart1.RefreshData();
+            ucExpiredAlert1.RefreshData();
         }
+
+            //research
+            //foreach (Control ctrl in flowLayoutPanel1.Controls)
+            //{
+            //    if (ctrl is ucBaseCard card) 
+            //    {
+            //        card.RefreshData(); // Tất cả các thẻ tự động chạy đi lấy dữ liệu mới nhất
+            //    }
+            //}
+           
     }
 
 }

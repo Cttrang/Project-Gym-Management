@@ -37,13 +37,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.pnlContentGuest = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.ucRevenueCard1 = new desktopapp_GYM.ucRevenueCard();
-            this.ucMemberStats1 = new desktopapp_GYM.ucMemberStats();
-            this.ucMemberStats2 = new desktopapp_GYM.ucMemberStats();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblWelcome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.lblWelcome = new System.Windows.Forms.Label();
+            this.ucExpiredAlert1 = new desktopapp_GYM.ucExpiredAlert();
+            this.ucRevenueChart1 = new desktopapp_GYM.ucRevenueChart();
             this.pnlSidebarGuest.SuspendLayout();
             this.pnlContentGuest.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -143,41 +142,13 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.ucRevenueCard1);
-            this.flowLayoutPanel1.Controls.Add(this.ucMemberStats1);
-            this.flowLayoutPanel1.Controls.Add(this.ucMemberStats2);
+            this.flowLayoutPanel1.Controls.Add(this.ucExpiredAlert1);
+            this.flowLayoutPanel1.Controls.Add(this.ucRevenueChart1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 171);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1311, 857);
             this.flowLayoutPanel1.TabIndex = 4;
-            // 
-            // ucRevenueCard1
-            // 
-            this.ucRevenueCard1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.ucRevenueCard1.BorderRadius = 30;
-            this.ucRevenueCard1.Location = new System.Drawing.Point(3, 3);
-            this.ucRevenueCard1.Name = "ucRevenueCard1";
-            this.ucRevenueCard1.Size = new System.Drawing.Size(496, 266);
-            this.ucRevenueCard1.TabIndex = 0;
-            // 
-            // ucMemberStats1
-            // 
-            this.ucMemberStats1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ucMemberStats1.BorderRadius = 30;
-            this.ucMemberStats1.Location = new System.Drawing.Point(505, 3);
-            this.ucMemberStats1.Name = "ucMemberStats1";
-            this.ucMemberStats1.Size = new System.Drawing.Size(283, 266);
-            this.ucMemberStats1.TabIndex = 1;
-            // 
-            // ucMemberStats2
-            // 
-            this.ucMemberStats2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ucMemberStats2.BorderRadius = 30;
-            this.ucMemberStats2.Location = new System.Drawing.Point(794, 3);
-            this.ucMemberStats2.Name = "ucMemberStats2";
-            this.ucMemberStats2.Size = new System.Drawing.Size(200, 150);
-            this.ucMemberStats2.TabIndex = 2;
             // 
             // panel1
             // 
@@ -189,6 +160,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1311, 171);
             this.panel1.TabIndex = 3;
+            // 
+            // lblWelcome
+            // 
+            this.lblWelcome.AutoSize = true;
+            this.lblWelcome.Location = new System.Drawing.Point(234, 110);
+            this.lblWelcome.Name = "lblWelcome";
+            this.lblWelcome.Size = new System.Drawing.Size(70, 25);
+            this.lblWelcome.TabIndex = 2;
+            this.lblWelcome.Text = "label3";
             // 
             // label1
             // 
@@ -210,14 +190,23 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
             // 
-            // lblWelcome
+            // ucExpiredAlert1
             // 
-            this.lblWelcome.AutoSize = true;
-            this.lblWelcome.Location = new System.Drawing.Point(234, 110);
-            this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(70, 25);
-            this.lblWelcome.TabIndex = 2;
-            this.lblWelcome.Text = "label3";
+            this.ucExpiredAlert1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ucExpiredAlert1.BorderRadius = 30;
+            this.ucExpiredAlert1.Location = new System.Drawing.Point(3, 3);
+            this.ucExpiredAlert1.Name = "ucExpiredAlert1";
+            this.ucExpiredAlert1.Size = new System.Drawing.Size(879, 387);
+            this.ucExpiredAlert1.TabIndex = 4;
+            // 
+            // ucRevenueChart1
+            // 
+            this.ucRevenueChart1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ucRevenueChart1.BorderRadius = 30;
+            this.ucRevenueChart1.Location = new System.Drawing.Point(3, 396);
+            this.ucRevenueChart1.Name = "ucRevenueChart1";
+            this.ucRevenueChart1.Size = new System.Drawing.Size(1131, 479);
+            this.ucRevenueChart1.TabIndex = 3;
             // 
             // frmMain
             // 
@@ -253,9 +242,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private ucRevenueCard ucRevenueCard1;
-        private ucMemberStats ucMemberStats1;
-        private ucMemberStats ucMemberStats2;
         private System.Windows.Forms.Label lblWelcome;
+        private ucRevenueChart ucRevenueChart1;
+        private ucExpiredAlert ucExpiredAlert1;
     }
 }

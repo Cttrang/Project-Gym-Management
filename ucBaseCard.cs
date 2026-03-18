@@ -64,5 +64,14 @@ namespace desktopapp_GYM
                 btnPin.Visible = false; // Ẩn nút
             }
         }
+
+        public virtual void RefreshData()
+        {
+            // Không viết gì ở đây
+        }
+        protected virtual void OnViewDetailClick()
+        {
+            // Mặc định không làm gì hoặc hiện thông báo chung
+        }
     }
 }

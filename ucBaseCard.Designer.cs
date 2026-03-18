@@ -34,6 +34,8 @@
             this.btnPin = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panelFooter = new System.Windows.Forms.Panel();
+            this.btnViewDetail = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,8 +71,26 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 34);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 116);
+            this.panel2.Size = new System.Drawing.Size(200, 82);
             this.panel2.TabIndex = 1;
+            // 
+            // panelFooter
+            // 
+            this.panelFooter.BackColor = System.Drawing.Color.RosyBrown;
+            this.panelFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelFooter.Location = new System.Drawing.Point(0, 116);
+            this.panelFooter.Name = "panelFooter";
+            this.panelFooter.Size = new System.Drawing.Size(200, 34);
+            this.panelFooter.TabIndex = 2;
+            this.panelFooter.Controls.Add(this.btnViewDetail);
+            //
+            // Thiết lập btnViewDetail
+            //
+            this.btnViewDetail.Text = "More";
+            this.btnViewDetail.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnViewDetail.Width = 100;
+            this.btnViewDetail.Name = "btnViewDetail";
+            this.btnViewDetail.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             // 
             // ucBaseCard
             // 
@@ -78,6 +98,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panelFooter);
             this.Controls.Add(this.panel1);
             this.Name = "ucBaseCard";
             this.Size = new System.Drawing.Size(200, 150);
@@ -90,6 +111,8 @@
         protected System.Windows.Forms.Button btnPin;
         private System.Windows.Forms.Timer timer1;
         protected System.Windows.Forms.Panel panel2;
-        public System.Windows.Forms.Panel panel1;
+        protected System.Windows.Forms.Panel panel1;
+        protected System.Windows.Forms.Panel panelFooter;
+        protected System.Windows.Forms.Button btnViewDetail;
     }
 }

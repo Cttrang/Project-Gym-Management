@@ -37,14 +37,14 @@
             // 
             // btnPin
             // 
-            this.btnPin.Location = new System.Drawing.Point(364, 6);
+            this.btnPin.Location = new System.Drawing.Point(764, 6);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.lblRevenueSubText);
             this.panel2.Controls.Add(this.lblRevenue);
             this.panel2.Location = new System.Drawing.Point(0, 43);
-            this.panel2.Size = new System.Drawing.Size(400, 257);
+            this.panel2.Size = new System.Drawing.Size(400, 223);
             // 
             // panel1
             // 
@@ -52,6 +52,11 @@
             this.panel1.Size = new System.Drawing.Size(400, 43);
             this.panel1.Controls.SetChildIndex(this.btnPin, 0);
             this.panel1.Controls.SetChildIndex(this.lblTotalRevenue, 0);
+            // 
+            // panelFooter
+            // 
+            this.panelFooter.Location = new System.Drawing.Point(0, 266);
+            this.panelFooter.Size = new System.Drawing.Size(400, 34);
             // 
             // lblTotalRevenue
             // 

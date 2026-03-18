@@ -16,5 +16,9 @@ namespace desktopapp_GYM
         {
             InitializeComponent();
         }
+        protected override void OnViewDetailClick()
+        {
+            btnViewDetail.Visible = false;
+        }
     }
 }
