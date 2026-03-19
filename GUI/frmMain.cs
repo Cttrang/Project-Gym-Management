@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace desktopapp_GYM.GUI
 {
@@ -20,14 +21,12 @@ namespace desktopapp_GYM.GUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            //lblWelcome.Text = "Xin chào, " + Session.CurrentUsername;
-
-            //if (Session.CurrentRole == "Receptionist")
-            //{
-            //    // Lễ tân thì ẩn nút xóa hoặc ẩn menu Dashboard của Manager
-            //    btnDeleteMember.Visible = false;
-            //    btnRevenueStats.Enabled = false;
-            //}
+            string name = Session.CurrentUsername;
+            string role = Session.CurrentRole;
+            lblWelcome.Text = $"{name} ({role})";
+            if (role == "Admin") lblWelcome.ForeColor = Color.Red;
+            else if (role == "Manager") lblWelcome.ForeColor = Color.DarkBlue;
+            else lblWelcome.ForeColor = Color.Green;
             //ucMemberStats1.RefreshData();
             //ucRevenueCard1.RefreshData();
             ucRevenueChart1.RefreshData();

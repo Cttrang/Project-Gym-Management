@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.pnlSidebarGuest = new System.Windows.Forms.Panel();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -41,23 +42,22 @@
             this.lblWelcome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ucExpiredAlert1 = new desktopapp_GYM.ucExpiredAlert();
             this.ucRevenueChart1 = new desktopapp_GYM.ucRevenueChart();
             this.pnlSidebarGuest.SuspendLayout();
             this.pnlContentGuest.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlSidebarGuest
             // 
             this.pnlSidebarGuest.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.pnlSidebarGuest.Controls.Add(this.button6);
-            this.pnlSidebarGuest.Controls.Add(this.button5);
-            this.pnlSidebarGuest.Controls.Add(this.button4);
-            this.pnlSidebarGuest.Controls.Add(this.button3);
-            this.pnlSidebarGuest.Controls.Add(this.button2);
-            this.pnlSidebarGuest.Controls.Add(this.button1);
+            this.pnlSidebarGuest.Controls.Add(this.flowLayoutPanel2);
             this.pnlSidebarGuest.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlSidebarGuest.Location = new System.Drawing.Point(0, 0);
             this.pnlSidebarGuest.Name = "pnlSidebarGuest";
@@ -67,7 +67,7 @@
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.Location = new System.Drawing.Point(27, 958);
+            this.button6.Location = new System.Drawing.Point(620, 105);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(165, 54);
             this.button6.TabIndex = 6;
@@ -78,20 +78,18 @@
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(23, 309);
+            this.button5.Location = new System.Drawing.Point(3, 460);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(165, 54);
+            this.button5.Size = new System.Drawing.Size(215, 54);
             this.button5.TabIndex = 5;
             this.button5.Text = "Hội viên";
             this.button5.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(23, 117);
+            this.button4.Location = new System.Drawing.Point(3, 208);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(165, 54);
+            this.button4.Size = new System.Drawing.Size(215, 54);
             this.button4.TabIndex = 4;
             this.button4.Text = "Dashboard";
             this.button4.UseVisualStyleBackColor = true;
@@ -100,9 +98,9 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(23, 369);
+            this.button3.Location = new System.Drawing.Point(3, 400);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(165, 54);
+            this.button3.Size = new System.Drawing.Size(215, 54);
             this.button3.TabIndex = 2;
             this.button3.Text = "Về chúng tôi";
             this.button3.UseVisualStyleBackColor = true;
@@ -111,9 +109,9 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(23, 177);
+            this.button2.Location = new System.Drawing.Point(3, 268);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(165, 66);
+            this.button2.Size = new System.Drawing.Size(215, 66);
             this.button2.TabIndex = 1;
             this.button2.Text = "Xem huấn luyện viên";
             this.button2.UseVisualStyleBackColor = true;
@@ -122,9 +120,9 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(23, 249);
+            this.button1.Location = new System.Drawing.Point(3, 340);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 54);
+            this.button1.Size = new System.Drawing.Size(215, 54);
             this.button1.TabIndex = 0;
             this.button1.Text = "Xem Gói Tập";
             this.button1.UseVisualStyleBackColor = true;
@@ -142,6 +140,7 @@
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.Controls.Add(this.ucExpiredAlert1);
             this.flowLayoutPanel1.Controls.Add(this.ucRevenueChart1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -152,6 +151,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.lblWelcome);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label2);
@@ -164,9 +164,10 @@
             // lblWelcome
             // 
             this.lblWelcome.AutoSize = true;
-            this.lblWelcome.Location = new System.Drawing.Point(234, 110);
+            this.lblWelcome.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWelcome.Location = new System.Drawing.Point(230, 111);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(70, 25);
+            this.lblWelcome.Size = new System.Drawing.Size(97, 36);
             this.lblWelcome.TabIndex = 2;
             this.lblWelcome.Text = "label3";
             // 
@@ -174,7 +175,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 28);
+            this.label1.Location = new System.Drawing.Point(27, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(644, 55);
             this.label1.TabIndex = 0;
@@ -189,6 +190,35 @@
             this.label2.Size = new System.Drawing.Size(209, 42);
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.Controls.Add(this.pictureBox1);
+            this.flowLayoutPanel2.Controls.Add(this.button4);
+            this.flowLayoutPanel2.Controls.Add(this.button2);
+            this.flowLayoutPanel2.Controls.Add(this.button1);
+            this.flowLayoutPanel2.Controls.Add(this.button3);
+            this.flowLayoutPanel2.Controls.Add(this.button5);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(218, 1028);
+            this.flowLayoutPanel2.TabIndex = 0;
+            this.flowLayoutPanel2.WrapContents = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(215, 199);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // ucExpiredAlert1
             // 
@@ -220,10 +250,13 @@
             this.Text = "frmMain";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.pnlSidebarGuest.ResumeLayout(false);
+            this.pnlSidebarGuest.PerformLayout();
             this.pnlContentGuest.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -245,5 +278,7 @@
         private System.Windows.Forms.Label lblWelcome;
         private ucRevenueChart ucRevenueChart1;
         private ucExpiredAlert ucExpiredAlert1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

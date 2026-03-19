@@ -36,14 +36,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtExpired)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnPin
-            // 
-            this.btnPin.Location = new System.Drawing.Point(460, 6);
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.dtExpired);
-            this.panel2.Size = new System.Drawing.Size(274, 192);
+            this.panel2.Size = new System.Drawing.Size(274, 226);
             // 
             // panel1
             // 
@@ -57,6 +53,10 @@
             this.panelFooter.Location = new System.Drawing.Point(0, 226);
             this.panelFooter.Size = new System.Drawing.Size(274, 34);
             // 
+            // btnPin
+            // 
+            this.btnPin.Location = new System.Drawing.Point(534, 6);
+            // 
             // btnViewDetail
             // 
             this.btnViewDetail.Location = new System.Drawing.Point(174, 0);
@@ -64,6 +64,7 @@
             // dtExpired
             // 
             this.dtExpired.AllowUserToAddRows = false;
+            this.dtExpired.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtExpired.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dtExpired.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dtExpired.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
@@ -75,7 +76,7 @@
             this.dtExpired.RowHeadersWidth = 82;
             this.dtExpired.RowTemplate.Height = 33;
             this.dtExpired.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dtExpired.Size = new System.Drawing.Size(274, 192);
+            this.dtExpired.Size = new System.Drawing.Size(274, 226);
             this.dtExpired.TabIndex = 0;
             // 
             // lblThongBao
