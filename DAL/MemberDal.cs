@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace desktopapp_GYM.DAL
 {
@@ -23,28 +24,22 @@ namespace desktopapp_GYM.DAL
         }
         public DataTable GetExpiringMembers()
         {
-            string sql = @"SELECT TOP 5 m.FullName, r.EndDate 
+            // Ép kiểu số ngày thành chuỗi ngay trong SQL để C# không bị lỗi format
+            string sql = @"SELECT TOP 5 
+                    m.FullName, 
+                    r.EndDate,
+                    CAST(DATEDIFF(day, CAST(GETDATE() AS DATE), r.EndDate) AS NVARCHAR(50)) AS DaysStatus
                    FROM MEMBERS m 
                    JOIN REGISTRATIONS r ON m.MemberID = r.MemberID 
-                   WHERE r.EndDate >= CAST(GETDATE() AS DATE) 
-                     AND r.EndDate <= DATEADD(day, 7, GETDATE())
+                   WHERE r.EndDate <= DATEADD(day, 7, GETDATE())
                    ORDER BY r.EndDate ASC";
 
             DataTable dt = new DataTable();
-            try
+            using (SqlConnection con = dc.GetConnection())
             {
-                using (SqlConnection con = dc.GetConnection())
-                {
-                    SqlDataAdapter da = new SqlDataAdapter(sql, con);
-                    da.Fill(dt);
-                }
+                SqlDataAdapter da = new SqlDataAdapter(sql, con);
+                da.Fill(dt);
             }
-            catch (Exception ex)
-            {
-                // Debug nếu có lỗi kết nối
-                Console.WriteLine("Lỗi SQL: " + ex.Message);
-            }
-
             return dt;
         }
 

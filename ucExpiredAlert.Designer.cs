@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.dtExpired = new System.Windows.Forms.DataGridView();
+            this.lblThongBao = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelFooter.SuspendLayout();
@@ -46,7 +47,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lblThongBao);
             this.panel1.Size = new System.Drawing.Size(274, 34);
+            this.panel1.Controls.SetChildIndex(this.btnPin, 0);
+            this.panel1.Controls.SetChildIndex(this.lblThongBao, 0);
             // 
             // panelFooter
             // 
@@ -59,6 +63,7 @@
             // 
             // dtExpired
             // 
+            this.dtExpired.AllowUserToAddRows = false;
             this.dtExpired.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dtExpired.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dtExpired.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
@@ -73,6 +78,15 @@
             this.dtExpired.Size = new System.Drawing.Size(274, 192);
             this.dtExpired.TabIndex = 0;
             // 
+            // lblThongBao
+            // 
+            this.lblThongBao.AutoSize = true;
+            this.lblThongBao.Location = new System.Drawing.Point(32, 6);
+            this.lblThongBao.Name = "lblThongBao";
+            this.lblThongBao.Size = new System.Drawing.Size(70, 25);
+            this.lblThongBao.TabIndex = 1;
+            this.lblThongBao.Text = "label1";
+            // 
             // ucExpiredAlert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -81,6 +95,7 @@
             this.Size = new System.Drawing.Size(274, 260);
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panelFooter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtExpired)).EndInit();
             this.ResumeLayout(false);
@@ -90,5 +105,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dtExpired;
+        private System.Windows.Forms.Label lblThongBao;
     }
 }
