@@ -25,14 +25,29 @@ namespace desktopapp_GYM.DAL
         public DataTable GetExpiringMembers()
         {
             // Ép kiểu số ngày thành chuỗi ngay trong SQL để C# không bị lỗi format
+            //string sql = @"SELECT TOP 5 
+            //        m.FullName, 
+            //        r.EndDate,
+            //        CAST(DATEDIFF(day, CAST(GETDATE() AS DATE), r.EndDate) AS NVARCHAR(50)) AS DaysStatus
+            //       FROM MEMBERS m 
+            //       JOIN REGISTRATIONS r ON m.MemberID = r.MemberID 
+            //       WHERE r.EndDate <= DATEADD(day, 7, GETDATE())
+            //       ORDER BY r.EndDate ASC";
+
+            //DataTable dt = new DataTable();
+            //using (SqlConnection con = dc.GetConnection())
+            //{
+            //    SqlDataAdapter da = new SqlDataAdapter(sql, con);
+            //    da.Fill(dt);
+            //}
+            //return dt;
             string sql = @"SELECT TOP 5 
                     m.FullName, 
-                    r.EndDate,
-                    CAST(DATEDIFF(day, CAST(GETDATE() AS DATE), r.EndDate) AS NVARCHAR(50)) AS DaysStatus
+                    r.REGDATE, 
+                    r.EndDate
                    FROM MEMBERS m 
                    JOIN REGISTRATIONS r ON m.MemberID = r.MemberID 
-                   WHERE r.EndDate <= DATEADD(day, 7, GETDATE())
-                   ORDER BY r.EndDate ASC";
+                   ORDER BY r.EndDate ASC"; // Sắp xếp ngày hết hạn lên đầu
 
             DataTable dt = new DataTable();
             using (SqlConnection con = dc.GetConnection())
