@@ -73,5 +73,20 @@ namespace desktopapp_GYM
         {
             // Mặc định không làm gì hoặc hiện thông báo chung
         }
+        public virtual void StartEffects()
+        {
+            if (timer1 != null)
+            {
+                timer1.Stop();
+                timer1.Enabled = true;
+                timer1.Start();
+            }
+
+            // Đảm bảo nút Pin luôn nổi lên trên cùng
+            if (btnPin != null) btnPin.BringToFront();
+
+            // Vẽ lại giao diện
+            this.Invalidate();
+        }
     }
 }

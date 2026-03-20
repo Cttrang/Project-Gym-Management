@@ -45,5 +45,12 @@ namespace desktopapp_GYM
             chartRevenue.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
             chartRevenue.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.FromArgb(230, 230, 230);
         }
+        public override void StartEffects()
+        {
+            base.StartEffects(); // Chạy logic hiện nút Pin của cha
+
+            // Logic riêng cho biểu đồ (nếu có)
+            this.PerformLayout();
+        }
     }
 }

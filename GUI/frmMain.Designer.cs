@@ -30,28 +30,27 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.pnlSidebarGuest = new System.Windows.Forms.Panel();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.pnlContentGuest = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblWelcome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.ucExpiredAlert1 = new desktopapp_GYM.ucExpiredAlert();
-            this.ucRevenueChart1 = new desktopapp_GYM.ucRevenueChart();
+            this.btnTest = new System.Windows.Forms.Button();
+            this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlSidebarGuest.SuspendLayout();
-            this.pnlContentGuest.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pnlContentGuest.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlSidebarGuest
@@ -64,26 +63,35 @@
             this.pnlSidebarGuest.Size = new System.Drawing.Size(218, 1028);
             this.pnlSidebarGuest.TabIndex = 1;
             // 
-            // button6
+            // flowLayoutPanel2
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.Location = new System.Drawing.Point(620, 105);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(165, 54);
-            this.button6.TabIndex = 6;
-            this.button6.Text = "Đăng Xuất";
-            this.button6.UseVisualStyleBackColor = true;
+            this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.Controls.Add(this.pictureBox1);
+            this.flowLayoutPanel2.Controls.Add(this.button4);
+            this.flowLayoutPanel2.Controls.Add(this.button2);
+            this.flowLayoutPanel2.Controls.Add(this.button1);
+            this.flowLayoutPanel2.Controls.Add(this.button3);
+            this.flowLayoutPanel2.Controls.Add(this.button5);
+            this.flowLayoutPanel2.Controls.Add(this.btnTest);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(218, 1028);
+            this.flowLayoutPanel2.TabIndex = 0;
+            this.flowLayoutPanel2.WrapContents = false;
             // 
-            // button5
+            // pictureBox1
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(3, 460);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(215, 54);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Hội viên";
-            this.button5.UseVisualStyleBackColor = true;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(215, 199);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // button4
             // 
@@ -93,17 +101,7 @@
             this.button4.TabIndex = 4;
             this.button4.Text = "Dashboard";
             this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(3, 400);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(215, 54);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Về chúng tôi";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button2
             // 
@@ -127,10 +125,42 @@
             this.button1.Text = "Xem Gói Tập";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.Location = new System.Drawing.Point(3, 400);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(215, 54);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Về chúng tôi";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.Location = new System.Drawing.Point(3, 460);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(215, 54);
+            this.button5.TabIndex = 5;
+            this.button5.Text = "Hội viên";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button6.Location = new System.Drawing.Point(1134, 12);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(165, 54);
+            this.button6.TabIndex = 6;
+            this.button6.Text = "Đăng Xuất";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
             // pnlContentGuest
             // 
             this.pnlContentGuest.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pnlContentGuest.Controls.Add(this.flowLayoutPanel1);
+            this.pnlContentGuest.Controls.Add(this.pnlContent);
             this.pnlContentGuest.Controls.Add(this.panel1);
             this.pnlContentGuest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContentGuest.Location = new System.Drawing.Point(218, 0);
@@ -141,16 +171,14 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Controls.Add(this.ucExpiredAlert1);
-            this.flowLayoutPanel1.Controls.Add(this.ucRevenueChart1);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 171);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(688, 28);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1311, 857);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(116, 123);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.flowLayoutPanel1);
             this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.lblWelcome);
             this.panel1.Controls.Add(this.label1);
@@ -164,10 +192,10 @@
             // lblWelcome
             // 
             this.lblWelcome.AutoSize = true;
-            this.lblWelcome.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWelcome.Location = new System.Drawing.Point(230, 111);
+            this.lblWelcome.Font = new System.Drawing.Font("Times New Roman", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWelcome.Location = new System.Drawing.Point(245, 98);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(97, 36);
+            this.lblWelcome.Size = new System.Drawing.Size(105, 42);
             this.lblWelcome.TabIndex = 2;
             this.lblWelcome.Text = "label3";
             // 
@@ -191,52 +219,23 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
             // 
-            // flowLayoutPanel2
+            // btnTest
             // 
-            this.flowLayoutPanel2.AutoSize = true;
-            this.flowLayoutPanel2.Controls.Add(this.pictureBox1);
-            this.flowLayoutPanel2.Controls.Add(this.button4);
-            this.flowLayoutPanel2.Controls.Add(this.button2);
-            this.flowLayoutPanel2.Controls.Add(this.button1);
-            this.flowLayoutPanel2.Controls.Add(this.button3);
-            this.flowLayoutPanel2.Controls.Add(this.button5);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(218, 1028);
-            this.flowLayoutPanel2.TabIndex = 0;
-            this.flowLayoutPanel2.WrapContents = false;
+            this.btnTest.Location = new System.Drawing.Point(3, 520);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(215, 54);
+            this.btnTest.TabIndex = 6;
+            this.btnTest.Text = "test";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
-            // pictureBox1
+            // pnlContent
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(215, 199);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
-            // 
-            // ucExpiredAlert1
-            // 
-            this.ucExpiredAlert1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ucExpiredAlert1.BorderRadius = 30;
-            this.ucExpiredAlert1.Location = new System.Drawing.Point(3, 3);
-            this.ucExpiredAlert1.Name = "ucExpiredAlert1";
-            this.ucExpiredAlert1.Size = new System.Drawing.Size(879, 387);
-            this.ucExpiredAlert1.TabIndex = 4;
-            // 
-            // ucRevenueChart1
-            // 
-            this.ucRevenueChart1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ucRevenueChart1.BorderRadius = 30;
-            this.ucRevenueChart1.Location = new System.Drawing.Point(3, 396);
-            this.ucRevenueChart1.Name = "ucRevenueChart1";
-            this.ucRevenueChart1.Size = new System.Drawing.Size(1131, 479);
-            this.ucRevenueChart1.TabIndex = 3;
+            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlContent.Location = new System.Drawing.Point(0, 171);
+            this.pnlContent.Name = "pnlContent";
+            this.pnlContent.Size = new System.Drawing.Size(1311, 857);
+            this.pnlContent.TabIndex = 4;
             // 
             // frmMain
             // 
@@ -251,12 +250,11 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.pnlSidebarGuest.ResumeLayout(false);
             this.pnlSidebarGuest.PerformLayout();
-            this.pnlContentGuest.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.pnlContentGuest.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -276,9 +274,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label lblWelcome;
-        private ucRevenueChart ucRevenueChart1;
-        private ucExpiredAlert ucExpiredAlert1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Panel pnlContent;
     }
 }

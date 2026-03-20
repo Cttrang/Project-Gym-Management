@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\MemberBLL.cs" />
     <Compile Include="BLL\Session.cs" />
     <Compile Include="BLL\UserBLL.cs" />
     <Compile Include="DAL\DataConnection.cs" />
@@ -91,6 +92,12 @@
     <Compile Include="ucClassStatus.Designer.cs">
       <DependentUpon>ucClassStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucDashBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucDashBoard.Designer.cs">
+      <DependentUpon>ucDashBoard.cs</DependentUpon>
+    </Compile>
     <Compile Include="ucExpiredAlert.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -102,6 +109,12 @@
     </Compile>
     <Compile Include="ucGymIntro.Designer.cs">
       <DependentUpon>ucGymIntro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucMemberList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucMemberList.Designer.cs">
+      <DependentUpon>ucMemberList.cs</DependentUpon>
     </Compile>
     <Compile Include="ucMemberStats.cs">
       <SubType>UserControl</SubType>
@@ -147,6 +160,9 @@
     </Compile>
     <EmbeddedResource Include="ucBaseCard.resx">
       <DependentUpon>ucBaseCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucDashBoard.resx">
+      <DependentUpon>ucDashBoard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucExpiredAlert.resx">
       <DependentUpon>ucExpiredAlert.cs</DependentUpon>
