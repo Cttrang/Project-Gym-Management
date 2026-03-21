@@ -170,6 +170,9 @@
     <EmbeddedResource Include="ucGymIntro.resx">
       <DependentUpon>ucGymIntro.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ucMemberList.resx">
+      <DependentUpon>ucMemberList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ucMemberStats.resx">
       <DependentUpon>ucMemberStats.cs</DependentUpon>
     </EmbeddedResource>

@@ -46,6 +46,43 @@ namespace desktopapp_GYM
             // 3. Ép FlowLayoutPanel sắp xếp lại các nút (Tránh lỗ hổng khi ẩn Card)
             flpDashBoard.ResumeLayout();
         }
+
+        private void ucRevenueChart1_Resize(object sender, EventArgs e)
+        {
+            foreach (Control ctrl in flpDashBoard.Controls)
+            {
+                if (ctrl is UserControl uc)
+                {
+                    uc.Width = flpDashBoard.ClientSize.Width - 25;
+                }
+            }
+        }
+
+        private void ucDashBoard_Resize(object sender, EventArgs e)
+        {
+        
+        }
+
+        private void flpDashBoard_Resize(object sender, EventArgs e)
+        {
+            // Tạm dừng vẽ để tránh giật lag khi resize
+            flpDashBoard.SuspendLayout();
+
+            foreach (Control card in flpDashBoard.Controls)
+            {
+                if (card is UserControl)
+                {
+                    // Ép chiều ngang của Card bằng chiều ngang của Panel (trừ đi khoảng hở thanh cuộn)
+                    // Nếu bạn muốn 2 Card trên 1 hàng thì chia 2, nhưng ở đây nên để 1 Card/1 hàng cho chắc chắn
+                    card.Width = flpDashBoard.ClientSize.Width - 25;
+
+                    // Ép các control bên trong Card (Chart/Grid) phải tính toán lại
+                    card.PerformLayout();
+                }
+            }
+
+            flpDashBoard.ResumeLayout();
+        }
     }
     
     

@@ -36,7 +36,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.txtMember = new System.Windows.Forms.Button();
+            this.btnTest = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.pnlContentGuest = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -44,13 +45,13 @@
             this.lblWelcome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnTest = new System.Windows.Forms.Button();
             this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlSidebarGuest.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlContentGuest.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.pnlContent.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlSidebarGuest
@@ -71,7 +72,7 @@
             this.flowLayoutPanel2.Controls.Add(this.button2);
             this.flowLayoutPanel2.Controls.Add(this.button1);
             this.flowLayoutPanel2.Controls.Add(this.button3);
-            this.flowLayoutPanel2.Controls.Add(this.button5);
+            this.flowLayoutPanel2.Controls.Add(this.txtMember);
             this.flowLayoutPanel2.Controls.Add(this.btnTest);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -136,16 +137,27 @@
             this.button3.Text = "Về chúng tôi";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // txtMember
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtMember.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(3, 460);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(215, 54);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Hội viên";
-            this.button5.UseVisualStyleBackColor = true;
+            this.txtMember.Location = new System.Drawing.Point(3, 460);
+            this.txtMember.Name = "txtMember";
+            this.txtMember.Size = new System.Drawing.Size(215, 54);
+            this.txtMember.TabIndex = 5;
+            this.txtMember.Text = "Hội viên";
+            this.txtMember.UseVisualStyleBackColor = true;
+            this.txtMember.Click += new System.EventHandler(this.txtMember_Click);
+            // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(3, 520);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(215, 54);
+            this.btnTest.TabIndex = 6;
+            this.btnTest.Text = "test";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // button6
             // 
@@ -171,14 +183,14 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(688, 28);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(116, 123);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1311, 857);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.flowLayoutPanel1);
             this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.lblWelcome);
             this.panel1.Controls.Add(this.label1);
@@ -219,18 +231,9 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
             // 
-            // btnTest
-            // 
-            this.btnTest.Location = new System.Drawing.Point(3, 520);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(215, 54);
-            this.btnTest.TabIndex = 6;
-            this.btnTest.Text = "test";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
-            // 
             // pnlContent
             // 
+            this.pnlContent.Controls.Add(this.flowLayoutPanel1);
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContent.Location = new System.Drawing.Point(0, 171);
             this.pnlContent.Name = "pnlContent";
@@ -247,6 +250,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmMain";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.pnlSidebarGuest.ResumeLayout(false);
             this.pnlSidebarGuest.PerformLayout();
@@ -255,6 +259,7 @@
             this.pnlContentGuest.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.pnlContent.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -266,7 +271,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button txtMember;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Panel pnlContentGuest;
         private System.Windows.Forms.Label label2;
