@@ -54,6 +54,7 @@
     <Compile Include="DAL\MemberDal.cs" />
     <Compile Include="DAL\RegistrationDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
+    <Compile Include="DTO\MemberDTO.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -60,11 +60,9 @@ namespace desktopapp_GYM
 
         private void btnOut_Click(object sender, EventArgs e)
         {
-            if (this.FindForm() is frmMain mainForm)
+            if (this.FindForm() is frmMain main)
             {
-                // Quay lại Dashboard (Giả sử bạn đã kéo ucDashBoard vào frmMain)
-                // Hoặc đơn giản là gọi lại hàm hiện Dashboard cũ
-                mainForm.ShowDashboard();
+                main.ShowUc();
             }
         }
 
@@ -169,36 +167,87 @@ namespace desktopapp_GYM
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvMembers.CurrentRow == null)
-            {
-                MessageBox.Show("Mời chọn người muốn xóa.");
-                return;
-            }
                 
             DataGridViewRow row = dgvMembers.CurrentRow;
             int id = Convert.ToInt32(row.Cells["ID"].Value);
             string targetRole = row.Cells["TYPE"].Value.ToString();
+            string name = row.Cells["FULLNAME"].Value.ToString();
 
-            if (bll.HasPermission(Session.CurrentRole, targetRole, "Delete"))
+            var result = MessageBox.Show($"Bạn có chắc muốn xóa {targetRole}: {name}?",
+                                 "Xác nhận xóa",
+                                 MessageBoxButtons.YesNo,
+                                 MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
             {
-                var result = MessageBox.Show("Xóa dữ liệu này sẽ không thể khôi phục. Tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                //if (result == DialogResult.Yes)
-                //{
-                //    if (dal.DeleteRecord(id, targetRole))
-                //    {
-                //        LoadData();
-                //    }
-                //}
-            }
-            else
-            {
-                MessageBox.Show("Quyền hạn của bạn không đủ để thực hiện thao tác xóa này.");
+                // Gọi BLL thực hiện xóa (BLL sẽ gọi DAL.DeleteRecord)
+                if (bll.DeleteData(id, targetRole))
+                {
+                    MessageBox.Show("Xóa thành công!");
+                    LoadData();
+                    SetupAutoComplete();
+                }
+                else
+                {
+                    MessageBox.Show("Xóa thất bại!");
+                }
             }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             frmChange Add = new frmChange();
+            if (Add.ShowDialog() == DialogResult.OK)
+            {
+                LoadData();
+                SetupAutoComplete();
+            }
+        }
+
+        private void btnEdits_Click(object sender, EventArgs e)
+        {
+            
+            DataGridViewRow row = dgvMembers.CurrentRow;
+            frmChange Edit = new frmChange(row);
+            if (Edit.ShowDialog() == DialogResult.OK)
+            {
+                LoadData();
+                
+            }
+        }
+
+        private void dgvMembers_SelectionChanged(object sender, EventArgs e)
+        {
+            // 1. Kiểm tra xem có dòng nào đang được chọn không
+            if (dgvMembers.CurrentRow != null)
+            {
+                // 2. Lấy Role của dòng đó (Huy thay "TYPE" bằng tên cột chứa Role trong Grid của Huy)
+                string selectedRole = dgvMembers.CurrentRow.Cells["TYPE"].Value?.ToString();
+
+                // 3. Danh sách các Role đặc biệt cần khóa nút
+                string[] specialRoles = { "Admin", "Manager", "Receptionist" };
+
+                // 4. Nếu Role nằm trong danh sách đặc biệt -> Khóa nút Edit/Delete
+                if (specialRoles.Contains(selectedRole))
+                {
+                    btnEdits.Enabled = false;
+                    btnDelete.Enabled = false;
+                    
+                }
+                else
+                {
+                    // Nếu là Member hoặc Trainer -> Mở nút
+                    btnEdits.Enabled = true;
+                    btnDelete.Enabled = true;
+                    
+                }
+            }
+            else
+            {
+                // Nếu không chọn dòng nào (Grid trống) -> Tắt nút luôn cho an toàn
+                btnEdits.Enabled = false;
+                btnDelete.Enabled = false;
+            }
         }
     }
 }

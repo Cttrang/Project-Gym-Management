@@ -1,4 +1,5 @@
 ﻿using desktopapp_GYM.DAL;
+using desktopapp_GYM.DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -49,6 +50,14 @@ namespace desktopapp_GYM.BLL
 
             // 3. Các trường hợp còn lại (Cấp cao tác động cấp thấp) -> Hợp lệ
             return true;
+        }
+        public bool SaveData(MemberDTO dto, bool isAdd) => dal.SaveMember(dto, isAdd);
+        public DataTable GetPackages() => dal.GetPackages();
+        public DataTable GetTrainers() => dal.GetTrainers();
+        public bool DeleteData(int id, string type)
+        {
+            // BLL nhận lệnh từ GUI và chuyển tiếp xuống DAL
+            return dal.DeleteRecord(id, type);
         }
     }
 }

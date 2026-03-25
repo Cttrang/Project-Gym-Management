@@ -27,30 +27,56 @@ namespace desktopapp_GYM.GUI
             if (role == "Admin") lblWelcome.ForeColor = Color.Red;
             else if (role == "Manager") lblWelcome.ForeColor = Color.DarkBlue;
             else lblWelcome.ForeColor = Color.Green;
-            //ucMemberStats1.RefreshData();
-            //ucRevenueCard1.RefreshData();
-            //ucRevenueChart1.RefreshData();
-            //ucExpiredAlert1.RefreshData();
+            ShowUc();
             
-            //ShowDashboard();
+            
         }
 
-        public void ShowMemberList()
+        public void ShowUc()
         {
-            // 1. Khởi tạo đối tượng
-            ucMemberList uc = new ucMemberList();
+            flowLayoutPanel1.Visible = true;
+            flowLayoutPanel1.BringToFront();
+            flowLayoutPanel1.Dock = DockStyle.Fill;
 
-            // 2. Xóa các control đang hiện hữu trong Panel nội dung (pnlContent)
-            pnlContent.Controls.Clear();
+            // 2. Quét qua tất cả các UC con nằm trong flowLayoutPanel để bắt chúng cập nhật
+            foreach (Control ctrl in flowLayoutPanel1.Controls)
+            {
+                // Kiểm tra xem nó có phải là UC thống kê của Huy không
+                if (ctrl is ucMemberStats ucMemberStats1)
+                {
+                    ucMemberStats1.RefreshData();
+                }
+                else if (ctrl is ucExpiredAlert ucExpiredAlert1)
+                {
+                    ucExpiredAlert1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
+                }
+                else if (ctrl is ucRevenueChart ucRevenueChart1)
+                {
+                    ucRevenueChart1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
+                }
+            }
+        }
+
+        public void ShowDetail(UserControl uc)
+        {
+            // 1. Ẩn cái Dashboard đi cho khuất mắt
             flowLayoutPanel1.Visible = false;
 
-            // 3. Thiết lập Dock = Fill để tràn màn hình
-            uc.Dock = DockStyle.Fill;
+            // 2. Dọn dẹp pnlContent trước khi thêm cái mới (tránh chồng chất)
+            foreach (Control ctrl in pnlContent.Controls)
+            {
+                if (ctrl != flowLayoutPanel1)
+                {
+                    pnlContent.Controls.Remove(ctrl);
+                }
+            }
 
-            // 4. Thêm vào Panel và hiển thị
+            // 3. Thêm UC chi tiết vào pnlContent
+            uc.Dock = DockStyle.Fill;
             pnlContent.Controls.Add(uc);
             uc.BringToFront();
         }
+
         private void btnTest_Click(object sender, EventArgs e)
         {
             //ucRevenueChart1.Visible = !ucRevenueChart1.Visible;
@@ -67,31 +93,13 @@ namespace desktopapp_GYM.GUI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            DisplayControl(new ucDashBoard());
+            
+            ShowUc();
+            
         }
 
-        private ucDashBoard _ucDashBoard;
-        public void ShowDashboard()
-        {
-            //// 1. Kiểm tra nếu Dashboard chưa được tạo hoặc đã bị xóa
-            //if (_ucDashBoard == null || _ucDashBoard.IsDisposed)
-            //{
-            //    _ucDashBoard = new ucDashBoard();
-            //}
-
-            //// 2. Xóa sạch các Control cũ đang hiển thị trong vùng nội dung (pnlContent)
-            //pnlContent.Controls.Clear();
-
-            //// 3. Thiết lập Dashboard để nó lấp đầy vùng nội dung
-            //_ucDashBoard.Dock = DockStyle.Fill;
-
-            //// 4. Thêm Dashboard vào Panel và đưa lên trên cùng
-            //pnlContent.Controls.Add(_ucDashBoard);
-            //_ucDashBoard.BringToFront();
-
-            //// 5. Kích hoạt các hiệu ứng (Timer, Nút Pin) cho các Card con bên trong
-            //ActivateCardsInDashboard(_ucDashBoard);
-        }
+        
+        
 
         private void ActivateCardsInDashboard(ucDashBoard db)
         {
@@ -114,27 +122,12 @@ namespace desktopapp_GYM.GUI
         }
         public void DisplayControl(UserControl uc)
         {
-            //// 1. Xóa sạch control cũ để giải phóng bộ nhớ
-            //pnlContent.Controls.Clear();
-
-            //// 2. Thiết lập UC mới
-            //uc.Dock = DockStyle.Fill;
-
-            //// 3. Thêm vào Panel chính
-            //pnlContent.Controls.Add(uc);
-            //uc.BringToFront();
-
-            //// 4. Nếu UC này là Dashboard, ta gọi lệnh kích hoạt Card
-            //if (uc is ucDashBoard db)
-            //{
-            //    // Bạn có thể gọi hàm Init hoặc Activate đã viết ở ucDashBoard
-            //    ActivateCardsInDashboard(db);
-            //}
+            
         }
 
         private void txtMember_Click(object sender, EventArgs e)
         {
-            ShowMemberList();
+            ShowDetail(new ucMemberList());
         }
     }
 

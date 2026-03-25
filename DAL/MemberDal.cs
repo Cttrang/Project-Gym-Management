@@ -1,4 +1,5 @@
-﻿using System;
+﻿using desktopapp_GYM.DTO;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -147,5 +148,54 @@ namespace desktopapp_GYM.DAL
                 throw new Exception("Lỗi khi xóa dữ liệu: " + ex.Message);
             }
         }
+
+        public bool SaveMember(MemberDTO dto, bool isAdd)
+        {
+            using (SqlConnection con = dc.GetConnection())
+            {
+                con.Open();
+                SqlTransaction trans = con.BeginTransaction();
+                try
+                {
+                    string sql = isAdd ?
+                        @"INSERT INTO MEMBERS (FULLNAME, PHONE, JOINDATE) VALUES (@name, @phone, GETDATE());
+                  DECLARE @mID INT = SCOPE_IDENTITY();
+                  INSERT INTO REGISTRATIONS (MEMBERID, PACKAGEID, TRAINERID, REGDATE, ENDDATE, TOTALAMOUNT, PAYMENTSTATUS)
+                  VALUES (@mID, @pkg, @trn, @rd, @ed, @total, @status)" :
+                        @"UPDATE MEMBERS SET FULLNAME=@name, PHONE=@phone WHERE MEMBERID=@id;
+                  UPDATE REGISTRATIONS SET PACKAGEID=@pkg, TRAINERID=@trn, REGDATE=@rd, ENDDATE=@ed, 
+                  TOTALAMOUNT=@total, PAYMENTSTATUS=@status WHERE MEMBERID=@id";
+
+                    SqlCommand cmd = new SqlCommand(sql, con, trans);
+                    cmd.Parameters.AddWithValue("@id", dto.ID);
+                    cmd.Parameters.AddWithValue("@name", dto.FullName);
+                    cmd.Parameters.AddWithValue("@phone", dto.Phone);
+                    cmd.Parameters.AddWithValue("@pkg", dto.PackageID);
+                    cmd.Parameters.AddWithValue("@trn", (object)dto.TrainerID ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@rd", dto.RegDate);
+                    cmd.Parameters.AddWithValue("@ed", dto.EndDate);
+                    cmd.Parameters.AddWithValue("@total", dto.TotalAmount);
+                    cmd.Parameters.AddWithValue("@status", dto.PaymentStatus);
+
+                    cmd.ExecuteNonQuery();
+                    trans.Commit();
+                    return true;
+                }
+                catch { trans.Rollback(); return false; }
+            }
+        }
+
+        public DataTable GetPackages()
+        {
+            return dc.ExecuteQuery("SELECT PACKAGEID, PACKAGENAME, DURATIONMONTHS, PRICE FROM PACKAGES");
+        }
+
+        public DataTable GetTrainers()
+        {
+            return dc.ExecuteQuery("SELECT TRAINERID, FULLNAME FROM TRAINERS");
+        }
+
+        
+
     }
 }

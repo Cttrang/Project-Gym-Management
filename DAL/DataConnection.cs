@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,18 @@ namespace desktopapp_GYM.DAL
             {
                 return new SqlConnection(connString);
             }
+
+        public DataTable ExecuteQuery(string sql)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = GetConnection()) // Hàm GetConnection bạn đã có
+            {
+                SqlDataAdapter da = new SqlDataAdapter(sql, con);
+                da.Fill(dt);
+            }
+            return dt;
         }
+    }
     
 
 }
