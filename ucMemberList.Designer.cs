@@ -132,6 +132,7 @@
             this.btnXuat.TabIndex = 7;
             this.btnXuat.Text = "Xuất dữ liệu";
             this.btnXuat.UseVisualStyleBackColor = true;
+            this.btnXuat.Click += new System.EventHandler(this.btnXuat_Click);
             // 
             // btnClearS
             // 

@@ -29,9 +29,9 @@ namespace desktopapp_GYM
         public frmPackageChange(PackageDTO pkg, bool isAdd)
         {
             InitializeComponent();
-            isAddMode = false;
+            this.isAddMode = isAdd;
             _selectedPkg = pkg;
-            this.Text = "Cập nhật thông tin gói tập";
+            this.Text = isAdd ? "Thêm gói tập mới" : "Cập nhật thông tin gói tập";
         }
 
         private void MarkAsChanged(object sender, EventArgs e)
@@ -78,32 +78,31 @@ namespace desktopapp_GYM
         {
             try
             {
-                // Kiểm tra nhập liệu cơ bản
-                if (string.IsNullOrWhiteSpace(txtTenGoi.Text))
+                if (string.IsNullOrWhiteSpace(txtTenGoi.Text) || string.IsNullOrWhiteSpace(txtGia.Text))
                 {
-                    MessageBox.Show("Vui lòng nhập tên gói tập!");
+                    MessageBox.Show("V.lòng nhập đầy đủ Tên và Giá!");
                     return;
                 }
 
-                // Nếu đang ADD thì tạo mới DTO, nếu EDIT thì dùng lại đối tượng cũ
                 PackageDTO dto = isAddMode ? new PackageDTO() : _selectedPkg;
-
                 dto.PackageName = txtTenGoi.Text.Trim();
-                dto.DurationMonths = int.Parse(txtHanGoi.Text);
-                // Xử lý dấu phân cách nghìn nếu người dùng nhập 500.000
-                dto.Price = decimal.Parse(txtGia.Text.Replace(".", "").Replace(",", ""));
+                dto.DurationMonths = int.TryParse(txtHanGoi.Text, out int m) ? m : 0;
+
+                // Sửa dòng này để an toàn hơn
+                string priceRaw = txtGia.Text.Replace(".", "").Replace(",", "");
+                dto.Price = decimal.TryParse(priceRaw, out decimal p) ? p : 0;
 
                 if (bll.SavePackage(dto, isAddMode))
                 {
                     MessageBox.Show("Lưu thành công!");
-                    isDataChanged = false; // Quan trọng để Exit không hỏi
+                    isDataChanged = false;
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi dữ liệu: " + ex.Message);
+                MessageBox.Show("Lỗi: " + ex.Message);
             }
         }
 
@@ -124,13 +123,14 @@ namespace desktopapp_GYM
 
         private void frmPackageChange_Load(object sender, EventArgs e)
         {
-            ToggleEvents(true);
 
             // Nếu là chế độ sửa, đổ dữ liệu vào các ô
             if (!isAddMode && _selectedPkg != null)
             {
                 FillData();
             }
+            else
+                ToggleEvents(true);
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -154,6 +154,11 @@ namespace desktopapp_GYM
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void txtHanGoi_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

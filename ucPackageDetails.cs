@@ -156,5 +156,31 @@ namespace desktopapp_GYM
         }
         private void dgvMembers_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e) { }
         private void dgvMembers_SelectionChanged(object sender, EventArgs e) { }
+
+        private void btnXuat_Click(object sender, EventArgs e)
+        {
+            if (dgvPackages.CurrentRow != null)
+            {
+                // 2. Lấy dữ liệu từ dòng đang chọn (Ép kiểu về DTO cho sạch code)
+                // Nếu Huy dùng DataTable thì thay bằng DataRowView
+                var pkg = (PackageDTO)dgvPackages.CurrentRow.DataBoundItem;
+
+                // 3. Chuẩn bị nội dung hiển thị
+                string info = $"--- THÔNG TIN GÓI TẬP ---\n\n" +
+                              $"Mã gói: {pkg.PackageID}\n" +
+                              $"Tên gói: {pkg.PackageName}\n" +
+                              $"Thời hạn: {pkg.DurationMonths} tháng\n" +
+                              $"Giá tiền: {pkg.Price.ToString("N0")} VNĐ\n" +
+                              $"Số người dùng: {pkg.TotalMembers}";
+
+                // 4. Hiển thị lên MessageBox
+                MessageBox.Show(info, "Chi tiết gói tập", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một gói tập trong danh sách để xem chi tiết!",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }

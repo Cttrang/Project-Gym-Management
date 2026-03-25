@@ -249,5 +249,34 @@ namespace desktopapp_GYM
                 btnDelete.Enabled = false;
             }
         }
+
+        private void btnXuat_Click(object sender, EventArgs e)
+        {
+            // 1. Kiểm tra xem có dòng nào đang được chọn không
+            if (dgvMembers.CurrentRow != null)
+            {
+                // 2. Lấy dữ liệu từ dòng đang chọn (Vì dgvMembers dùng DataTable nên ép về DataRowView)
+                var row = (DataRowView)dgvMembers.CurrentRow.DataBoundItem;
+
+                // 3. Chuẩn bị nội dung hiển thị (Lấy đúng tên cột trong SQL/DataTable của Huy)
+                string info = $"--- THÔNG TIN CHI TIẾT ---\n\n" +
+                              $"Mã số: {row["ID"]}\n" +
+                              $"Họ tên: {row["FULLNAME"]}\n" +
+                              $"Vai trò: {row["TYPE"]}\n" +
+                              $"SĐT: {row["PHONE"]}\n" +
+                              $"Ngày tham gia: {Convert.ToDateTime(row["JOINDATE"]):dd/MM/yyyy}\n" +
+                              $"Gói đăng ký: {row["PACKAGEID"]}\n" +
+                              $"Tổng tiền: {Convert.ToDecimal(row["TOTALAMOUNT"]).ToString("N0")} VNĐ\n" +
+                              $"Thanh toán: {row["PAYMENTSTATUS"]}";
+
+                // 4. Hiển thị lên MessageBox
+                MessageBox.Show(info, "Chi tiết hội viên", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một người dùng trong danh sách để xem chi tiết!",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }
