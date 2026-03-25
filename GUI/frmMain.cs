@@ -29,7 +29,7 @@ namespace desktopapp_GYM.GUI
             else lblWelcome.ForeColor = Color.Green;
             ShowUc();
             
-            
+
         }
 
         public void ShowUc()
@@ -128,6 +128,11 @@ namespace desktopapp_GYM.GUI
         private void txtMember_Click(object sender, EventArgs e)
         {
             ShowDetail(new ucMemberList());
+        }
+
+        private void lblWelcome_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

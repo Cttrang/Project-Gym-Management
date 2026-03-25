@@ -33,12 +33,16 @@ namespace desktopapp_GYM
             series.Color = Color.FromArgb(255, 128, 0);
             series["PointWidth"] = "0.5";
             series.IsValueShownAsLabel = true;
+            series.LabelFormat = "N0";
 
-            foreach (DataRow row in dt.Rows)
+            if (dt != null)
             {
-                series.Points.AddXY(row["MonthYear"].ToString(), row["Total"]);
-            }
+                foreach (DataRow row in dt.Rows)
+                {
+                    series.Points.AddXY(row["MonthYear"].ToString(), row["Total"]);
+                }
 
+            }
             chartRevenue.Series.Add(series);
 
             // Tinh chỉnh trục tọa độ
