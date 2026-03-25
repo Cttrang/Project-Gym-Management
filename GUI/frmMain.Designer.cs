@@ -64,7 +64,7 @@
             this.pnlSidebarGuest.Controls.Add(this.flowLayoutPanel2);
             this.pnlSidebarGuest.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlSidebarGuest.Location = new System.Drawing.Point(0, 0);
-            this.pnlSidebarGuest.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlSidebarGuest.Margin = new System.Windows.Forms.Padding(4);
             this.pnlSidebarGuest.Name = "pnlSidebarGuest";
             this.pnlSidebarGuest.Size = new System.Drawing.Size(218, 981);
             this.pnlSidebarGuest.TabIndex = 1;
@@ -82,7 +82,7 @@
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(218, 981);
             this.flowLayoutPanel2.TabIndex = 0;
@@ -94,7 +94,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(4, 4);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(216, 198);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -104,7 +104,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(4, 210);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(216, 54);
             this.button4.TabIndex = 4;
@@ -117,7 +117,7 @@
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(4, 272);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(216, 65);
             this.button2.TabIndex = 1;
@@ -129,19 +129,20 @@
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(4, 345);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(216, 54);
             this.button1.TabIndex = 0;
             this.button1.Text = "Xem Gói Tập";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Location = new System.Drawing.Point(4, 407);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(216, 54);
             this.button3.TabIndex = 2;
@@ -153,7 +154,7 @@
             this.txtMember.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMember.Location = new System.Drawing.Point(4, 469);
-            this.txtMember.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMember.Margin = new System.Windows.Forms.Padding(4);
             this.txtMember.Name = "txtMember";
             this.txtMember.Size = new System.Drawing.Size(216, 54);
             this.txtMember.TabIndex = 5;
@@ -164,7 +165,7 @@
             // btnTest
             // 
             this.btnTest.Location = new System.Drawing.Point(4, 531);
-            this.btnTest.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnTest.Margin = new System.Windows.Forms.Padding(4);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(216, 54);
             this.btnTest.TabIndex = 6;
@@ -176,7 +177,7 @@
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.Location = new System.Drawing.Point(1132, 12);
-            this.button6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button6.Margin = new System.Windows.Forms.Padding(4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(164, 54);
             this.button6.TabIndex = 6;
@@ -190,7 +191,7 @@
             this.pnlContentGuest.Controls.Add(this.panel1);
             this.pnlContentGuest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContentGuest.Location = new System.Drawing.Point(218, 0);
-            this.pnlContentGuest.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlContentGuest.Margin = new System.Windows.Forms.Padding(4);
             this.pnlContentGuest.Name = "pnlContentGuest";
             this.pnlContentGuest.Size = new System.Drawing.Size(1310, 981);
             this.pnlContentGuest.TabIndex = 2;
@@ -200,7 +201,7 @@
             this.pnlContent.Controls.Add(this.flowLayoutPanel1);
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContent.Location = new System.Drawing.Point(0, 171);
-            this.pnlContent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlContent.Margin = new System.Windows.Forms.Padding(4);
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(1310, 810);
             this.pnlContent.TabIndex = 4;
@@ -213,7 +214,7 @@
             this.flowLayoutPanel1.Controls.Add(this.ucMemberStats1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1310, 810);
             this.flowLayoutPanel1.TabIndex = 4;
@@ -226,7 +227,7 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1310, 171);
             this.panel1.TabIndex = 3;
@@ -302,7 +303,7 @@
             this.ClientSize = new System.Drawing.Size(1528, 981);
             this.Controls.Add(this.pnlContentGuest);
             this.Controls.Add(this.pnlSidebarGuest);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmMain";

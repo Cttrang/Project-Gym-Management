@@ -134,6 +134,11 @@ namespace desktopapp_GYM.GUI
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucPackageDetails());
+        }
     }
 
 }

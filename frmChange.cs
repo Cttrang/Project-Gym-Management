@@ -32,6 +32,32 @@ namespace desktopapp_GYM
             cboVaiTro.Enabled = false;
         }
 
+        private void MarkAsChanged(object sender, EventArgs e)
+        {
+            isDataChanged = true;
+        }
+
+        private void ToggleEvents(bool active)
+        {
+            if (active)
+            {
+                txtHoTen.TextChanged += MarkAsChanged;
+                txtSDT.TextChanged += MarkAsChanged;
+                cboVaiTro.SelectedIndexChanged += MarkAsChanged;
+                cboThanhToan.SelectedIndexChanged += MarkAsChanged;
+                cboHLV.SelectedIndexChanged += MarkAsChanged;
+                // cboGoiTap đã có hàm riêng nên không add ở đây
+            }
+            else
+            {
+                txtHoTen.TextChanged -= MarkAsChanged;
+                txtSDT.TextChanged -= MarkAsChanged;
+                cboVaiTro.SelectedIndexChanged -= MarkAsChanged;
+                cboThanhToan.SelectedIndexChanged -= MarkAsChanged;
+                cboHLV.SelectedIndexChanged -= MarkAsChanged;
+            }
+        }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -54,6 +80,7 @@ namespace desktopapp_GYM
 
         private void FillData()
         {
+            ToggleEvents(false);
             // 1. Điền thông tin cơ bản
             txtHoTen.Text = selectedRow.Cells["FULLNAME"].Value.ToString();
             txtSDT.Text = selectedRow.Cells["PHONE"].Value.ToString();
@@ -81,6 +108,7 @@ namespace desktopapp_GYM
             }
 
             // Sau khi điền xong, reset lại biến check thay đổi để tránh hiện cảnh báo thoát khi chưa sửa gì
+            ToggleEvents(true);
             isDataChanged = false;
         }
 
@@ -107,6 +135,8 @@ namespace desktopapp_GYM
             cboHLV.DataSource = bll.GetTrainers();
             cboHLV.DisplayMember = "FULLNAME";
             cboHLV.ValueMember = "TRAINERID";
+
+            ToggleEvents(true);
 
             if (!isAddMode && selectedRow != null)
             {
@@ -140,8 +170,40 @@ namespace desktopapp_GYM
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            if (isDataChanged && MessageBox.Show("Thoát mà không lưu?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.No) return;
             this.Close();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ToggleEvents(false);
+            txtHoTen.Clear();
+            txtSDT.Clear();
+            txtTongTien.Clear();
+            if (cboVaiTro.Items.Count > 0) cboVaiTro.SelectedIndex = 0;
+            if (cboGoiTap.Items.Count > 0) cboGoiTap.SelectedIndex = 0;
+            if (cboHLV.Items.Count > 0) cboHLV.SelectedIndex = -1; // HLV có thể để trống
+            cboThanhToan.SelectedIndex = -1;
+            dtpNgayDangKy.Value = DateTime.Now;
+            dtpNgayHetHan.Value = DateTime.Now;
+
+            ToggleEvents(true);
+            isDataChanged = false;
+            txtHoTen.Focus();
+        }
+
+        private void frmChange_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isDataChanged)
+            {
+                var result = MessageBox.Show("Dữ liệu đã thay đổi nhưng chưa lưu. Bạn có chắc muốn thoát?",
+                                           "Xác nhận thoát",
+                                           MessageBoxButtons.YesNo,
+                                           MessageBoxIcon.Question);
+                if (result == DialogResult.No)
+                {
+                    e.Cancel = true; // Hủy lệnh đóng Form
+                }
+            }
         }
     }
 }
