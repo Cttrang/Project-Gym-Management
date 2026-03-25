@@ -40,18 +40,18 @@
             this.btnTest = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.pnlContentGuest = new System.Windows.Forms.Panel();
+            this.pnlContent = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblWelcome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlSidebarGuest.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlContentGuest.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.pnlContent.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlSidebarGuest
@@ -180,6 +180,15 @@
             this.pnlContentGuest.Size = new System.Drawing.Size(1311, 1028);
             this.pnlContentGuest.TabIndex = 2;
             // 
+            // pnlContent
+            // 
+            this.pnlContent.Controls.Add(this.flowLayoutPanel1);
+            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlContent.Location = new System.Drawing.Point(0, 171);
+            this.pnlContent.Name = "pnlContent";
+            this.pnlContent.Size = new System.Drawing.Size(1311, 857);
+            this.pnlContent.TabIndex = 4;
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoScroll = true;
@@ -231,15 +240,6 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
             // 
-            // pnlContent
-            // 
-            this.pnlContent.Controls.Add(this.flowLayoutPanel1);
-            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContent.Location = new System.Drawing.Point(0, 171);
-            this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1311, 857);
-            this.pnlContent.TabIndex = 4;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -257,9 +257,9 @@
             this.flowLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlContentGuest.ResumeLayout(false);
+            this.pnlContent.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.pnlContent.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

@@ -24,9 +24,10 @@ namespace desktopapp_GYM
 
         private void LoadData()
         {
-            dgvMembers.DataSource = bll.GetAllEveryone();
+            DataTable dt = bll.GetAllEveryone();
+            dgvMembers.DataSource = dt;
             dgvMembers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
+            FormatDataGridView();
         }
 
         private void SetupAutoComplete()
@@ -54,6 +55,7 @@ namespace desktopapp_GYM
         {
             LoadData();
             SetupAutoComplete();
+            
         }
 
         private void btnOut_Click(object sender, EventArgs e)
@@ -66,23 +68,11 @@ namespace desktopapp_GYM
             }
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            string key = txtSearch.Text.Trim();
-            dgvMembers.DataSource = bll.SearchData(key);
-            txtSearch.Text = "";
-            FormatDataGridView();
-        }
-
-        private void btnSearch_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
         private void btnClearSearch_Click(object sender, EventArgs e)
         {
             txtSearch.Clear();
-            LoadData();
+            txtSearch.Focus();
+            
         }
 
         private void FormatDataGridView()
@@ -100,6 +90,8 @@ namespace desktopapp_GYM
                 dgvMembers.Columns["ENDDATE"].HeaderText = "Ngày hết hạn";
                 dgvMembers.Columns["TOTALAMOUNT"].HeaderText = "Tổng tiền";
                 dgvMembers.Columns["PAYMENTSTATUS"].HeaderText = "Thanh toán";
+                dgvMembers.Columns["PACKAGEID"].HeaderText = "Gói đăng kí";
+                dgvMembers.Columns["TRAINERID"].HeaderText = "Mã HLV";
 
                 // Định dạng ngày tháng
                 dgvMembers.Columns["JOINDATE"].DefaultCellStyle.Format = "dd/MM/yyyy";
@@ -119,7 +111,18 @@ namespace desktopapp_GYM
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            dgvMembers.DataSource = bll.SearchData(txtSearch.Text);
+            string keyword = txtSearch.Text.Trim();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                // Nếu trống thì nạp tất cả
+                dgvMembers.DataSource = bll.GetAllEveryone();
+            }
+            else
+            {
+                // Nếu có chữ thì mới search
+                dgvMembers.DataSource = bll.SearchData(keyword);
+            }
             FormatDataGridView();
         }
 
@@ -166,8 +169,12 @@ namespace desktopapp_GYM
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvMembers.CurrentRow == null) return;
-
+            if (dgvMembers.CurrentRow == null)
+            {
+                MessageBox.Show("Mời chọn người muốn xóa.");
+                return;
+            }
+                
             DataGridViewRow row = dgvMembers.CurrentRow;
             int id = Convert.ToInt32(row.Cells["ID"].Value);
             string targetRole = row.Cells["TYPE"].Value.ToString();
@@ -175,18 +182,23 @@ namespace desktopapp_GYM
             if (bll.HasPermission(Session.CurrentRole, targetRole, "Delete"))
             {
                 var result = MessageBox.Show("Xóa dữ liệu này sẽ không thể khôi phục. Tiếp tục?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (result == DialogResult.Yes)
-                {
-                    if (dal.DeleteRecord(id, targetRole))
-                    {
-                        LoadData();
-                    }
-                }
+                //if (result == DialogResult.Yes)
+                //{
+                //    if (dal.DeleteRecord(id, targetRole))
+                //    {
+                //        LoadData();
+                //    }
+                //}
             }
             else
             {
                 MessageBox.Show("Quyền hạn của bạn không đủ để thực hiện thao tác xóa này.");
             }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            frmChange Add = new frmChange();
         }
     }
 }

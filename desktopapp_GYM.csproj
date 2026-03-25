@@ -60,6 +60,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChange.Designer.cs">
+      <DependentUpon>frmChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\frmGuest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,6 +146,9 @@
     <Compile Include="ucRevenueChart.Designer.cs">
       <DependentUpon>ucRevenueChart.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="frmChange.resx">
+      <DependentUpon>frmChange.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\frmGuest.resx">
       <DependentUpon>frmGuest.cs</DependentUpon>
     </EmbeddedResource>

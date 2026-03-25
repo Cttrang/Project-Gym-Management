@@ -39,7 +39,6 @@
             this.btnEdits = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.dgvMembers = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
@@ -98,7 +97,6 @@
             this.groupBox1.Controls.Add(this.btnEdits);
             this.groupBox1.Controls.Add(this.txtSearch);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.btnSearch);
             this.groupBox1.Controls.Add(this.btnAdd);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Font = new System.Drawing.Font("Times New Roman", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -130,16 +128,17 @@
             // 
             // btnClearS
             // 
-            this.btnClearS.Location = new System.Drawing.Point(55, 248);
+            this.btnClearS.Location = new System.Drawing.Point(55, 183);
             this.btnClearS.Name = "btnClearS";
             this.btnClearS.Size = new System.Drawing.Size(213, 53);
             this.btnClearS.TabIndex = 6;
             this.btnClearS.Text = "Clear Search";
             this.btnClearS.UseVisualStyleBackColor = true;
+            this.btnClearS.Click += new System.EventHandler(this.btnClearSearch_Click);
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(55, 486);
+            this.btnDelete.Location = new System.Drawing.Point(55, 459);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(213, 53);
             this.btnDelete.TabIndex = 5;
@@ -149,7 +148,7 @@
             // 
             // btnEdits
             // 
-            this.btnEdits.Location = new System.Drawing.Point(55, 427);
+            this.btnEdits.Location = new System.Drawing.Point(55, 389);
             this.btnEdits.Name = "btnEdits";
             this.btnEdits.Size = new System.Drawing.Size(213, 53);
             this.btnEdits.TabIndex = 4;
@@ -175,25 +174,15 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Search:";
             // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(55, 190);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(213, 52);
-            this.btnSearch.TabIndex = 1;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.TextChanged += new System.EventHandler(this.btnSearch_TextChanged);
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(55, 368);
+            this.btnAdd.Location = new System.Drawing.Point(55, 321);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(213, 53);
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // dgvMembers
             // 
@@ -220,6 +209,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "ucMemberList";
             this.Size = new System.Drawing.Size(1300, 820);
+            this.Load += new System.EventHandler(this.ucMemberList_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -236,7 +226,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.DataGridView dgvMembers;
         private System.Windows.Forms.TextBox txtSearch;
