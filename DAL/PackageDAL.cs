@@ -1,6 +1,7 @@
 ﻿using desktopapp_GYM.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -79,5 +80,27 @@ namespace desktopapp_GYM.DAL
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
+
+        // Trong file PackageDAL.cs
+        public DataTable GetTopPackages(int topCount)
+        {
+            // Câu lệnh SQL: Đếm số người dùng, sắp xếp giảm dần và lấy Top
+            string sql = $@"SELECT TOP {topCount} 
+                        PACKAGENAME AS [Tên gói], 
+                        COUNT(REGID) AS [Người dùng]
+                    FROM PACKAGES p
+                    LEFT JOIN REGISTRATIONS r ON p.PACKAGEID = r.PACKAGEID
+                    GROUP BY PACKAGENAME
+                    ORDER BY COUNT(REGID) DESC";
+
+            using (SqlConnection con = GetConnection()) // Dùng kết nối tĩnh của Huy
+            {
+                SqlDataAdapter da = new SqlDataAdapter(sql, con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt; // Trả về DataTable chứa Tên gói và Số người
+            }
+        }
+
     }
 }

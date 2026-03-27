@@ -29,7 +29,6 @@ namespace desktopapp_GYM.GUI
             else lblWelcome.ForeColor = Color.Green;
             ShowUc();
             
-
         }
 
         public void ShowUc()
@@ -53,6 +52,10 @@ namespace desktopapp_GYM.GUI
                 else if (ctrl is ucRevenueChart ucRevenueChart1)
                 {
                     ucRevenueChart1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
+                }
+                else if (ctrl is ucPackagePrice ucPackagePrice1)
+                {
+                    ucPackagePrice1.RefreshData();
                 }
             }
         }

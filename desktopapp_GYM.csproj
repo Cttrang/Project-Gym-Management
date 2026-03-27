@@ -207,6 +207,9 @@
     <EmbeddedResource Include="ucPackageDetails.resx">
       <DependentUpon>ucPackageDetails.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ucPackagePrice.resx">
+      <DependentUpon>ucPackagePrice.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ucRevenueCard.resx">
       <DependentUpon>ucRevenueCard.cs</DependentUpon>
     </EmbeddedResource>
