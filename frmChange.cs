@@ -32,6 +32,28 @@ namespace desktopapp_GYM
             cboVaiTro.Enabled = false;
         }
 
+        private void ToggleFormByRole(string role)
+        {
+            bool isMember = (role == "Member");
+            bool isTrainer = (role == "Trainer");
+
+            // Phần Đăng kí — chỉ Member dùng
+            cboGoiTap.Enabled = isMember;
+            dtpNgayDangKy.Enabled = isMember;
+            dtpNgayHetHan.Enabled = isMember;
+            cboHLV.Enabled = isMember;
+
+            // Phần Thanh toán, gói tập — chỉ Member dùng
+            txtTongTien.Enabled = isMember;
+            cboThanhToan.Enabled = isMember;
+
+            // Ghi chú — chỉ Trainer dùng (nhập Specialty)
+            txtNotes.Enabled = isTrainer;
+
+            // Status — cả 2 đều dùng
+            cboStatus.Enabled = true;
+        }
+
         private void MarkAsChanged(object sender, EventArgs e)
         {
             isDataChanged = true;
@@ -60,7 +82,8 @@ namespace desktopapp_GYM
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            ToggleFormByRole(cboVaiTro.Text);
+            isDataChanged = true;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -85,26 +108,37 @@ namespace desktopapp_GYM
             txtHoTen.Text = selectedRow.Cells["FULLNAME"].Value.ToString();
             txtSDT.Text = selectedRow.Cells["PHONE"].Value.ToString();
             cboVaiTro.Text = selectedRow.Cells["TYPE"].Value.ToString();
+            cboStatus.Text = selectedRow.Cells["STATUS"].Value?.ToString();
 
             // 2. Điền thông tin gói tập (Dùng SelectedValue để khớp với ValueMember)
-            if (selectedRow.Cells["PACKAGEID"].Value != DBNull.Value)
-            {
-                cboGoiTap.SelectedValue = selectedRow.Cells["PACKAGEID"].Value;
-            }
+            string role = cboVaiTro.Text;
+            ToggleFormByRole(role);
 
-            // 3. Điền thông tin HLV
-            if (selectedRow.Cells["TRAINERID"].Value != DBNull.Value)
+            if (role == "Member")
             {
-                cboHLV.SelectedValue = selectedRow.Cells["TRAINERID"].Value;
-            }
+                if (selectedRow.Cells["PACKAGEID"].Value != DBNull.Value)
+                    cboGoiTap.SelectedValue = selectedRow.Cells["PACKAGEID"].Value;
 
-            // 4. Các thông tin khác
-            dtpNgayDangKy.Value = Convert.ToDateTime(selectedRow.Cells["REGDATE"].Value);
-            cboThanhToan.Text = selectedRow.Cells["PAYMENTSTATUS"].Value.ToString();
-            if (selectedRow.Cells["TOTALAMOUNT"].Value != DBNull.Value)
+
+                if (selectedRow.Cells["TRAINERID"].Value != DBNull.Value)
+                    cboHLV.SelectedValue = selectedRow.Cells["TRAINERID"].Value;
+
+                if (selectedRow.Cells["REGDATE"].Value != DBNull.Value)
+                    dtpNgayDangKy.Value = Convert.ToDateTime(selectedRow.Cells["REGDATE"].Value);
+
+                if (selectedRow.Cells["ENDDATE"].Value != DBNull.Value)
+                    dtpNgayHetHan.Value = Convert.ToDateTime(selectedRow.Cells["ENDDATE"].Value);
+
+                cboThanhToan.Text = selectedRow.Cells["PAYMENTSTATUS"].Value?.ToString();
+
+                if (selectedRow.Cells["TOTALAMOUNT"].Value != DBNull.Value)
+                    txtTongTien.Text = Convert.ToDecimal(
+                        selectedRow.Cells["TOTALAMOUNT"].Value).ToString("N0");
+            }
+            else if (role == "Trainer")
             {
-                decimal total = Convert.ToDecimal(selectedRow.Cells["TOTALAMOUNT"].Value);
-                txtTongTien.Text = total.ToString("N0");
+                // GHICHU của Trainer = Specialty
+                txtNotes.Text = selectedRow.Cells["GHICHU"].Value?.ToString();
             }
 
             // Sau khi điền xong, reset lại biến check thay đổi để tránh hiện cảnh báo thoát khi chưa sửa gì
@@ -127,6 +161,7 @@ namespace desktopapp_GYM
         private void frmChange_Load(object sender, EventArgs e)
         {
             cboVaiTro.Items.AddRange(new string[] { "Member", "Trainer" });
+            cboStatus.Items.AddRange(new string[] { "Active", "Inactive" });
 
             cboGoiTap.DataSource = bll.GetPackages();
             cboGoiTap.DisplayMember = "PACKAGENAME";
@@ -142,6 +177,8 @@ namespace desktopapp_GYM
             {
                 FillData();
             }
+            else
+                ToggleFormByRole("Member");
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -204,6 +241,16 @@ namespace desktopapp_GYM
                     e.Cancel = true; // Hủy lệnh đóng Form
                 }
             }
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboHLV_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

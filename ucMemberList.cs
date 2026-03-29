@@ -55,7 +55,7 @@ namespace desktopapp_GYM
         {
             LoadData();
             SetupAutoComplete();
-            
+
         }
 
         private void btnOut_Click(object sender, EventArgs e)
@@ -70,7 +70,7 @@ namespace desktopapp_GYM
         {
             txtSearch.Clear();
             txtSearch.Focus();
-            
+
         }
 
         private void FormatDataGridView()
@@ -93,7 +93,7 @@ namespace desktopapp_GYM
                 dgvMembers.Columns["GHICHU"].HeaderText = "Ghi chú";
 
                 // Ẩn TRAINERID và PACKAGEID vì đã có GHICHU thể hiện
-                dgvMembers.Columns["TRAINERID"].Visible = false;
+                //dgvMembers.Columns["TRAINERID"].Visible = false;
                 //dgvMembers.Columns["PACKAGEID"].Visible = false;
 
                 // Định dạng ngày
@@ -169,7 +169,7 @@ namespace desktopapp_GYM
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-                
+
             DataGridViewRow row = dgvMembers.CurrentRow;
             int id = Convert.ToInt32(row.Cells["ID"].Value);
             string targetRole = row.Cells["TYPE"].Value.ToString();
@@ -208,13 +208,13 @@ namespace desktopapp_GYM
 
         private void btnEdits_Click(object sender, EventArgs e)
         {
-            
+
             DataGridViewRow row = dgvMembers.CurrentRow;
             frmChange Edit = new frmChange(row);
             if (Edit.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
-                
+
             }
         }
 
@@ -232,16 +232,18 @@ namespace desktopapp_GYM
                 // 4. Nếu Role nằm trong danh sách đặc biệt -> Khóa nút Edit/Delete
                 if (specialRoles.Contains(selectedRole))
                 {
+                    btnAdd.Enabled = false;
                     btnEdits.Enabled = false;
                     btnDelete.Enabled = false;
-                    
+
                 }
                 else
                 {
                     // Nếu là Member hoặc Trainer -> Mở nút
+                    btnAdd.Enabled = true;
                     btnEdits.Enabled = true;
                     btnDelete.Enabled = true;
-                    
+
                 }
             }
             else
@@ -254,31 +256,51 @@ namespace desktopapp_GYM
 
         private void btnXuat_Click(object sender, EventArgs e)
         {
-            // 1. Kiểm tra xem có dòng nào đang được chọn không
-            if (dgvMembers.CurrentRow != null)
+            if (dgvMembers.CurrentRow == null)
             {
-                // 2. Lấy dữ liệu từ dòng đang chọn (Vì dgvMembers dùng DataTable nên ép về DataRowView)
-                var row = (DataRowView)dgvMembers.CurrentRow.DataBoundItem;
+                MessageBox.Show("Vui lòng chọn một người dùng trong danh sách!",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                // 3. Chuẩn bị nội dung hiển thị (Lấy đúng tên cột trong SQL/DataTable của Huy)
-                string info = $"--- THÔNG TIN CHI TIẾT ---\n\n" +
-                              $"Mã số: {row["ID"]}\n" +
-                              $"Họ tên: {row["FULLNAME"]}\n" +
-                              $"Vai trò: {row["TYPE"]}\n" +
-                              $"SĐT: {row["PHONE"]}\n" +
-                              $"Ngày tham gia: {Convert.ToDateTime(row["JOINDATE"]):dd/MM/yyyy}\n" +
-                              $"Gói đăng ký: {row["PACKAGEID"]}\n" +
-                              $"Tổng tiền: {Convert.ToDecimal(row["TOTALAMOUNT"]).ToString("N0")} VNĐ\n" +
-                              $"Thanh toán: {row["PAYMENTSTATUS"]}";
+            var row = (DataRowView)dgvMembers.CurrentRow.DataBoundItem;
+            string type = row["TYPE"].ToString();
 
-                // 4. Hiển thị lên MessageBox
-                MessageBox.Show(info, "Chi tiết hội viên", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string info;
+
+            if (type == "Member")
+            {
+                info = $"--- THÔNG TIN HỘI VIÊN ---\n\n" +
+                       $"Mã số:         {row["ID"]}\n" +
+                       $"Họ tên:        {row["FULLNAME"]}\n" +
+                       $"SĐT:           {row["PHONE"]}\n" +
+                       $"Trạng thái:    {row["STATUS"]}\n" +
+                       $"Ngày tham gia: {(row["JOINDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["JOINDATE"]).ToString("dd/MM/yyyy"))}\n" +
+                       $"Gói đăng ký:   {(row["PACKAGEID"] == DBNull.Value ? "—" : row["PACKAGEID"].ToString())}\n" +
+                       $"Ngày đăng ký:  {(row["REGDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["REGDATE"]).ToString("dd/MM/yyyy"))}\n" +
+                       $"Ngày hết hạn:  {(row["ENDDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["ENDDATE"]).ToString("dd/MM/yyyy"))}\n" +
+                       $"HLV phụ trách: {row["GHICHU"]}\n" +
+                       $"Tổng tiền:     {Convert.ToDecimal(row["TOTALAMOUNT"]).ToString("N0")} VNĐ\n" +
+                       $"Thanh toán:    {row["PAYMENTSTATUS"]}";
+            }
+            else if (type == "Trainer")
+            {
+                info = $"--- THÔNG TIN HUẤN LUYỆN VIÊN ---\n\n" +
+                       $"Mã số:      {row["ID"]}\n" +
+                       $"Họ tên:     {row["FULLNAME"]}\n" +
+                       $"SĐT:        {row["PHONE"]}\n" +
+                       $"Trạng thái: {row["STATUS"]}\n" +
+                       $"Chuyên môn: {row["GHICHU"]}";
             }
             else
             {
-                MessageBox.Show("Vui lòng chọn một người dùng trong danh sách để xem chi tiết!",
-                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                info = $"--- THÔNG TIN TÀI KHOẢN ---\n\n" +
+                       $"Mã số:   {row["ID"]}\n" +
+                       $"Tên đăng nhập: {row["FULLNAME"]}\n" +
+                       $"Vai trò: {row["TYPE"]}";
             }
+
+            MessageBox.Show(info, "Chi tiết", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
