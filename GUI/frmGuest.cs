@@ -62,9 +62,9 @@ namespace desktopapp_GYM.GUI
                 {
                     ucPackagePrice1.RefreshData();
                 }
-                else if (ctrl is ucExpiredAlert ucExpiredAlert1)
+                else if (ctrl is ucTrainerStatus ucTrainerStatus1)
                 {
-                    ucExpiredAlert1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
+                    ucTrainerStatus1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
                 }
                 else if (ctrl is ucRevenueChart ucRevenueChart1)
                 {
@@ -101,6 +101,11 @@ namespace desktopapp_GYM.GUI
         private void btnDashBoard_Click(object sender, EventArgs e)
         {
             ShowUc();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucTrainerList());
         }
     }
 }

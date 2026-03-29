@@ -90,8 +90,15 @@ namespace desktopapp_GYM
             }
         }
 
-        private void ucPackageDetails_Load(object sender, EventArgs e) 
+        private void ucPackageDetails_Load(object sender, EventArgs e)
         {
+            if (this.FindForm() is frmGuest guest)
+            {
+                btnAdd.Visible = false;
+                btnDelete.Visible = false;
+                btnEdits.Visible = false;
+                btnXuat.Visible = false;
+            }    
             LoadData();
             ApplyRolePermissions();
         }
@@ -140,6 +147,10 @@ namespace desktopapp_GYM
             {
                 main.ShowUc();
             }
+            if (this.FindForm() is frmGuest guest)
+            {
+                guest.ShowUc();
+            }    
         }
         private void btnClearSearch_Click(object sender, EventArgs e) 
         {

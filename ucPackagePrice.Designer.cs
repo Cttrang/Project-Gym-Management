@@ -83,9 +83,9 @@
             this.label1.ForeColor = System.Drawing.Color.IndianRed;
             this.label1.Location = new System.Drawing.Point(15, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 19);
+            this.label1.Size = new System.Drawing.Size(188, 19);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Những gói nổi tiếng nhất";
+            this.label1.Text = "Những gói nổi tiếng nhất!!!";
             // 
             // ucPackagePrice
             // 

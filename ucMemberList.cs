@@ -77,33 +77,35 @@ namespace desktopapp_GYM
         {
             if (dgvMembers.Columns.Count > 0)
             {
-                // Đổi tên cột IN HOA từ SQL sang Tiếng Việt có dấu
+                // Đổi tên cột
                 dgvMembers.Columns["ID"].HeaderText = "Mã số";
                 dgvMembers.Columns["FULLNAME"].HeaderText = "Họ và Tên";
                 dgvMembers.Columns["TYPE"].HeaderText = "Vai trò";
                 dgvMembers.Columns["PHONE"].HeaderText = "SĐT";
                 dgvMembers.Columns["JOINDATE"].HeaderText = "Ngày tham gia";
-                dgvMembers.Columns["REGID"].HeaderText = "Mã đăng kí";
                 dgvMembers.Columns["REGDATE"].HeaderText = "Ngày đăng kí";
                 dgvMembers.Columns["ENDDATE"].HeaderText = "Ngày hết hạn";
                 dgvMembers.Columns["TOTALAMOUNT"].HeaderText = "Tổng tiền";
                 dgvMembers.Columns["PAYMENTSTATUS"].HeaderText = "Thanh toán";
                 dgvMembers.Columns["PACKAGEID"].HeaderText = "Gói đăng kí";
                 dgvMembers.Columns["TRAINERID"].HeaderText = "Mã HLV";
+                dgvMembers.Columns["STATUS"].HeaderText = "Trạng thái";
+                dgvMembers.Columns["GHICHU"].HeaderText = "Ghi chú";
 
-                // Định dạng ngày tháng
+                // Ẩn TRAINERID và PACKAGEID vì đã có GHICHU thể hiện
+                dgvMembers.Columns["TRAINERID"].Visible = false;
+                //dgvMembers.Columns["PACKAGEID"].Visible = false;
+
+                // Định dạng ngày
                 dgvMembers.Columns["JOINDATE"].DefaultCellStyle.Format = "dd/MM/yyyy";
                 dgvMembers.Columns["REGDATE"].DefaultCellStyle.Format = "dd/MM/yyyy";
                 dgvMembers.Columns["ENDDATE"].DefaultCellStyle.Format = "dd/MM/yyyy";
 
-                // Định dạng tiền tệ (Ví dụ: 500.000)
+                // Định dạng tiền
                 dgvMembers.Columns["TOTALAMOUNT"].DefaultCellStyle.Format = "N0";
 
-                // Tự động dãn cột chiếm hết chiều ngang
+                // Tự dãn cột
                 dgvMembers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-                // Tùy chọn: Ẩn bớt REGID nếu bạn thấy quá chật
-                // dgvMembers.Columns["REGID"].Visible = false;
             }
         }
 

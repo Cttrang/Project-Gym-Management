@@ -82,16 +82,7 @@ namespace desktopapp_GYM.GUI
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            //ucRevenueChart1.Visible = !ucRevenueChart1.Visible;
-            //ucExpiredAlert1.Visible = !ucExpiredAlert1.Visible;
-            //if (ucRevenueChart1.Visible)
-            //{
-            //    // Khi hiện lại, ép nó gọi StartEffects để xem Timer có "sống" lại không
-            //    ucRevenueChart1.StartEffects();
-            //    ucRevenueChart1.BringToFront();
-            //    ucExpiredAlert1.StartEffects();
-            //    ucExpiredAlert1.BringToFront();
-            //}
+            
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -102,27 +93,6 @@ namespace desktopapp_GYM.GUI
         }
 
         
-        
-
-        private void ActivateCardsInDashboard(ucDashBoard db)
-        {
-            // Tìm FlowLayoutPanel bên trong Dashboard (giả sử tên là flpDashboard)
-            // Chúng ta duyệt qua các Control để tìm các Card con
-            foreach (Control c in db.Controls)
-            {
-                if (c is FlowLayoutPanel flp)
-                {
-                    foreach (Control card in flp.Controls)
-                    {
-                        // Nếu Card đó kế thừa từ ucBaseCard, ta gọi StartEffects
-                        if (card is ucBaseCard baseCard)
-                        {
-                            baseCard.StartEffects();
-                        }
-                    }
-                }
-            }
-        }
         public void DisplayControl(UserControl uc)
         {
             
@@ -141,6 +111,11 @@ namespace desktopapp_GYM.GUI
         private void button1_Click(object sender, EventArgs e)
         {
             ShowDetail(new ucPackageDetails());
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucTrainerList());
         }
     }
 

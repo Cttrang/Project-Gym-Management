@@ -45,7 +45,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 16.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(140, 40);
+            this.label1.Location = new System.Drawing.Point(140, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(240, 25);
             this.label1.TabIndex = 0;
@@ -54,7 +54,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(53, 96);
+            this.label2.Location = new System.Drawing.Point(53, 86);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 19);
             this.label2.TabIndex = 1;
@@ -63,7 +63,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(53, 158);
+            this.label3.Location = new System.Drawing.Point(53, 148);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(81, 19);
             this.label3.TabIndex = 2;
@@ -72,7 +72,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(53, 216);
+            this.label4.Location = new System.Drawing.Point(53, 206);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 19);
             this.label4.TabIndex = 3;
@@ -80,7 +80,7 @@
             // 
             // txtTenGoi
             // 
-            this.txtTenGoi.Location = new System.Drawing.Point(145, 93);
+            this.txtTenGoi.Location = new System.Drawing.Point(145, 83);
             this.txtTenGoi.Name = "txtTenGoi";
             this.txtTenGoi.Size = new System.Drawing.Size(245, 26);
             this.txtTenGoi.TabIndex = 4;
@@ -88,14 +88,14 @@
             // 
             // txtGia
             // 
-            this.txtGia.Location = new System.Drawing.Point(145, 213);
+            this.txtGia.Location = new System.Drawing.Point(145, 203);
             this.txtGia.Name = "txtGia";
             this.txtGia.Size = new System.Drawing.Size(245, 26);
             this.txtGia.TabIndex = 5;
             // 
             // txtHanGoi
             // 
-            this.txtHanGoi.Location = new System.Drawing.Point(145, 155);
+            this.txtHanGoi.Location = new System.Drawing.Point(145, 145);
             this.txtHanGoi.Name = "txtHanGoi";
             this.txtHanGoi.Size = new System.Drawing.Size(245, 26);
             this.txtHanGoi.TabIndex = 6;
@@ -136,7 +136,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(396, 158);
+            this.label5.Location = new System.Drawing.Point(396, 148);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(46, 19);
             this.label5.TabIndex = 10;
