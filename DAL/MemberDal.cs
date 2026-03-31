@@ -112,6 +112,7 @@ namespace desktopapp_GYM.DAL
             GROUP BY MEMBERID
             )
         ) R ON M.MEMBERID = R.MEMBERID
+        LEFT JOIN TRAINERS T ON R.TRAINERID = T.TRAINERID
         WHERE M.FULLNAME LIKE @KEY OR M.PHONE LIKE @KEY";
 
             DataTable dt = new DataTable();
