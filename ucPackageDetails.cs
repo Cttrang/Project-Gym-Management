@@ -85,6 +85,7 @@ namespace desktopapp_GYM
                 dgvPackages.Columns["DurationMonths"].HeaderText = "Tháng";
                 dgvPackages.Columns["Price"].HeaderText = "Giá tiền";
                 dgvPackages.Columns["TotalMembers"].HeaderText = "Số người dùng";
+                
                 dgvPackages.Columns["Price"].DefaultCellStyle.Format = "N0";
                 dgvPackages.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
@@ -182,6 +183,7 @@ namespace desktopapp_GYM
                               $"Tên gói: {pkg.PackageName}\n" +
                               $"Thời hạn: {pkg.DurationMonths} tháng\n" +
                               $"Giá tiền: {pkg.Price.ToString("N0")} VNĐ\n" +
+                              $"Status: {pkg.Status}\n" +
                               $"Số người dùng: {pkg.TotalMembers}";
 
                 // 4. Hiển thị lên MessageBox

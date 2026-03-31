@@ -68,6 +68,8 @@ namespace desktopapp_GYM
                 cboVaiTro.SelectedIndexChanged += MarkAsChanged;
                 cboThanhToan.SelectedIndexChanged += MarkAsChanged;
                 cboHLV.SelectedIndexChanged += MarkAsChanged;
+                txtNotes.TextChanged += MarkAsChanged;
+
                 // cboGoiTap đã có hàm riêng nên không add ở đây
             }
             else
@@ -77,10 +79,17 @@ namespace desktopapp_GYM
                 cboVaiTro.SelectedIndexChanged -= MarkAsChanged;
                 cboThanhToan.SelectedIndexChanged -= MarkAsChanged;
                 cboHLV.SelectedIndexChanged -= MarkAsChanged;
+                txtNotes.TextChanged -= MarkAsChanged;
             }
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        //private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    ToggleFormByRole(cboVaiTro.Text);
+        //    isDataChanged = true;
+        //}
+
+        private void cboVaiTro_SelectedIndexChanged(object sender, EventArgs e)
         {
             ToggleFormByRole(cboVaiTro.Text);
             isDataChanged = true;
@@ -148,11 +157,19 @@ namespace desktopapp_GYM
 
         private void cboGoiTap_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboGoiTap.SelectedValue is DataRowView) return;
+            // Guard: chưa chọn gì hoặc đang load form thì bỏ qua
+            if (cboGoiTap.SelectedItem == null) return;
+            if (!(cboGoiTap.SelectedItem is DataRowView)) return;
+
             DataRowView row = (DataRowView)cboGoiTap.SelectedItem;
 
-            dtpNgayHetHan.Value = dtpNgayDangKy.Value.AddMonths(Convert.ToInt32(row["DURATIONMONTHS"]));
+            // Tính ngày hết hạn từ ngày đăng ký + số tháng của gói
+            int months = Convert.ToInt32(row["DURATIONMONTHS"]);
+            dtpNgayHetHan.Value = dtpNgayDangKy.Value.AddMonths(months);
+
+            // Điền giá tiền
             txtTongTien.Text = Convert.ToDecimal(row["PRICE"]).ToString("N0");
+
             isDataChanged = true;
         }
 
@@ -183,25 +200,50 @@ namespace desktopapp_GYM
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            string role = cboVaiTro.Text;
+
+            if (string.IsNullOrEmpty(role))
+            {
+                MessageBox.Show("Vui lòng chọn Vai trò!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             MemberDTO dto = new MemberDTO
             {
                 FullName = txtHoTen.Text,
                 Phone = txtSDT.Text,
-                Role = cboVaiTro.Text,
-                PackageID = (int)cboGoiTap.SelectedValue,
-                TrainerID = cboHLV.SelectedValue as int?,
-                RegDate = dtpNgayDangKy.Value,
-                EndDate = dtpNgayHetHan.Value,
-                TotalAmount = decimal.Parse(txtTongTien.Text.Replace(".", "")),
-                PaymentStatus = cboThanhToan.Text
+                Role = role,
+                Status = cboStatus.Text
             };
-            if (!isAddMode) dto.ID = Convert.ToInt32(selectedRow.Cells["ID"].Value);
+
+            if (!isAddMode)
+                dto.ID = Convert.ToInt32(selectedRow.Cells["ID"].Value);
+
+            if (role == "Member")
+            {
+                dto.PackageID = (int)cboGoiTap.SelectedValue;
+                dto.TrainerID = cboHLV.SelectedValue as int?;
+                dto.RegDate = dtpNgayDangKy.Value;
+                dto.EndDate = dtpNgayHetHan.Value;
+                dto.TotalAmount = decimal.Parse(txtTongTien.Text.Replace(".", ""));
+                dto.PaymentStatus = cboThanhToan.Text;
+            }
+            else if (role == "Trainer")
+            {
+                dto.GhiChu = txtNotes.Text; // Specialty của Trainer
+            }
 
             if (bll.SaveData(dto, isAddMode))
             {
                 MessageBox.Show("Thành công!");
                 isDataChanged = false;
-                this.DialogResult = DialogResult.OK; // Đóng và báo hiệu Load lại Grid
+                this.DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show("Lưu thất bại! Vui lòng kiểm tra lại thông tin.",
+                                "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -216,13 +258,14 @@ namespace desktopapp_GYM
             txtHoTen.Clear();
             txtSDT.Clear();
             txtTongTien.Clear();
+            txtNotes.Clear();              // thêm
+            cboStatus.SelectedIndex = -1; // thêm
             if (cboVaiTro.Items.Count > 0) cboVaiTro.SelectedIndex = 0;
             if (cboGoiTap.Items.Count > 0) cboGoiTap.SelectedIndex = 0;
-            if (cboHLV.Items.Count > 0) cboHLV.SelectedIndex = -1; // HLV có thể để trống
+            if (cboHLV.Items.Count > 0) cboHLV.SelectedIndex = -1;
             cboThanhToan.SelectedIndex = -1;
             dtpNgayDangKy.Value = DateTime.Now;
             dtpNgayHetHan.Value = DateTime.Now;
-
             ToggleEvents(true);
             isDataChanged = false;
             txtHoTen.Focus();
@@ -251,6 +294,18 @@ namespace desktopapp_GYM
         private void cboHLV_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void dtpNgayDangKy_ValueChanged(object sender, EventArgs e)
+        {
+            if (cboGoiTap.SelectedItem == null) return;
+            if (!(cboGoiTap.SelectedItem is DataRowView)) return;
+
+            DataRowView row = (DataRowView)cboGoiTap.SelectedItem;
+            int months = Convert.ToInt32(row["DURATIONMONTHS"]);
+            dtpNgayHetHan.Value = dtpNgayDangKy.Value.AddMonths(months);
+
+            isDataChanged = true;
         }
     }
 }

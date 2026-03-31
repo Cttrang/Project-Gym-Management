@@ -51,6 +51,7 @@ namespace desktopapp_GYM
                 dgvTrainers.Columns["FullName"].HeaderText = "Họ và Tên";
                 dgvTrainers.Columns["Phone"].HeaderText = "Số điện thoại";
                 dgvTrainers.Columns["Specialty"].HeaderText = "Chuyên môn";
+                dgvTrainers.Columns["Status"].HeaderText = "Trạng thái"; // thêm
                 dgvTrainers.Columns["TotalStudents"].HeaderText = "Số học viên";
 
                 dgvTrainers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -96,7 +97,7 @@ namespace desktopapp_GYM
         }
         private void btnAdd_Click(object sender, EventArgs e) 
         {
-            //frmTrainerChange frm = new frmTrainerChange(new TrainerDTO(), true);
+            //frmTrainerEdits frm = new frmTrainerEdits(new TrainerDTO(), true);
             //if (frm.ShowDialog() == DialogResult.OK) LoadData();
         }
         private void btnEdits_Click(object sender, EventArgs e) 

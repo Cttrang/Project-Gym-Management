@@ -46,25 +46,24 @@ namespace desktopapp_GYM
                 txtTenGoi.TextChanged += MarkAsChanged;
                 txtHanGoi.TextChanged += MarkAsChanged;
                 txtGia.TextChanged += MarkAsChanged;
+                cboStatus.SelectedIndexChanged += MarkAsChanged; // thêm
             }
             else
             {
                 txtTenGoi.TextChanged -= MarkAsChanged;
                 txtHanGoi.TextChanged -= MarkAsChanged;
                 txtGia.TextChanged -= MarkAsChanged;
+                cboStatus.SelectedIndexChanged -= MarkAsChanged; // thêm
             }
         }
 
         private void FillData()
         {
-            // Tạm tắt sự kiện để không bị tính là người dùng thay đổi
             ToggleEvents(false);
-
             txtTenGoi.Text = _selectedPkg.PackageName;
             txtHanGoi.Text = _selectedPkg.DurationMonths.ToString();
-            txtGia.Text = _selectedPkg.Price.ToString("N0"); // Định dạng số cho đẹp
-
-            // Bật lại sự kiện và reset biến check
+            txtGia.Text = _selectedPkg.Price.ToString("N0");
+            cboStatus.Text = _selectedPkg.Status;  // thêm — bỏ comment cũ đi
             ToggleEvents(true);
             isDataChanged = false;
         }
@@ -80,15 +79,15 @@ namespace desktopapp_GYM
             {
                 if (string.IsNullOrWhiteSpace(txtTenGoi.Text) || string.IsNullOrWhiteSpace(txtGia.Text))
                 {
-                    MessageBox.Show("V.lòng nhập đầy đủ Tên và Giá!");
+                    MessageBox.Show("Vui lòng nhập đầy đủ Tên và Giá!");
                     return;
                 }
 
                 PackageDTO dto = isAddMode ? new PackageDTO() : _selectedPkg;
                 dto.PackageName = txtTenGoi.Text.Trim();
                 dto.DurationMonths = int.TryParse(txtHanGoi.Text, out int m) ? m : 0;
+                dto.Status = cboStatus.Text; // thêm
 
-                // Sửa dòng này để an toàn hơn
                 string priceRaw = txtGia.Text.Replace(".", "").Replace(",", "");
                 dto.Price = decimal.TryParse(priceRaw, out decimal p) ? p : 0;
 
@@ -124,13 +123,15 @@ namespace desktopapp_GYM
         private void frmPackageChange_Load(object sender, EventArgs e)
         {
 
-            // Nếu là chế độ sửa, đổ dữ liệu vào các ô
+            cboStatus.Items.AddRange(new string[] { "Active", "Inactive" }); // thêm
+
             if (!isAddMode && _selectedPkg != null)
-            {
                 FillData();
-            }
             else
+            {
+                cboStatus.SelectedIndex = 0; // mặc định Active khi Add
                 ToggleEvents(true);
+            }
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -141,12 +142,12 @@ namespace desktopapp_GYM
                 txtTenGoi.Clear();
                 txtHanGoi.Clear();
                 txtGia.Clear();
+                cboStatus.SelectedIndex = 0; // thêm
                 ToggleEvents(true);
             }
             else
-            {
-                FillData(); // Nếu sửa thì khôi phục lại lúc đầu
-            }
+                FillData();
+
             isDataChanged = false;
             txtTenGoi.Focus();
         }

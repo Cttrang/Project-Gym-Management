@@ -12,6 +12,7 @@ namespace desktopapp_GYM.DTO
         public string PackageName { get; set; }
         public int DurationMonths { get; set; }
         public decimal Price { get; set; }
+        public string Status { get; set; }
         public int TotalMembers { get; set; }
     }
 }

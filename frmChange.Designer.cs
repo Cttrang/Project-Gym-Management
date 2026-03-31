@@ -37,6 +37,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cboStatus = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.cboVaiTro = new System.Windows.Forms.ComboBox();
             this.txtSDT = new System.Windows.Forms.TextBox();
             this.txtHoTen = new System.Windows.Forms.TextBox();
@@ -53,11 +55,9 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
-            this.cboStatus = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.txtNotes = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.txtNotes = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -160,6 +160,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông tin cá nhân";
             // 
+            // cboStatus
+            // 
+            this.cboStatus.FormattingEnabled = true;
+            this.cboStatus.Location = new System.Drawing.Point(101, 152);
+            this.cboStatus.Name = "cboStatus";
+            this.cboStatus.Size = new System.Drawing.Size(226, 27);
+            this.cboStatus.TabIndex = 8;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(23, 155);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(46, 19);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "Status";
+            // 
             // cboVaiTro
             // 
             this.cboVaiTro.FormattingEnabled = true;
@@ -167,7 +184,7 @@
             this.cboVaiTro.Name = "cboVaiTro";
             this.cboVaiTro.Size = new System.Drawing.Size(226, 27);
             this.cboVaiTro.TabIndex = 6;
-            this.cboVaiTro.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.cboVaiTro.SelectedIndexChanged += new System.EventHandler(this.cboVaiTro_SelectedIndexChanged);
             // 
             // txtSDT
             // 
@@ -220,6 +237,7 @@
             this.dtpNgayDangKy.Name = "dtpNgayDangKy";
             this.dtpNgayDangKy.Size = new System.Drawing.Size(200, 26);
             this.dtpNgayDangKy.TabIndex = 16;
+            this.dtpNgayDangKy.ValueChanged += new System.EventHandler(this.dtpNgayDangKy_ValueChanged);
             // 
             // cboHLV
             // 
@@ -237,6 +255,7 @@
             this.cboGoiTap.Name = "cboGoiTap";
             this.cboGoiTap.Size = new System.Drawing.Size(200, 27);
             this.cboGoiTap.TabIndex = 11;
+            this.cboGoiTap.SelectedIndexChanged += new System.EventHandler(this.cboGoiTap_SelectedIndexChanged);
             // 
             // groupBox3
             // 
@@ -319,23 +338,6 @@
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(23, 155);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(46, 19);
-            this.label11.TabIndex = 7;
-            this.label11.Text = "Status";
-            // 
-            // cboStatus
-            // 
-            this.cboStatus.FormattingEnabled = true;
-            this.cboStatus.Location = new System.Drawing.Point(101, 152);
-            this.cboStatus.Name = "cboStatus";
-            this.cboStatus.Size = new System.Drawing.Size(226, 27);
-            this.cboStatus.TabIndex = 8;
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.label14);
@@ -347,14 +349,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Ghi chú";
             // 
-            // txtNotes
-            // 
-            this.txtNotes.Location = new System.Drawing.Point(33, 68);
-            this.txtNotes.Name = "txtNotes";
-            this.txtNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtNotes.Size = new System.Drawing.Size(279, 26);
-            this.txtNotes.TabIndex = 14;
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -363,6 +357,14 @@
             this.label14.Size = new System.Drawing.Size(155, 19);
             this.label14.TabIndex = 15;
             this.label14.Text = "Chuyên môn của trainer:";
+            // 
+            // txtNotes
+            // 
+            this.txtNotes.Location = new System.Drawing.Point(33, 68);
+            this.txtNotes.Name = "txtNotes";
+            this.txtNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtNotes.Size = new System.Drawing.Size(279, 26);
+            this.txtNotes.TabIndex = 14;
             // 
             // frmChange
             // 

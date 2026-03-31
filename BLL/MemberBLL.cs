@@ -12,6 +12,7 @@ namespace desktopapp_GYM.BLL
     public class MemberBLL
     {
         MemberDal dal = new MemberDal();
+        TrainerDAL trainerDal = new TrainerDAL();
 
         public DataTable GetAllEveryone()
         {
@@ -51,7 +52,30 @@ namespace desktopapp_GYM.BLL
             // 3. Các trường hợp còn lại (Cấp cao tác động cấp thấp) -> Hợp lệ
             return true;
         }
-        public bool SaveData(MemberDTO dto, bool isAdd) => dal.SaveMember(dto, isAdd);
+        //public bool SaveData(MemberDTO dto, bool isAdd) => dal.SaveMember(dto, isAdd);
+
+        public bool SaveData(MemberDTO dto, bool isAdd)
+        {
+            if (dto.Role == "Member")
+                return dal.SaveMember(dto, isAdd);
+
+            else if (dto.Role == "Trainer")
+            {
+                // Chuyển MemberDTO sang TrainerDTO rồi gọi TrainerDAL.Save
+                TrainerDTO trainerDto = new TrainerDTO
+                {
+                    TrainerID = dto.ID,
+                    FullName = dto.FullName,
+                    Phone = dto.Phone,
+                    Specialty = dto.GhiChu,  // GhiChu = Specialty của Trainer
+                    Status = dto.Status
+                };
+                return trainerDal.Save(trainerDto, isAdd);
+            }
+
+            return false;
+        }
+
         public DataTable GetPackages() => dal.GetPackages();
         public DataTable GetTrainers() => dal.GetTrainers();
         public bool DeleteData(int id, string type)

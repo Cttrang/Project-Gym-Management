@@ -16,11 +16,11 @@ namespace desktopapp_GYM.DAL
             List<PackageDTO> list = new List<PackageDTO>();
 
             // Câu SQL lấy thông tin gói tập và đếm số người đăng ký
-            string query = @"SELECT p.PACKAGEID, p.PACKAGENAME, p.DURATIONMONTHS, p.PRICE, 
+            string query = @"SELECT p.PACKAGEID, p.PACKAGENAME, p.DURATIONMONTHS, p.PRICE, p.STATUS, 
                              COUNT(r.REGID) AS TotalMembers 
                              FROM PACKAGES p 
                              LEFT JOIN REGISTRATIONS r ON p.PACKAGEID = r.PACKAGEID 
-                             GROUP BY p.PACKAGEID, p.PACKAGENAME, p.DURATIONMONTHS, p.PRICE";
+                             GROUP BY p.PACKAGEID, p.PACKAGENAME, p.DURATIONMONTHS, p.PRICE, p.STATUS";
 
             try
             {
@@ -37,6 +37,7 @@ namespace desktopapp_GYM.DAL
                         pkg.PackageName = reader["PACKAGENAME"].ToString();
                         pkg.DurationMonths = Convert.ToInt32(reader["DURATIONMONTHS"]);
                         pkg.Price = Convert.ToDecimal(reader["PRICE"]);
+                        pkg.Status = reader["status"].ToString();
                         pkg.TotalMembers = Convert.ToInt32(reader["TotalMembers"]);
 
                         list.Add(pkg);
@@ -54,8 +55,8 @@ namespace desktopapp_GYM.DAL
         public bool Save(PackageDTO pkg, bool isAdd)
         {
             string sql = isAdd ?
-                "INSERT INTO PACKAGES (PACKAGENAME, DURATIONMONTHS, PRICE) VALUES (@name, @dur, @pri)" :
-                "UPDATE PACKAGES SET PACKAGENAME=@name, DURATIONMONTHS=@dur, PRICE=@pri WHERE PACKAGEID=@id";
+        "INSERT INTO PACKAGES (PACKAGENAME, DURATIONMONTHS, PRICE, STATUS) VALUES (@name, @dur, @pri, @status)" :
+        "UPDATE PACKAGES SET PACKAGENAME=@name, DURATIONMONTHS=@dur, PRICE=@pri, STATUS=@status WHERE PACKAGEID=@id";
 
             using (SqlConnection con = GetConnection())
             {
@@ -64,6 +65,7 @@ namespace desktopapp_GYM.DAL
                 cmd.Parameters.AddWithValue("@name", pkg.PackageName);
                 cmd.Parameters.AddWithValue("@dur", pkg.DurationMonths);
                 cmd.Parameters.AddWithValue("@pri", pkg.Price);
+                cmd.Parameters.AddWithValue("@status", pkg.Status ?? "Active"); // thêm dòng này
                 con.Open();
                 return cmd.ExecuteNonQuery() > 0;
             }

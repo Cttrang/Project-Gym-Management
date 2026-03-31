@@ -176,13 +176,20 @@ namespace desktopapp_GYM.DAL
                 try
                 {
                     string sql = isAdd ?
-                        @"INSERT INTO MEMBERS (FULLNAME, PHONE, JOINDATE) VALUES (@name, @phone, GETDATE());
+                        @"INSERT INTO MEMBERS (FULLNAME, PHONE, JOINDATE, STATUS) 
+                  VALUES (@name, @phone, GETDATE(), @memberStatus);
                   DECLARE @mID INT = SCOPE_IDENTITY();
-                  INSERT INTO REGISTRATIONS (MEMBERID, PACKAGEID, TRAINERID, REGDATE, ENDDATE, TOTALAMOUNT, PAYMENTSTATUS)
+                  INSERT INTO REGISTRATIONS 
+                      (MEMBERID, PACKAGEID, TRAINERID, REGDATE, ENDDATE, TOTALAMOUNT, PAYMENTSTATUS)
                   VALUES (@mID, @pkg, @trn, @rd, @ed, @total, @status)" :
-                        @"UPDATE MEMBERS SET FULLNAME=@name, PHONE=@phone WHERE MEMBERID=@id;
-                  UPDATE REGISTRATIONS SET PACKAGEID=@pkg, TRAINERID=@trn, REGDATE=@rd, ENDDATE=@ed, 
-                  TOTALAMOUNT=@total, PAYMENTSTATUS=@status WHERE REGID = (
+
+                        @"UPDATE MEMBERS 
+                  SET FULLNAME=@name, PHONE=@phone, STATUS=@memberStatus
+                  WHERE MEMBERID=@id;
+                  UPDATE REGISTRATIONS 
+                  SET PACKAGEID=@pkg, TRAINERID=@trn, REGDATE=@rd,
+                      ENDDATE=@ed, TOTALAMOUNT=@total, PAYMENTSTATUS=@status
+                  WHERE REGID = (
                       SELECT MAX(REGID) FROM REGISTRATIONS WHERE MEMBERID=@id
                   )";
 
@@ -190,6 +197,7 @@ namespace desktopapp_GYM.DAL
                     cmd.Parameters.AddWithValue("@id", dto.ID);
                     cmd.Parameters.AddWithValue("@name", dto.FullName);
                     cmd.Parameters.AddWithValue("@phone", dto.Phone);
+                    cmd.Parameters.AddWithValue("@memberStatus", dto.Status ?? "Active"); // thêm
                     cmd.Parameters.AddWithValue("@pkg", dto.PackageID);
                     cmd.Parameters.AddWithValue("@trn", (object)dto.TrainerID ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@rd", dto.RegDate);
