@@ -28,10 +28,84 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.dgvTopPackages = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panelFooter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTopPackages)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // btnPin
+            // 
+            this.btnPin.Location = new System.Drawing.Point(358, 3);
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel2.Controls.Add(this.dgvTopPackages);
+            this.panel2.Location = new System.Drawing.Point(0, 28);
+            this.panel2.Size = new System.Drawing.Size(261, 119);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Size = new System.Drawing.Size(261, 28);
+            this.panel1.Controls.SetChildIndex(this.btnPin, 0);
+            this.panel1.Controls.SetChildIndex(this.label1, 0);
+            // 
+            // panelFooter
+            // 
+            this.panelFooter.Location = new System.Drawing.Point(0, 147);
+            this.panelFooter.Size = new System.Drawing.Size(261, 18);
+            // 
+            // btnViewDetail
+            // 
+            this.btnViewDetail.Location = new System.Drawing.Point(211, 0);
+            // 
+            // dgvTopPackages
+            // 
+            this.dgvTopPackages.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dgvTopPackages.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTopPackages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTopPackages.Location = new System.Drawing.Point(0, 0);
+            this.dgvTopPackages.Name = "dgvTopPackages";
+            this.dgvTopPackages.Size = new System.Drawing.Size(261, 119);
+            this.dgvTopPackages.TabIndex = 0;
+            this.dgvTopPackages.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvTopPackages_CellFormatting);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.IndianRed;
+            this.label1.Location = new System.Drawing.Point(15, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(188, 19);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Những gói nổi tiếng nhất!!!";
+            // 
+            // ucPackagePrice
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "ucPackagePrice";
+            this.Size = new System.Drawing.Size(261, 165);
+            this.Load += new System.EventHandler(this.ucPackagePrice_Load);
+            this.panel2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panelFooter.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTopPackages)).EndInit();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.DataGridView dgvTopPackages;
+        private System.Windows.Forms.Label label1;
     }
 }

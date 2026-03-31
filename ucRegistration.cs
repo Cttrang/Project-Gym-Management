@@ -10,15 +10,11 @@ using System.Windows.Forms;
 
 namespace desktopapp_GYM
 {
-    public partial class ucGymIntro : ucBaseCard
+    public partial class ucRegistration : UserControl
     {
-        public ucGymIntro()
+        public ucRegistration()
         {
             InitializeComponent();
-        }
-        protected override void OnViewDetailClick()
-        {
-            btnViewDetail.Visible = false;
         }
     }
 }

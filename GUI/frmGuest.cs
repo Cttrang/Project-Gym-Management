@@ -42,5 +42,70 @@ namespace desktopapp_GYM.GUI
                 }
             }
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        public void ShowUc()
+        {
+            flowLayoutPanel1.Visible = true;
+            flowLayoutPanel1.BringToFront();
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+
+            // 2. Quét qua tất cả các UC con nằm trong flowLayoutPanel để bắt chúng cập nhật
+            foreach (Control ctrl in flowLayoutPanel1.Controls)
+            {
+                // Kiểm tra xem nó có phải là UC thống kê của Huy không
+                if (ctrl is ucPackagePrice ucPackagePrice1)
+                {
+                    ucPackagePrice1.RefreshData();
+                }
+                else if (ctrl is ucTrainerStatus ucTrainerStatus1)
+                {
+                    ucTrainerStatus1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
+                }
+                else if (ctrl is ucRevenueChart ucRevenueChart1)
+                {
+                    ucRevenueChart1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
+                }
+            }
+        }
+
+        public void ShowDetail(UserControl uc)
+        {
+            // 1. Ẩn cái Dashboard đi cho khuất mắt
+            flowLayoutPanel1.Visible = false;
+
+            // 2. Dọn dẹp pnlContent trước khi thêm cái mới (tránh chồng chất)
+            foreach (Control ctrl in panelContent.Controls)
+            {
+                if (ctrl != flowLayoutPanel1)
+                {
+                    panelContent.Controls.Remove(ctrl);
+                }
+            }
+
+            // 3. Thêm UC chi tiết vào pnlContent
+            uc.Dock = DockStyle.Fill;
+            panelContent.Controls.Add(uc);
+            uc.BringToFront();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucPackageDetails());
+        }
+
+        private void btnDashBoard_Click(object sender, EventArgs e)
+        {
+            ShowUc();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucTrainerList());
+        }
     }
 }

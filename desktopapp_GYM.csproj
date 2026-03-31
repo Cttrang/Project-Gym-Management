@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,15 +47,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\MemberBLL.cs" />
+    <Compile Include="BLL\PackageBLL.cs" />
     <Compile Include="BLL\Session.cs" />
+    <Compile Include="BLL\TrainerBLL.cs" />
     <Compile Include="BLL\UserBLL.cs" />
+    <Compile Include="ChangePackage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangePackage.Designer.cs">
+      <DependentUpon>ChangePackage.cs</DependentUpon>
+    </Compile>
     <Compile Include="DAL\DataConnection.cs" />
+    <Compile Include="DAL\MemberDal.cs" />
+    <Compile Include="DAL\PackageDAL.cs" />
+    <Compile Include="DAL\RegistrationDAL.cs" />
+    <Compile Include="DAL\TrainerDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
+    <Compile Include="DTO\MemberDTO.cs" />
+    <Compile Include="DTO\PackageDTO.cs" />
+    <Compile Include="DTO\TrainerDTO.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChange.Designer.cs">
+      <DependentUpon>frmChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTrainerEdits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTrainerEdits.Designer.cs">
+      <DependentUpon>frmTrainerEdits.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\frmGuest.cs">
       <SubType>Form</SubType>
@@ -88,6 +117,12 @@
     <Compile Include="ucClassStatus.Designer.cs">
       <DependentUpon>ucClassStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucDashBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucDashBoard.Designer.cs">
+      <DependentUpon>ucDashBoard.cs</DependentUpon>
+    </Compile>
     <Compile Include="ucExpiredAlert.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -100,17 +135,35 @@
     <Compile Include="ucGymIntro.Designer.cs">
       <DependentUpon>ucGymIntro.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucMemberList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucMemberList.Designer.cs">
+      <DependentUpon>ucMemberList.cs</DependentUpon>
+    </Compile>
     <Compile Include="ucMemberStats.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ucMemberStats.Designer.cs">
       <DependentUpon>ucMemberStats.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucPackageDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucPackageDetails.Designer.cs">
+      <DependentUpon>ucPackageDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="ucPackagePrice.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ucPackagePrice.Designer.cs">
       <DependentUpon>ucPackagePrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucRegistration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucRegistration.Designer.cs">
+      <DependentUpon>ucRegistration.cs</DependentUpon>
     </Compile>
     <Compile Include="ucRevenueCard.cs">
       <SubType>UserControl</SubType>
@@ -124,6 +177,27 @@
     <Compile Include="ucRevenueChart.Designer.cs">
       <DependentUpon>ucRevenueChart.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucTrainerList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucTrainerList.Designer.cs">
+      <DependentUpon>ucTrainerList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucTrainerStatus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucTrainerStatus.Designer.cs">
+      <DependentUpon>ucTrainerStatus.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ChangePackage.resx">
+      <DependentUpon>ChangePackage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChange.resx">
+      <DependentUpon>frmChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTrainerEdits.resx">
+      <DependentUpon>frmTrainerEdits.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\frmGuest.resx">
       <DependentUpon>frmGuest.cs</DependentUpon>
     </EmbeddedResource>
@@ -145,14 +219,41 @@
     <EmbeddedResource Include="ucBaseCard.resx">
       <DependentUpon>ucBaseCard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ucDashBoard.resx">
+      <DependentUpon>ucDashBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucExpiredAlert.resx">
+      <DependentUpon>ucExpiredAlert.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ucGymIntro.resx">
       <DependentUpon>ucGymIntro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucMemberList.resx">
+      <DependentUpon>ucMemberList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucMemberStats.resx">
       <DependentUpon>ucMemberStats.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ucPackageDetails.resx">
+      <DependentUpon>ucPackageDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucPackagePrice.resx">
+      <DependentUpon>ucPackagePrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucRegistration.resx">
+      <DependentUpon>ucRegistration.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ucRevenueCard.resx">
       <DependentUpon>ucRevenueCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucRevenueChart.resx">
+      <DependentUpon>ucRevenueChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucTrainerList.resx">
+      <DependentUpon>ucTrainerList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucTrainerStatus.resx">
+      <DependentUpon>ucTrainerStatus.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

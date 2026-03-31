@@ -34,7 +34,10 @@
             this.btnPin = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panelFooter = new System.Windows.Forms.Panel();
+            this.btnViewDetail = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
+            this.panelFooter.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -43,17 +46,19 @@
             this.panel1.Controls.Add(this.btnPin);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 34);
+            this.panel1.Size = new System.Drawing.Size(100, 26);
             this.panel1.TabIndex = 0;
             // 
             // btnPin
             // 
             this.btnPin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPin.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPin.BackgroundImage")));
-            this.btnPin.Location = new System.Drawing.Point(164, 6);
+            this.btnPin.Location = new System.Drawing.Point(82, 3);
+            this.btnPin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnPin.Name = "btnPin";
-            this.btnPin.Size = new System.Drawing.Size(35, 27);
+            this.btnPin.Size = new System.Drawing.Size(18, 14);
             this.btnPin.TabIndex = 0;
             this.btnPin.Text = "button1";
             this.btnPin.UseVisualStyleBackColor = true;
@@ -67,21 +72,47 @@
             // panel2
             // 
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 34);
+            this.panel2.Location = new System.Drawing.Point(0, 26);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 116);
+            this.panel2.Size = new System.Drawing.Size(100, 34);
             this.panel2.TabIndex = 1;
+            // 
+            // panelFooter
+            // 
+            this.panelFooter.BackColor = System.Drawing.Color.RosyBrown;
+            this.panelFooter.Controls.Add(this.btnViewDetail);
+            this.panelFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelFooter.Location = new System.Drawing.Point(0, 60);
+            this.panelFooter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelFooter.Name = "panelFooter";
+            this.panelFooter.Size = new System.Drawing.Size(100, 18);
+            this.panelFooter.TabIndex = 2;
+            // 
+            // btnViewDetail
+            // 
+            this.btnViewDetail.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnViewDetail.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnViewDetail.Location = new System.Drawing.Point(50, 0);
+            this.btnViewDetail.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnViewDetail.Name = "btnViewDetail";
+            this.btnViewDetail.Size = new System.Drawing.Size(50, 18);
+            this.btnViewDetail.TabIndex = 0;
+            this.btnViewDetail.Text = "More";
             // 
             // ucBaseCard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panelFooter);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ucBaseCard";
-            this.Size = new System.Drawing.Size(200, 150);
+            this.Size = new System.Drawing.Size(100, 78);
             this.panel1.ResumeLayout(false);
+            this.panelFooter.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -90,6 +121,8 @@
         protected System.Windows.Forms.Button btnPin;
         private System.Windows.Forms.Timer timer1;
         protected System.Windows.Forms.Panel panel2;
-        public System.Windows.Forms.Panel panel1;
+        protected System.Windows.Forms.Panel panel1;
+        protected System.Windows.Forms.Panel panelFooter;
+        protected System.Windows.Forms.Button btnViewDetail;
     }
 }

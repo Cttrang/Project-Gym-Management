@@ -15,7 +15,7 @@ namespace desktopapp_GYM.GUI
 {
     public partial class frmLogin : Form
     {
-        Encoding encoding = Encoding.UTF8;
+        
         UserBLL userBLL = new UserBLL();
         public frmLogin()
         {

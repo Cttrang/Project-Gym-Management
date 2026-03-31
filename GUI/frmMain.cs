@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace desktopapp_GYM.GUI
 {
@@ -20,14 +21,101 @@ namespace desktopapp_GYM.GUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            //lblWelcome.Text = "Xin chào, " + Session.CurrentUsername;
+            string name = Session.CurrentUsername;
+            string role = Session.CurrentRole;
+            lblWelcome.Text = $"{name} ({role})";
+            if (role == "Admin") lblWelcome.ForeColor = Color.Red;
+            else if (role == "Manager") lblWelcome.ForeColor = Color.DarkBlue;
+            else lblWelcome.ForeColor = Color.Green;
+            ShowUc();
+            
+        }
 
-            //if (Session.CurrentRole == "Receptionist")
-            //{
-            //    // Lễ tân thì ẩn nút xóa hoặc ẩn menu Dashboard của Manager
-            //    btnDeleteMember.Visible = false;
-            //    btnRevenueStats.Enabled = false;
-            //}
+        public void ShowUc()
+        {
+            flowLayoutPanel1.Visible = true;
+            flowLayoutPanel1.BringToFront();
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+
+            // 2. Quét qua tất cả các UC con nằm trong flowLayoutPanel để bắt chúng cập nhật
+            foreach (Control ctrl in flowLayoutPanel1.Controls)
+            {
+                // Kiểm tra xem nó có phải là UC thống kê của Huy không
+                if (ctrl is ucMemberStats ucMemberStats1)
+                {
+                    ucMemberStats1.RefreshData();
+                }
+                else if (ctrl is ucExpiredAlert ucExpiredAlert1)
+                {
+                    ucExpiredAlert1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
+                }
+                else if (ctrl is ucRevenueChart ucRevenueChart1)
+                {
+                    ucRevenueChart1.RefreshData(); // Giả sử Huy có hàm RefreshData trong UC cảnh báo
+                }
+                else if (ctrl is ucPackagePrice ucPackagePrice1)
+                {
+                    ucPackagePrice1.RefreshData();
+                }
+            }
+        }
+
+        public void ShowDetail(UserControl uc)
+        {
+            // 1. Ẩn cái Dashboard đi cho khuất mắt
+            flowLayoutPanel1.Visible = false;
+
+            // 2. Dọn dẹp pnlContent trước khi thêm cái mới (tránh chồng chất)
+            foreach (Control ctrl in pnlContent.Controls)
+            {
+                if (ctrl != flowLayoutPanel1)
+                {
+                    pnlContent.Controls.Remove(ctrl);
+                }
+            }
+
+            // 3. Thêm UC chi tiết vào pnlContent
+            uc.Dock = DockStyle.Fill;
+            pnlContent.Controls.Add(uc);
+            uc.BringToFront();
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            
+            ShowUc();
+            
+        }
+
+        
+        public void DisplayControl(UserControl uc)
+        {
+            
+        }
+
+        private void txtMember_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucMemberList());
+        }
+
+        private void lblWelcome_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucPackageDetails());
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucTrainerList());
         }
     }
 
