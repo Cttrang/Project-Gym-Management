@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace desktopapp_GYM.DAL
 {
@@ -74,13 +75,27 @@ namespace desktopapp_GYM.DAL
             using (SqlConnection con = GetConnection())
             {
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@id", tr.TrainerID);
+                if (!isAdd)
+                {
+                    cmd.Parameters.AddWithValue("@id", tr.TrainerID);
+                }
+                //cmd.Parameters.AddWithValue("@id", tr.TrainerID);
                 cmd.Parameters.AddWithValue("@name", tr.FullName);
                 cmd.Parameters.AddWithValue("@phone", tr.Phone ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@spec", tr.Specialty ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@status", tr.Status ?? "Active");
-                con.Open();
-                return cmd.ExecuteNonQuery() > 0;
+                //con.Open();
+                //return cmd.ExecuteNonQuery() > 0;
+                try
+                {
+                    con.Open();
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString()); // 🔥 lỗi thật sẽ hiện ở đây
+                    return false;
+                }
             }
         }
 

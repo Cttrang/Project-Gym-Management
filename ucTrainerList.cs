@@ -97,16 +97,16 @@ namespace desktopapp_GYM
         }
         private void btnAdd_Click(object sender, EventArgs e) 
         {
-            //frmTrainerEdits frm = new frmTrainerEdits(new TrainerDTO(), true);
-            //if (frm.ShowDialog() == DialogResult.OK) LoadData();
+            frmTrainerEdits frm = new frmTrainerEdits(new TrainerDTO(), true);
+            if (frm.ShowDialog() == DialogResult.OK) LoadData();
         }
         private void btnEdits_Click(object sender, EventArgs e) 
         {
             if (dgvTrainers.CurrentRow != null)
             {
                 var selected = (TrainerDTO)dgvTrainers.CurrentRow.DataBoundItem;
-                //frmTrainerChange frm = new frmTrainerChange(selected, false);
-                //if (frm.ShowDialog() == DialogResult.OK) LoadData();
+                frmTrainerEdits frm = new frmTrainerEdits(selected, false);
+                if (frm.ShowDialog() == DialogResult.OK) LoadData();
             }
         }
         private void btnDelete_Click(object sender, EventArgs e) 

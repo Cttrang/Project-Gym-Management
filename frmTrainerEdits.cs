@@ -26,10 +26,10 @@ namespace desktopapp_GYM
             this.Text = "Thêm huấn luyện viên mới";
         }
 
-        public frmTrainerEdits(TrainerDTO trainer)
+        public frmTrainerEdits(TrainerDTO trainer, bool isAdd)
         {
             InitializeComponent();
-            isAddMode = false;
+            isAddMode = isAdd;
             _selectedTr = trainer;
             this.Text = "Cập nhật thông tin huấn luyện viên";
         }
@@ -83,6 +83,7 @@ namespace desktopapp_GYM
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+
             if (string.IsNullOrWhiteSpace(txtHLV.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên Huấn luyện viên!",
