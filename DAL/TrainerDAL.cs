@@ -15,11 +15,19 @@ namespace desktopapp_GYM.DAL
         public List<TrainerDTO> GetAllTrainers()
         {
             List<TrainerDTO> list = new List<TrainerDTO>();
-            string query = @"SELECT t.TRAINERID, t.FULLNAME, t.PHONE, t.SPECIALTY, t.STATUS,
-                             COUNT(r.REGID) AS TotalStudents
-                             FROM TRAINERS t
-                             LEFT JOIN REGISTRATIONS r ON t.TRAINERID = r.TRAINERID
-                             GROUP BY t.TRAINERID, t.FULLNAME, t.PHONE, t.SPECIALTY, t.STATUS";
+            // Câu truy vấn mới: Lấy thông tin HLV + Gộp tên các gói tập thành 1 chuỗi
+            string query = @"
+        SELECT t.TRAINERID, t.FULLNAME, t.PHONE, t.SPECIALTY, t.STATUS,
+               COUNT(DISTINCT r.REGID) AS TotalStudents,
+               STUFF((
+                   SELECT ', ' + p.PACKAGENAME
+                   FROM TRAINER_PACKAGES tp
+                   JOIN PACKAGES p ON tp.PACKAGEID = p.PACKAGEID
+                   WHERE tp.TRAINERID = t.TRAINERID
+                   FOR XML PATH('')), 1, 2, '') AS Packages
+        FROM TRAINERS t
+        LEFT JOIN REGISTRATIONS r ON t.TRAINERID = r.TRAINERID
+        GROUP BY t.TRAINERID, t.FULLNAME, t.PHONE, t.SPECIALTY, t.STATUS";
 
             try
             {
@@ -37,7 +45,9 @@ namespace desktopapp_GYM.DAL
                             Phone = reader["PHONE"].ToString(),
                             Specialty = reader["SPECIALTY"].ToString(),
                             Status = reader["STATUS"].ToString(),
-                            TotalStudents = Convert.ToInt32(reader["TotalStudents"])
+                            TotalStudents = Convert.ToInt32(reader["TotalStudents"]),
+                            // Gán chuỗi các gói tập vào thuộc tính mới
+                            AssignedPackages = reader["Packages"].ToString()
                         });
                     }
                 }
@@ -110,5 +120,108 @@ namespace desktopapp_GYM.DAL
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
+
+        // Thêm hàm này vào TrainerDAL để lấy ID vừa tạo nếu dùng chức năng add new Trainer
+        public int SaveAndGetID(TrainerDTO tr)
+        {
+            string sql = "INSERT INTO TRAINERS (FULLNAME, PHONE, SPECIALTY, STATUS) OUTPUT INSERTED.TRAINERID VALUES (@name, @phone, @spec, @status)";
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@name", tr.FullName);
+                cmd.Parameters.AddWithValue("@phone", tr.Phone ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@spec", tr.Specialty ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@status", tr.Status);
+                con.Open();
+                return (int)cmd.ExecuteScalar(); // Trả về ID vừa tạo
+            }
+        }
+
+        // Hàm lưu chuyên môn vào bảng trung gian
+        public bool SaveWithPackages(TrainerDTO tr, List<int> packageIds, bool isAdd)
+        {
+            using (SqlConnection con = GetConnection())
+            {
+                con.Open();
+                SqlTransaction trans = con.BeginTransaction();
+                try
+                {
+                    int trainerId;
+
+                    if (isAdd)
+                    {
+                        // INSERT và lấy ID vừa tạo
+                        string insertSql = @"INSERT INTO TRAINERS 
+                    (FULLNAME, PHONE, SPECIALTY, STATUS) 
+                    OUTPUT INSERTED.TRAINERID 
+                    VALUES (@name, @phone, @spec, @status)";
+                        SqlCommand insertCmd = new SqlCommand(insertSql, con, trans);
+                        insertCmd.Parameters.AddWithValue("@name", tr.FullName);
+                        insertCmd.Parameters.AddWithValue("@phone", tr.Phone ?? (object)DBNull.Value);
+                        insertCmd.Parameters.AddWithValue("@spec", tr.Specialty ?? (object)DBNull.Value);
+                        insertCmd.Parameters.AddWithValue("@status", tr.Status ?? "Active");
+                        trainerId = (int)insertCmd.ExecuteScalar();
+                    }
+                    else
+                    {
+                        // UPDATE thông tin HLV
+                        string updateSql = @"UPDATE TRAINERS 
+                    SET FULLNAME=@name, PHONE=@phone, SPECIALTY=@spec, STATUS=@status 
+                    WHERE TRAINERID=@id";
+                        SqlCommand updateCmd = new SqlCommand(updateSql, con, trans);
+                        updateCmd.Parameters.AddWithValue("@id", tr.TrainerID);
+                        updateCmd.Parameters.AddWithValue("@name", tr.FullName);
+                        updateCmd.Parameters.AddWithValue("@phone", tr.Phone ?? (object)DBNull.Value);
+                        updateCmd.Parameters.AddWithValue("@spec", tr.Specialty ?? (object)DBNull.Value);
+                        updateCmd.Parameters.AddWithValue("@status", tr.Status ?? "Active");
+                        updateCmd.ExecuteNonQuery();
+                        trainerId = tr.TrainerID;
+                    }
+
+                    // Xóa gói cũ rồi insert lại toàn bộ
+                    string deleteSql = "DELETE FROM TRAINER_PACKAGES WHERE TRAINERID = @tid";
+                    SqlCommand deleteCmd = new SqlCommand(deleteSql, con, trans);
+                    deleteCmd.Parameters.AddWithValue("@tid", trainerId);
+                    deleteCmd.ExecuteNonQuery();
+
+                    // Insert các gói mới được chọn
+                    foreach (int pkgId in packageIds)
+                    {
+                        string insertPkgSql = @"INSERT INTO TRAINER_PACKAGES 
+                    (TRAINERID, PACKAGEID) VALUES (@tid, @pid)";
+                        SqlCommand insertPkgCmd = new SqlCommand(insertPkgSql, con, trans);
+                        insertPkgCmd.Parameters.AddWithValue("@tid", trainerId);
+                        insertPkgCmd.Parameters.AddWithValue("@pid", pkgId);
+                        insertPkgCmd.ExecuteNonQuery();
+                    }
+
+                    trans.Commit();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    MessageBox.Show("Lỗi lưu dữ liệu: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        public List<int> GetPackageIdsByTrainer(int trainerId)
+        {
+            List<int> ids = new List<int>();
+            string sql = "SELECT PACKAGEID FROM TRAINER_PACKAGES WHERE TRAINERID = @id";
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@id", trainerId);
+                con.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+                while (r.Read()) ids.Add((int)r["PACKAGEID"]);
+            }
+            return ids;
+        }
+
+
     }
 }

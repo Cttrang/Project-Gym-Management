@@ -53,6 +53,7 @@ namespace desktopapp_GYM
                 dgvTrainers.Columns["Specialty"].HeaderText = "Chuyên môn";
                 dgvTrainers.Columns["Status"].HeaderText = "Trạng thái"; // thêm
                 dgvTrainers.Columns["TotalStudents"].HeaderText = "Số học viên";
+                dgvTrainers.Columns["AssignedPackages"].HeaderText = "Gói dạy";
 
                 dgvTrainers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }

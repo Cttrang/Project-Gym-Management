@@ -14,10 +14,12 @@ namespace desktopapp_GYM
 {
     public partial class frmTrainerEdits : Form
     {
+        PackageBLL pkgBll = new PackageBLL();
         TrainerBLL bll = new TrainerBLL();
         TrainerDTO _selectedTr = null;
         bool isAddMode = true;
         bool isDataChanged = false;
+
 
         public frmTrainerEdits()
         {
@@ -64,6 +66,18 @@ namespace desktopapp_GYM
             txtSDT.Text = _selectedTr.Phone;
             txtNotes.Text = _selectedTr.Specialty;
             cboStatus.Text = _selectedTr.Status;  // thêm
+
+            List<int> assignedIds = bll.GetPackageIdsByTrainer(_selectedTr.TrainerID);
+
+            for (int i = 0; i < clbPackages.Items.Count; i++)
+            {
+                var pkg = (PackageDTO)clbPackages.Items[i];
+                if (assignedIds.Contains(pkg.PackageID))
+                {
+                    clbPackages.SetItemChecked(i, true); // Tích vào ô tương ứng
+                }
+            }
+
             ToggleEvents(true);
             isDataChanged = false;
         }
@@ -71,6 +85,18 @@ namespace desktopapp_GYM
         private void frmTrainerEdits_Load(object sender, EventArgs e)
         {
             cboStatus.Items.AddRange(new string[] { "Active", "Inactive" }); // thêm
+
+            try
+            {
+                var allPackages = pkgBll.GetData(); // Lấy danh sách gói tập
+                clbPackages.DataSource = allPackages;
+                clbPackages.DisplayMember = "PackageName";
+                clbPackages.ValueMember = "PackageID";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải danh sách gói tập: " + ex.Message);
+            }
 
             if (!isAddMode && _selectedTr != null)
                 FillData();
@@ -91,13 +117,21 @@ namespace desktopapp_GYM
                 return;
             }
 
+            // Lấy danh sách gói được tick trong CheckedListBox
+            List<int> selectedPackageIds = new List<int>();
+            foreach (var item in clbPackages.CheckedItems)
+            {
+                var pkg = (PackageDTO)item;
+                selectedPackageIds.Add(pkg.PackageID);
+            }
+
             TrainerDTO dto = isAddMode ? new TrainerDTO() : _selectedTr;
             dto.FullName = txtHLV.Text.Trim();
             dto.Phone = txtSDT.Text.Trim();
             dto.Specialty = txtNotes.Text.Trim();
-            dto.Status = cboStatus.Text;  // thêm — không hardcode "Active" nữa
+            dto.Status = cboStatus.Text;
 
-            if (bll.SaveTrainer(dto, isAddMode))
+            if (bll.SaveTrainerWithPackages(dto, selectedPackageIds, isAddMode))
             {
                 MessageBox.Show("Lưu thành công!");
                 isDataChanged = false;
@@ -119,11 +153,16 @@ namespace desktopapp_GYM
                 txtHLV.Clear();
                 txtSDT.Clear();
                 txtNotes.Clear();
-                cboStatus.SelectedIndex = 0; // thêm — reset về Active
+                cboStatus.SelectedIndex = 0;
+
+                // Bỏ tick tất cả gói
+                for (int i = 0; i < clbPackages.Items.Count; i++)
+                    clbPackages.SetItemChecked(i, false);
+
                 ToggleEvents(true);
             }
             else
-                FillData();
+                FillData(); // Edit thì khôi phục lại data ban đầu
 
             isDataChanged = false;
             txtHLV.Focus();

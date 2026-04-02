@@ -14,5 +14,6 @@ namespace desktopapp_GYM.DTO
         public string Specialty { get; set; }
         public string Status { get; set; }
         public int TotalStudents { get; set; }
+        public string AssignedPackages { get; set; }
     }
 }
