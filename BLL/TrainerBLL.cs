@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace desktopapp_GYM.BLL
 {
@@ -33,5 +34,26 @@ namespace desktopapp_GYM.BLL
 
             return dal.Delete(tr.TrainerID);
         }
+
+        public List<int> GetPackageIdsByTrainer(int trainerId)
+        {
+            // Ở đây Huy có thể thêm kiểm tra nghiệp vụ nếu cần
+            if (trainerId <= 0) return new List<int>();
+
+            return dal.GetPackageIdsByTrainer(trainerId);
+        }
+
+        public bool SaveTrainerWithPackages(TrainerDTO tr, List<int> packageIds, bool isAdd)
+        {
+            if (string.IsNullOrWhiteSpace(tr.FullName)) return false;
+            if (packageIds == null || packageIds.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn ít nhất 1 gói tập cho HLV!",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return dal.SaveWithPackages(tr, packageIds, isAdd);
+        }
+
     }
 }

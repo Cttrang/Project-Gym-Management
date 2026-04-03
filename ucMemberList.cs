@@ -15,7 +15,7 @@ namespace desktopapp_GYM
 {
     public partial class ucMemberList : UserControl
     {
-        MemberDal dal = new MemberDal();
+        
         MemberBLL bll = new MemberBLL();
         public ucMemberList()
         {
@@ -28,6 +28,31 @@ namespace desktopapp_GYM
             dgvMembers.DataSource = dt;
             dgvMembers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             FormatDataGridView();
+        }
+
+        private void RefreshDataIfExpirationsFound()
+        {
+            try
+            {
+                // 1. Gọi BLL quét Database để cập nhật trạng thái Inactive
+                int count = bll.UpdateExpiredStatus();
+
+                // 2. Nếu có ít nhất 1 người bị quá hạn
+                if (count > 0)
+                {
+                    // Load lại dữ liệu mới để Grid hiển thị đúng chữ 'Inactive'
+                    LoadData();
+
+                    // Thông báo cho nhân viên biết
+                    MessageBox.Show($"Hệ thống đã tự động chuyển {count} hội viên sang 'Inactive' do hết hạn tập!",
+                                    "Thông báo định kỳ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Tránh làm treo App nếu SQL có vấn đề, chỉ hiển thị lỗi nhẹ
+                Console.WriteLine("Lỗi quét hết hạn: " + ex.Message);
+            }
         }
 
         private void SetupAutoComplete()
@@ -54,6 +79,7 @@ namespace desktopapp_GYM
         private void ucMemberList_Load(object sender, EventArgs e)
         {
             LoadData();
+            RefreshDataIfExpirationsFound();
             SetupAutoComplete();
 
         }
@@ -132,37 +158,42 @@ namespace desktopapp_GYM
             if (e.RowIndex < 0 || e.RowIndex >= dgvMembers.Rows.Count) return;
 
             // 2. Kiểm tra cột PAYMENTSTATUS (Tên cột phải khớp với SQL IN HOA bạn đã viết)
-            if (dgvMembers.Columns[e.ColumnIndex].Name == "PAYMENTSTATUS")
+            // Lấy dòng hiện tại để kiểm tra dữ liệu
+            var row = dgvMembers.Rows[e.RowIndex];
+            var typeValue = row.Cells["TYPE"].Value?.ToString().Trim();
+            var statusValue = row.Cells["PAYMENTSTATUS"].Value?.ToString().Trim();
+            var endDateValue = row.Cells["ENDDATE"].Value;
+
+            if (typeValue == "Member")
             {
-                var statusValue = dgvMembers.Rows[e.RowIndex].Cells["PAYMENTSTATUS"].Value;
-                var typeValue = dgvMembers.Rows[e.RowIndex].Cells["TYPE"].Value;
+                bool isExpired = false;
 
-                if (statusValue != null && typeValue != null)
+                // 1. Kiểm tra hết hạn: So sánh ngày hiện tại với ENDDATE
+                if (endDateValue != DBNull.Value && endDateValue != null)
                 {
-                    string status = statusValue.ToString().Trim();
-                    string type = typeValue.ToString().Trim();
+                    DateTime endDate = Convert.ToDateTime(endDateValue);
+                    if (endDate.Date < DateTime.Now.Date) // Nếu ngày hết hạn nhỏ hơn ngày hôm nay
+                    {
+                        isExpired = true;
+                    }
+                }
 
-                    // 3. Chỉ xét những ai là 'Member' và trạng thái chưa thanh toán
-                    // Dựa trên bảng REGISTRATIONS, nếu chưa nạp tiền thường là 'Unpaid' hoặc trống
-                    if (type == "Member" && (status == "Unpaid" || status == "Chưa thanh toán" || string.IsNullOrEmpty(status)))
-                    {
-                        // TÔ MÀU CHỮ ĐỎ cho cả dòng
-                        dgvMembers.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Red;
+                // 2. Kiểm tra chưa thanh toán
+                bool isUnpaid = (statusValue == "Unpaid" || statusValue == "Chưa thanh toán" || string.IsNullOrEmpty(statusValue));
 
-                        // Bạn có thể làm chữ đậm lên để dễ chú ý hơn
-                        dgvMembers.Rows[e.RowIndex].DefaultCellStyle.Font = new Font(dgvMembers.Font, FontStyle.Bold);
-                    }
-                    else if (status == "Paid" || status == "Completed")
-                    {
-                        // Với những dòng đã thanh toán, để chữ màu xanh đậm (DeepGreen) cho dễ phân biệt
-                        dgvMembers.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.DarkGreen;
-                        dgvMembers.Rows[e.RowIndex].DefaultCellStyle.Font = new Font(dgvMembers.Font, FontStyle.Regular);
-                    }
-                    else
-                    {
-                        // Reset về mặc định cho HLV hoặc Nhân viên (những người không có status thanh toán)
-                        dgvMembers.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
-                    }
+                // 3. Thực hiện tô màu: Nếu Hết hạn HOẶC Chưa thanh toán thì tô ĐỎ
+                if (isExpired || isUnpaid)
+                {
+                    row.DefaultCellStyle.ForeColor = Color.Red;
+                    row.DefaultCellStyle.Font = new Font(dgvMembers.Font, FontStyle.Bold);
+
+                    // (Tùy chọn) Nếu muốn biết lý do đỏ, Huy có thể gán vào ToolTip
+                    row.Cells["ENDDATE"].ToolTipText = isExpired ? "Gói tập đã hết hạn!" : "";
+                }
+                else if (statusValue == "Paid" || statusValue == "Completed")
+                {
+                    row.DefaultCellStyle.ForeColor = Color.DarkGreen;
+                    row.DefaultCellStyle.Font = new Font(dgvMembers.Font, FontStyle.Regular);
                 }
             }
         }
@@ -202,6 +233,7 @@ namespace desktopapp_GYM
             if (Add.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
+                RefreshDataIfExpirationsFound();
                 SetupAutoComplete();
             }
         }
@@ -210,11 +242,12 @@ namespace desktopapp_GYM
         {
 
             DataGridViewRow row = dgvMembers.CurrentRow;
+            if (row == null) return;
             frmChange Edit = new frmChange(row);
             if (Edit.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
-
+                RefreshDataIfExpirationsFound();
             }
         }
 

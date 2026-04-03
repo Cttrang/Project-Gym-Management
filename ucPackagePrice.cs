@@ -102,7 +102,7 @@ namespace desktopapp_GYM
             }
             catch
             {
-                // Nuốt lỗi nếu có xung đột tạm thời trong lúc nạp Grid
+                MessageBox.Show("Có lỗi khi lấy dữ liệu để tạo bảng Toppackage.");
             }
         }
     }

@@ -43,6 +43,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.ucPackagePrice1 = new desktopapp_GYM.ucPackagePrice();
             this.ucTrainerStatus1 = new desktopapp_GYM.ucTrainerStatus();
+            this.button4 = new System.Windows.Forms.Button();
             this.pnlSidebarGuest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -53,6 +54,7 @@
             // pnlSidebarGuest
             // 
             this.pnlSidebarGuest.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.pnlSidebarGuest.Controls.Add(this.button4);
             this.pnlSidebarGuest.Controls.Add(this.btnDashBoard);
             this.pnlSidebarGuest.Controls.Add(this.pictureBox1);
             this.pnlSidebarGuest.Controls.Add(this.btnLoginGuest);
@@ -221,6 +223,19 @@
             this.ucTrainerStatus1.Size = new System.Drawing.Size(425, 192);
             this.ucTrainerStatus1.TabIndex = 1;
             // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.Location = new System.Drawing.Point(19, 335);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(130, 45);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "Test uc";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // frmGuest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -261,5 +276,6 @@
         private ucPackagePrice ucPackagePrice1;
         private System.Windows.Forms.Button btnDashBoard;
         private ucTrainerStatus ucTrainerStatus1;
+        private System.Windows.Forms.Button button4;
     }
 }

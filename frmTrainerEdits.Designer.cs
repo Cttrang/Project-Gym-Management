@@ -40,13 +40,15 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
             this.cboStatus = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.clbPackages = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 16.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(173, 26);
+            this.label1.Location = new System.Drawing.Point(240, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(155, 25);
             this.label1.TabIndex = 1;
@@ -109,7 +111,7 @@
             // btnExit
             // 
             this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnExit.Location = new System.Drawing.Point(322, 245);
+            this.btnExit.Location = new System.Drawing.Point(476, 214);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(120, 35);
             this.btnExit.TabIndex = 15;
@@ -119,9 +121,9 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(169, 245);
+            this.btnClear.Location = new System.Drawing.Point(484, 114);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(89, 35);
+            this.btnClear.Size = new System.Drawing.Size(95, 35);
             this.btnClear.TabIndex = 14;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -129,7 +131,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(64, 245);
+            this.btnSave.Location = new System.Drawing.Point(484, 73);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(95, 35);
             this.btnSave.TabIndex = 13;
@@ -141,7 +143,7 @@
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(102, 197);
+            this.lblStatus.Location = new System.Drawing.Point(102, 189);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(46, 19);
             this.lblStatus.TabIndex = 16;
@@ -149,17 +151,38 @@
             // 
             // cboStatus
             // 
+            this.cboStatus.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboStatus.FormattingEnabled = true;
-            this.cboStatus.Location = new System.Drawing.Point(163, 198);
+            this.cboStatus.Location = new System.Drawing.Point(163, 186);
             this.cboStatus.Name = "cboStatus";
-            this.cboStatus.Size = new System.Drawing.Size(121, 21);
+            this.cboStatus.Size = new System.Drawing.Size(121, 27);
             this.cboStatus.TabIndex = 17;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(12, 230);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(137, 19);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Học phần đảm nhiệm";
+            // 
+            // clbPackages
+            // 
+            this.clbPackages.FormattingEnabled = true;
+            this.clbPackages.Location = new System.Drawing.Point(29, 266);
+            this.clbPackages.Name = "clbPackages";
+            this.clbPackages.Size = new System.Drawing.Size(544, 124);
+            this.clbPackages.TabIndex = 20;
             // 
             // frmTrainerEdits
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(497, 303);
+            this.ClientSize = new System.Drawing.Size(608, 413);
+            this.Controls.Add(this.clbPackages);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.cboStatus);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnExit);
@@ -196,5 +219,7 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.ComboBox cboStatus;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckedListBox clbPackages;
     }
 }
