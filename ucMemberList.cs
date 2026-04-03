@@ -15,7 +15,7 @@ namespace desktopapp_GYM
 {
     public partial class ucMemberList : UserControl
     {
-        MemberDal dal = new MemberDal();
+        
         MemberBLL bll = new MemberBLL();
         public ucMemberList()
         {
