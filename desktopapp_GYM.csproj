@@ -50,6 +50,7 @@
     <Compile Include="BLL\MemberBLL.cs" />
     <Compile Include="BLL\PackageBLL.cs" />
     <Compile Include="BLL\Session.cs" />
+    <Compile Include="BLL\TimeslotBLL.cs" />
     <Compile Include="BLL\TrainerBLL.cs" />
     <Compile Include="BLL\UserBLL.cs" />
     <Compile Include="ChangePackage.cs">
@@ -62,10 +63,12 @@
     <Compile Include="DAL\MemberDal.cs" />
     <Compile Include="DAL\PackageDAL.cs" />
     <Compile Include="DAL\RegistrationDAL.cs" />
+    <Compile Include="DAL\TimeslotDAL.cs" />
     <Compile Include="DAL\TrainerDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
     <Compile Include="DTO\MemberDTO.cs" />
     <Compile Include="DTO\PackageDTO.cs" />
+    <Compile Include="DTO\TimeslotDTO.cs" />
     <Compile Include="DTO\TrainerDTO.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -78,6 +81,12 @@
     </Compile>
     <Compile Include="frmChange.Designer.cs">
       <DependentUpon>frmChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTimeslotEdits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTimeslotEdits.Designer.cs">
+      <DependentUpon>frmTimeslotEdits.cs</DependentUpon>
     </Compile>
     <Compile Include="frmTrainerEdits.cs">
       <SubType>Form</SubType>
@@ -200,6 +209,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmChange.resx">
       <DependentUpon>frmChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTimeslotEdits.resx">
+      <DependentUpon>frmTimeslotEdits.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTrainerEdits.resx">
       <DependentUpon>frmTrainerEdits.cs</DependentUpon>

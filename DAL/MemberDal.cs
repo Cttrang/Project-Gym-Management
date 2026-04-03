@@ -23,6 +23,50 @@ namespace desktopapp_GYM.DAL
                 return (int)cmd.ExecuteScalar();
             }
         }
+
+        //kiểm tra quá hạn ở database và chỉnh status member nếu member đã hết hạn
+        public int UpdateExpiredStatus()
+        {
+            string sql = @"
+                -- 1. Khóa những người hết hạn
+                UPDATE MEMBERS SET STATUS = 'Inactive' 
+                WHERE MEMBERID IN (
+                    SELECT MEMBERID FROM REGISTRATIONS 
+                    WHERE ENDDATE < GETDATE()
+                ) AND STATUS = 'Active';
+
+                -- 2. Mở khóa những người đã gia hạn (quan trọng!)
+                UPDATE MEMBERS SET STATUS = 'Active' 
+                WHERE MEMBERID IN (
+                    SELECT MEMBERID FROM REGISTRATIONS 
+                    WHERE ENDDATE >= GETDATE()
+                ) AND STATUS = 'Inactive';";
+            using (SqlConnection con = dc.GetConnection())
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        // Thực thi câu lệnh UPDATE (trả về số dòng bị tác động)
+                        return cmd.ExecuteNonQuery();
+
+                        // Huy có thể dùng Console.WriteLine hoặc Debug để kiểm tra nếu cần
+                        // Console.WriteLine($"Đã cập nhật {rowsAffected} hội viên hết hạn.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Ghi log lỗi nếu có (Huy có thể dùng MessageBox hoặc ném Exception ra BLL)
+                    throw new Exception("Lỗi khi cập nhật trạng thái hết hạn: " + ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+        }
+
         public DataTable GetExpiringMembers()
         {
             //Ép kiểu số ngày thành chuỗi ngay trong SQL để C# không bị lỗi format
@@ -70,19 +114,19 @@ namespace desktopapp_GYM.DAL
 
         -- 3. MEMBERS (Thêm Package và Trainer ID từ bảng Registrations)
         SELECT 
-    M.MEMBERID AS ID, M.FULLNAME, N'Member' AS TYPE, M.PHONE, 
-    M.JOINDATE, R.REGDATE, R.ENDDATE, 
-    ISNULL(R.TOTALAMOUNT, 0) AS TOTALAMOUNT, R.PAYMENTSTATUS,
-    R.PACKAGEID, R.TRAINERID, M.STATUS, ISNULL(T.FULLNAME, N'Không có') AS GHICHU
-    FROM MEMBERS M
-    LEFT JOIN (
+            M.MEMBERID AS ID, M.FULLNAME, N'Member' AS TYPE, M.PHONE, 
+            M.JOINDATE, R.REGDATE, R.ENDDATE, 
+            ISNULL(R.TOTALAMOUNT, 0) AS TOTALAMOUNT, R.PAYMENTSTATUS,
+            R.PACKAGEID, R.TRAINERID, M.STATUS, ISNULL(T.FULLNAME, N'Không có') AS GHICHU
+            FROM MEMBERS M
+            LEFT JOIN (
         SELECT * FROM REGISTRATIONS
         WHERE REGID IN (
             SELECT MAX(REGID) 
             FROM REGISTRATIONS 
             GROUP BY MEMBERID
-        )
-    )  R ON M.MEMBERID = R.MEMBERID
+            )
+        )  R ON M.MEMBERID = R.MEMBERID
         LEFT JOIN TRAINERS T ON R.TRAINERID = T.TRAINERID";
 
             DataTable dt = new DataTable();
@@ -125,11 +169,11 @@ namespace desktopapp_GYM.DAL
             }
             return dt;
         }
-        public bool DeleteRecord(int id, string type)
+        public bool DeleteRecord(int id, string targetRole)
         {
             string sql = "";
-            // Dựa vào 'type' (cột TYPE trên Grid) để quyết định bảng và cột ID cần xóa
-            switch (type)
+            // Dựa vào 'type targetRole' (cột TYPE trên Grid) để quyết định bảng và cột ID cần xóa
+            switch (targetRole)
             {
                 case "Admin":
                 case "Manager":

@@ -122,6 +122,11 @@ namespace desktopapp_GYM.GUI
         {
             this.Close();
         }
+
+        private void btnClassRegis_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucTimeSlotRegis());
+        }
     }
 
 }

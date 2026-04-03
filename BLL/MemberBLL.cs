@@ -19,6 +19,11 @@ namespace desktopapp_GYM.BLL
             return dal.GetAllEveryone();
         }
 
+        public int UpdateExpiredStatus()
+        {
+            return dal.UpdateExpiredStatus();
+        }
+
         public DataTable SearchData(string keyword)
         {
             return dal.SearchEveryone(keyword);
@@ -52,7 +57,17 @@ namespace desktopapp_GYM.BLL
             // 3. Các trường hợp còn lại (Cấp cao tác động cấp thấp) -> Hợp lệ
             return true;
         }
-        //public bool SaveData(MemberDTO dto, bool isAdd) => dal.SaveMember(dto, isAdd);
+
+        private void CheckStaffPermission(string targetRole, string action)
+        {
+            string[] staffRoles = { "Admin", "Manager", "Receptionist" };
+            if (staffRoles.Contains(targetRole))
+            {
+                if (!HasPermission(Session.CurrentRole, targetRole, action))
+                    throw new Exception(
+                        $"Bạn không có quyền {action} tài khoản có vai trò {targetRole}!");
+            }
+        }
 
         public bool SaveData(MemberDTO dto, bool isAdd)
         {
@@ -78,10 +93,10 @@ namespace desktopapp_GYM.BLL
 
         public DataTable GetPackages() => dal.GetPackages();
         public DataTable GetTrainers() => dal.GetTrainers();
-        public bool DeleteData(int id, string type)
+        public bool DeleteData(int id, string targetRole)
         {
-            // BLL nhận lệnh từ GUI và chuyển tiếp xuống DAL
-            return dal.DeleteRecord(id, type);
+            CheckStaffPermission(targetRole, "xóa");
+            return dal.DeleteRecord(id, targetRole);
         }
     }
 }
