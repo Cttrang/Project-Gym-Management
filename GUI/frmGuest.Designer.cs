@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmGuest));
             this.pnlSidebarGuest = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.btnDashBoard = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnLoginGuest = new System.Windows.Forms.Button();
@@ -43,7 +44,6 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.ucPackagePrice1 = new desktopapp_GYM.ucPackagePrice();
             this.ucTrainerStatus1 = new desktopapp_GYM.ucTrainerStatus();
-            this.button4 = new System.Windows.Forms.Button();
             this.pnlSidebarGuest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -67,6 +67,19 @@
             this.pnlSidebarGuest.Name = "pnlSidebarGuest";
             this.pnlSidebarGuest.Size = new System.Drawing.Size(172, 510);
             this.pnlSidebarGuest.TabIndex = 0;
+            // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.Location = new System.Drawing.Point(19, 335);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(130, 45);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "Test uc";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // btnDashBoard
             // 
@@ -195,6 +208,7 @@
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.Controls.Add(this.ucPackagePrice1);
             this.flowLayoutPanel1.Controls.Add(this.ucTrainerStatus1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -220,21 +234,8 @@
             this.ucTrainerStatus1.Location = new System.Drawing.Point(2, 205);
             this.ucTrainerStatus1.Margin = new System.Windows.Forms.Padding(2);
             this.ucTrainerStatus1.Name = "ucTrainerStatus1";
-            this.ucTrainerStatus1.Size = new System.Drawing.Size(425, 192);
+            this.ucTrainerStatus1.Size = new System.Drawing.Size(425, 201);
             this.ucTrainerStatus1.TabIndex = 1;
-            // 
-            // button4
-            // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(19, 335);
-            this.button4.Margin = new System.Windows.Forms.Padding(2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(130, 45);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Test uc";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // frmGuest
             // 
