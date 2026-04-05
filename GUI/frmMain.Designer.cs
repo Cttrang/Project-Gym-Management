@@ -36,6 +36,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.txtMember = new System.Windows.Forms.Button();
+            this.btnEditAcc = new System.Windows.Forms.Button();
+            this.btnManagerAcc = new System.Windows.Forms.Button();
+            this.btnClassRegis = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
@@ -50,7 +53,6 @@
             this.lblWelcome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnClassRegis = new System.Windows.Forms.Button();
             this.pnlSidebarGuest.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -79,6 +81,8 @@
             this.flowLayoutPanel2.Controls.Add(this.button2);
             this.flowLayoutPanel2.Controls.Add(this.button1);
             this.flowLayoutPanel2.Controls.Add(this.txtMember);
+            this.flowLayoutPanel2.Controls.Add(this.btnEditAcc);
+            this.flowLayoutPanel2.Controls.Add(this.btnManagerAcc);
             this.flowLayoutPanel2.Controls.Add(this.btnClassRegis);
             this.flowLayoutPanel2.Controls.Add(this.button3);
             this.flowLayoutPanel2.Controls.Add(this.btnTest);
@@ -154,11 +158,44 @@
             this.txtMember.UseVisualStyleBackColor = true;
             this.txtMember.Click += new System.EventHandler(this.txtMember_Click);
             // 
+            // btnEditAcc
+            // 
+            this.btnEditAcc.Location = new System.Drawing.Point(4, 469);
+            this.btnEditAcc.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEditAcc.Name = "btnEditAcc";
+            this.btnEditAcc.Size = new System.Drawing.Size(302, 54);
+            this.btnEditAcc.TabIndex = 8;
+            this.btnEditAcc.Text = "Chỉnh sửa tài khoản";
+            this.btnEditAcc.UseVisualStyleBackColor = true;
+            this.btnEditAcc.Click += new System.EventHandler(this.btnEditAcc_Click);
+            // 
+            // btnManagerAcc
+            // 
+            this.btnManagerAcc.Location = new System.Drawing.Point(4, 531);
+            this.btnManagerAcc.Margin = new System.Windows.Forms.Padding(4);
+            this.btnManagerAcc.Name = "btnManagerAcc";
+            this.btnManagerAcc.Size = new System.Drawing.Size(302, 54);
+            this.btnManagerAcc.TabIndex = 9;
+            this.btnManagerAcc.Text = "Quản lý tài khoản";
+            this.btnManagerAcc.UseVisualStyleBackColor = true;
+            this.btnManagerAcc.Click += new System.EventHandler(this.btnManagerAcc_Click);
+            // 
+            // btnClassRegis
+            // 
+            this.btnClassRegis.Location = new System.Drawing.Point(4, 593);
+            this.btnClassRegis.Margin = new System.Windows.Forms.Padding(4);
+            this.btnClassRegis.Name = "btnClassRegis";
+            this.btnClassRegis.Size = new System.Drawing.Size(302, 54);
+            this.btnClassRegis.TabIndex = 7;
+            this.btnClassRegis.Text = "Đăng kí tg cho gói";
+            this.btnClassRegis.UseVisualStyleBackColor = true;
+            this.btnClassRegis.Click += new System.EventHandler(this.btnClassRegis_Click);
+            // 
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(4, 531);
+            this.button3.Location = new System.Drawing.Point(4, 655);
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(302, 54);
@@ -168,7 +205,7 @@
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(4, 593);
+            this.btnTest.Location = new System.Drawing.Point(4, 717);
             this.btnTest.Margin = new System.Windows.Forms.Padding(4);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(302, 54);
@@ -312,17 +349,6 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
             // 
-            // btnClassRegis
-            // 
-            this.btnClassRegis.Location = new System.Drawing.Point(4, 469);
-            this.btnClassRegis.Margin = new System.Windows.Forms.Padding(4);
-            this.btnClassRegis.Name = "btnClassRegis";
-            this.btnClassRegis.Size = new System.Drawing.Size(302, 54);
-            this.btnClassRegis.TabIndex = 7;
-            this.btnClassRegis.Text = "Đăng kí tg cho gói";
-            this.btnClassRegis.UseVisualStyleBackColor = true;
-            this.btnClassRegis.Click += new System.EventHandler(this.btnClassRegis_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -373,5 +399,7 @@
         internal System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private ucPackagePrice ucPackagePrice1;
         private System.Windows.Forms.Button btnClassRegis;
+        private System.Windows.Forms.Button btnEditAcc;
+        private System.Windows.Forms.Button btnManagerAcc;
     }
 }

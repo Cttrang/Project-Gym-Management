@@ -24,8 +24,6 @@ namespace desktopapp_GYM
         public frmTrainerEdits()
         {
             InitializeComponent();
-            isAddMode = true;
-            this.Text = "Thêm huấn luyện viên mới";
         }
 
         public frmTrainerEdits(TrainerDTO trainer, bool isAdd)
@@ -33,7 +31,7 @@ namespace desktopapp_GYM
             InitializeComponent();
             isAddMode = isAdd;
             _selectedTr = trainer;
-            this.Text = "Cập nhật thông tin huấn luyện viên";
+            this.Text = isAdd ? "Thêm huấn luyện viên mới" : "Cập nhật thông tin huấn luyện viên";
         }
 
         private void MarkAsChanged(object sender, EventArgs e)
