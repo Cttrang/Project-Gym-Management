@@ -127,6 +127,23 @@ namespace desktopapp_GYM.GUI
         {
             ShowDetail(new ucTimeSlotRegis());
         }
+
+        private void btnManagerAcc_Click(object sender, EventArgs e)
+        {
+            string role = Session.CurrentRole;
+            if (role != "Admin") this.Visible = false;
+            ShowDetail(new ucAccountManager());
+        }
+
+        private void btnEditAcc_Click(object sender, EventArgs e)
+        {
+            frmEditAccount frm = new frmEditAccount(Session.CurrentUser, false);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                Session.CurrentUsername = Session.CurrentUser.Username;
+                lblWelcome.Text = Session.CurrentUsername;
+            }
+        }
     }
 
 }
