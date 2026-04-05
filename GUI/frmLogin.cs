@@ -1,4 +1,5 @@
 ﻿using desktopapp_GYM.BLL;
+using desktopapp_GYM.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,19 +25,24 @@ namespace desktopapp_GYM.GUI
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string role = userBLL.Login(txtUserName.Text, txtPassword.Text);
+            UserDTO userLogin = userBLL.Login(txtUserName.Text, txtPassword.Text);
 
-            if (role != null)
+            if (userLogin != null)
             {
-                Session.CurrentRole = role;
-                Session.CurrentUsername = txtUserName.Text;
+                // Nạp đầy đủ "vũ khí" vào Session
+                Session.CurrentUserID = userLogin.UserID;      // Cực kỳ quan trọng để Update
+                Session.CurrentUsername = userLogin.Username;  // Hiện tên Dashboard
+                Session.CurrentRole = userLogin.Role;          // Phân quyền menu
+                Session.CurrentUser = userLogin;               // Dùng để truyền vào Form Edit Profile
+                Session.LoginTime = DateTime.Now;
 
-                this.DialogResult= DialogResult.OK;
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Tài khoản hoặc mật khẩu không chính xác!", "Thông báo");
+                MessageBox.Show("Tài khoản hoặc mật khẩu không chính xác!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

@@ -89,7 +89,7 @@ namespace desktopapp_GYM
                 if (Session.CurrentRole != "Admin")
                 {
                     cboRole.Enabled = false;
-                    txtUsername.ReadOnly = true;
+                    //txtUsername.ReadOnly = true;
                 }
 
                 if (_selected != null) FillData();
@@ -104,14 +104,35 @@ namespace desktopapp_GYM
             txtPassword.Visible = true;
             txtNewPass.Visible = true;
             lblNotice.Visible = true;
-            lblNotice.Text = "Nhập mật khẩu cũ để xác thực";
-            lblNotice.ForeColor = Color.Gray;
-            txtPassword.Focus();
+            if (Session.CurrentRole == "Admin" && _selected.Username != Session.CurrentUsername)
+            {
+                lblNotice.Text = "Chế độ Admin: Reset mật khẩu trực tiếp";
+                lblNotice.ForeColor = Color.Blue;
+                txtPassword.Enabled = false; // Không cần nhập mật khẩu cũ
+                txtPassword.Text = "********"; // Hiển thị giả lập
+                txtNewPass.Enabled = true;   // Mở luôn ô mật khẩu mới
+                txtNewPass.Focus();
+            }
+            else
+            {
+                // User thường hoặc Admin tự sửa chính mình thì vẫn phải xác thực
+                lblNotice.Text = "Nhập mật khẩu cũ để xác thực";
+                lblNotice.ForeColor = Color.Gray;
+                txtPassword.Enabled = true;
+                txtPassword.Clear();
+                txtNewPass.Enabled = false;
+                txtPassword.Focus();
+            }
         }
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
             if (isAddMode) return;
+
+            if (Session.CurrentRole == "Admin" && _selected.Username != Session.CurrentUsername)
+            {
+                return;
+            }
 
             string input = txtPassword.Text;
             if (string.IsNullOrEmpty(input)) return;
