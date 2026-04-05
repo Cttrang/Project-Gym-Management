@@ -11,7 +11,7 @@ namespace desktopapp_GYM.BLL
     {
         DAL.UserDAL dal = new DAL.UserDAL();
 
-        public string Login(string u, string p)
+        public UserDTO Login(string u, string p)
         {
             if (string.IsNullOrEmpty(u) || string.IsNullOrEmpty(p))
                 return null; // Không cho phép để trống

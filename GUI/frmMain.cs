@@ -19,14 +19,28 @@ namespace desktopapp_GYM.GUI
             InitializeComponent();
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
+        private void UpdateUserDisplay()
         {
             string name = Session.CurrentUsername;
             string role = Session.CurrentRole;
             lblWelcome.Text = $"{name} ({role})";
+
             if (role == "Admin") lblWelcome.ForeColor = Color.Red;
             else if (role == "Manager") lblWelcome.ForeColor = Color.DarkBlue;
             else lblWelcome.ForeColor = Color.Green;
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            string role = Session.CurrentRole;
+            if (role != "Admin")
+            {
+                btnManagerAcc.Visible = false;
+            }
+
+            if (role == "Admin") btnEditAcc.Visible = false;
+
+            UpdateUserDisplay();
             ShowUc();
             
         }
@@ -130,8 +144,7 @@ namespace desktopapp_GYM.GUI
 
         private void btnManagerAcc_Click(object sender, EventArgs e)
         {
-            string role = Session.CurrentRole;
-            if (role != "Admin") this.Visible = false;
+            
             ShowDetail(new ucAccountManager());
         }
 
@@ -141,7 +154,8 @@ namespace desktopapp_GYM.GUI
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 Session.CurrentUsername = Session.CurrentUser.Username;
-                lblWelcome.Text = Session.CurrentUsername;
+                Session.CurrentRole = Session.CurrentUser.Role;
+                UpdateUserDisplay();
             }
         }
     }
