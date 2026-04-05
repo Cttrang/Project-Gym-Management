@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.dgvTopTrainers = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelFooter.SuspendLayout();
@@ -37,7 +38,7 @@
             // 
             // btnPin
             // 
-            this.btnPin.Location = new System.Drawing.Point(452, 3);
+            this.btnPin.Location = new System.Drawing.Point(637, 3);
             // 
             // panel2
             // 
@@ -46,7 +47,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Size = new System.Drawing.Size(285, 26);
+            this.panel1.Controls.SetChildIndex(this.btnPin, 0);
+            this.panel1.Controls.SetChildIndex(this.label1, 0);
             // 
             // panelFooter
             // 
@@ -69,6 +73,17 @@
             this.dgvTopTrainers.TabIndex = 0;
             this.dgvTopTrainers.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvTopTrainers_CellFormatting);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.label1.Location = new System.Drawing.Point(15, 8);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(261, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Những huấn luyện viên nổi tiếng nhất!!";
+            // 
             // ucTrainerStatus
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -78,6 +93,7 @@
             this.Load += new System.EventHandler(this.ucTrainerStatus_Load);
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panelFooter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopTrainers)).EndInit();
             this.ResumeLayout(false);
@@ -87,5 +103,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dgvTopTrainers;
+        private System.Windows.Forms.Label label1;
     }
 }
