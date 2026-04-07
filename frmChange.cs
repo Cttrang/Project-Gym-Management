@@ -125,6 +125,8 @@ namespace desktopapp_GYM
 
             if (role == "Member")
             {
+                string paymentStatus = selectedRow.Cells["PAYMENTSTATUS"].Value?.ToString();
+
                 if (selectedRow.Cells["PACKAGEID"].Value != DBNull.Value)
                     cboGoiTap.SelectedValue = selectedRow.Cells["PACKAGEID"].Value;
 
@@ -143,6 +145,21 @@ namespace desktopapp_GYM
                 if (selectedRow.Cells["TOTALAMOUNT"].Value != DBNull.Value)
                     txtTongTien.Text = Convert.ToDecimal(
                         selectedRow.Cells["TOTALAMOUNT"].Value).ToString("N0");
+                if (paymentStatus == "Paid")
+                {
+                    // Khóa các thứ liên quan đến tiền và hạn dùng
+                    cboGoiTap.Enabled = false;
+                    cboThanhToan.Enabled = false;
+                    dtpNgayDangKy.Enabled = false;
+                    // dtpNgayHetHan thường tự nhảy theo gói nên khóa luôn cho chắc
+                    dtpNgayHetHan.Enabled = false;
+                    cboHLV.Enabled = false; 
+
+                    // Gợi ý: Đổi màu nền hoặc hiển thị thông báo nhỏ
+                    txtTongTien.BackColor = Color.LightGray;
+                    MessageBox.Show("Gói tập đã thanh toán, chỉ có thể sửa thông tin cá nhân.");
+                    //lblThongBao.ForeColor = Color.Red;
+                }
             }
             else if (role == "Trainer")
             {
@@ -188,14 +205,17 @@ namespace desktopapp_GYM
             cboHLV.DisplayMember = "FULLNAME";
             cboHLV.ValueMember = "TRAINERID";
 
-            ToggleEvents(true);
-
             if (!isAddMode && selectedRow != null)
             {
                 FillData();
             }
             else
+            {
                 ToggleFormByRole("Member");
+                // CHỈ BẬT Ở ĐÂY NẾU LÀ ADD MODE
+                ToggleEvents(true);
+                isDataChanged = false; // Đảm bảo reset về false sau khi setup xong
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -254,21 +274,45 @@ namespace desktopapp_GYM
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            ToggleEvents(false);
-            txtHoTen.Clear();
-            txtSDT.Clear();
-            txtTongTien.Clear();
-            txtNotes.Clear();              // thêm
-            cboStatus.SelectedIndex = -1; // thêm
-            if (cboVaiTro.Items.Count > 0) cboVaiTro.SelectedIndex = 0;
-            if (cboGoiTap.Items.Count > 0) cboGoiTap.SelectedIndex = 0;
-            if (cboHLV.Items.Count > 0) cboHLV.SelectedIndex = -1;
-            cboThanhToan.SelectedIndex = -1;
-            dtpNgayDangKy.Value = DateTime.Now;
-            dtpNgayHetHan.Value = DateTime.Now;
-            ToggleEvents(true);
-            isDataChanged = false;
-            txtHoTen.Focus();
+            if (isAddMode)
+            {
+                // TRƯỜNG HỢP ADD: Xóa trắng để nhập mới
+                ToggleEvents(false);
+                txtHoTen.Clear();
+                txtSDT.Clear();
+                txtTongTien.Clear();
+                txtNotes.Clear();
+                cboStatus.SelectedIndex = -1;
+
+                if (cboVaiTro.Items.Count > 0) cboVaiTro.SelectedIndex = 0;
+                if (cboGoiTap.Items.Count > 0) cboGoiTap.SelectedIndex = 0;
+                if (cboHLV.Items.Count > 0) cboHLV.SelectedIndex = -1;
+
+                cboThanhToan.SelectedIndex = -1;
+                dtpNgayDangKy.Value = DateTime.Now;
+                dtpNgayHetHan.Value = DateTime.Now;
+
+                // Quan trọng: Mở khóa lại các Control (vì nhập mới thì chưa có 'Paid')
+                cboGoiTap.Enabled = true;
+                cboThanhToan.Enabled = true;
+                dtpNgayDangKy.Enabled = true;
+                dtpNgayHetHan.Enabled = true;
+                txtTongTien.BackColor = Color.White;
+                // lblThongBao.Text = ""; // Nếu Huy có dùng label thông báo
+
+                ToggleEvents(true);
+                isDataChanged = false;
+                txtHoTen.Focus();
+            }
+            else
+            {
+                // TRƯỜNG HỢP EDIT: Nạp lại dữ liệu cũ từ Grid
+                if (selectedRow != null)
+                {
+                    FillData(); // Hàm FillData của Huy đã có sẵn logic nạp lại + khóa Control nếu Paid
+                    //MessageBox.Show("Đã khôi phục dữ liệu ban đầu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
         private void frmChange_FormClosing(object sender, FormClosingEventArgs e)

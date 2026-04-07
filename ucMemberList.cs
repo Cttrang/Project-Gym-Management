@@ -113,7 +113,7 @@ namespace desktopapp_GYM
                 dgvMembers.Columns["ENDDATE"].HeaderText = "Ngày hết hạn";
                 dgvMembers.Columns["TOTALAMOUNT"].HeaderText = "Tổng tiền";
                 dgvMembers.Columns["PAYMENTSTATUS"].HeaderText = "Thanh toán";
-                dgvMembers.Columns["PACKAGEID"].HeaderText = "Gói đăng kí";
+                dgvMembers.Columns["PACKAGEID"].HeaderText = "Gói đăng kí mới nhất";
                 dgvMembers.Columns["TRAINERID"].HeaderText = "Mã HLV";
                 dgvMembers.Columns["STATUS"].HeaderText = "Trạng thái";
                 dgvMembers.Columns["GHICHU"].HeaderText = "Ghi chú";
@@ -213,16 +213,23 @@ namespace desktopapp_GYM
 
             if (result == DialogResult.Yes)
             {
-                // Gọi BLL thực hiện xóa (BLL sẽ gọi DAL.DeleteRecord)
-                if (bll.DeleteData(id, targetRole))
+                try
                 {
-                    MessageBox.Show("Xóa thành công!");
-                    LoadData();
-                    SetupAutoComplete();
+                    // Gọi BLL thực hiện xóa (BLL sẽ gọi DAL.DeleteRecord)
+                    if (bll.DeleteData(id, targetRole))
+                    {
+                        MessageBox.Show("Xóa thành công!");
+                        LoadData();
+                        SetupAutoComplete();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa thất bại!");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Xóa thất bại!");
+                    MessageBox.Show(ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
         }

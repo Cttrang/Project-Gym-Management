@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace desktopapp_GYM.BLL
 {
@@ -96,6 +97,25 @@ namespace desktopapp_GYM.BLL
         public bool DeleteData(int id, string targetRole)
         {
             CheckStaffPermission(targetRole, "xóa");
+            if (targetRole == "Member")
+            {
+                // Gọi DAL lấy trạng thái, BLL tự quyết định có cho xóa hay không
+                if (dal.GetMemberStatus(id) == "Paid")
+                {
+                    throw new Exception("Hội viên đã thanh toán phí tập. Không thể xóa để đảm bảo tính minh bạch tài chính!");
+                }
+            }
+            else if (targetRole != "Admin" && targetRole != "Manager")
+            {
+                // Giả định là Trainer: Chặn xóa nếu đang có học viên
+                if (dal.GetTrainerStudentCount(id) > 0)
+                {
+                    throw new Exception("Huấn luyện viên này đang có học viên theo học. Không thể xóa!");
+                }
+            }
+
+            // 3. Nếu mọi thứ hợp lệ, gọi DAL để xóa
+            
             return dal.DeleteRecord(id, targetRole);
         }
     }

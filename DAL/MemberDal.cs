@@ -117,7 +117,10 @@ namespace desktopapp_GYM.DAL
             M.MEMBERID AS ID, M.FULLNAME, N'Member' AS TYPE, M.PHONE, 
             M.JOINDATE, R.REGDATE, R.ENDDATE, 
             ISNULL(R.TOTALAMOUNT, 0) AS TOTALAMOUNT, R.PAYMENTSTATUS,
-            R.PACKAGEID, R.TRAINERID, M.STATUS, ISNULL(T.FULLNAME, N'Không có') AS GHICHU
+            R.PACKAGEID, R.TRAINERID, M.STATUS, 
+            (SELECT N'Đã đăng ký: ' + CAST(COUNT(*) AS NVARCHAR) + N' gói' 
+            FROM REGISTRATIONS 
+            WHERE MEMBERID = M.MEMBERID) AS GHICHU
             FROM MEMBERS M
             LEFT JOIN (
         SELECT * FROM REGISTRATIONS
@@ -268,7 +271,38 @@ namespace desktopapp_GYM.DAL
             return dc.ExecuteQuery("SELECT TRAINERID, FULLNAME FROM TRAINERS");
         }
 
+        // Kiểm tra trạng thái thanh toán của Member
+        public string GetMemberStatus(int id)
+        {
+            using (SqlConnection con = dc.GetConnection())
+            {
+                string sql = @"SELECT TOP 1 PAYMENTSTATUS 
+                       FROM REGISTRATIONS 
+                       WHERE MEMBERID = @ID 
+                       ORDER BY (CASE WHEN PAYMENTSTATUS = 'Paid' THEN 1 ELSE 2 END) ASC";
 
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@ID", id);
+                con.Open();
+
+                object result = cmd.ExecuteScalar();
+                return result?.ToString() ?? "No Registration";
+            }
+        }
+
+        // Kiểm tra số lượng học viên của Trainer
+        public int GetTrainerStudentCount(int id)
+        {
+            using (SqlConnection con = dc.GetConnection())
+            {
+                // Giả sử bảng REGISTRATIONS lưu mối quan hệ giữa học viên và HLV
+                string sql = "SELECT COUNT(*) FROM REGISTRATIONS WHERE TRAINERID = @ID";
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@ID", id);
+                con.Open();
+                return (int)cmd.ExecuteScalar();
+            }
+        }
 
     }
 }
