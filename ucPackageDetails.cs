@@ -82,11 +82,17 @@ namespace desktopapp_GYM
             {
                 dgvPackages.Columns["PackageID"].HeaderText = "Mã";
                 dgvPackages.Columns["PackageName"].HeaderText = "Tên gói tập";
+                dgvPackages.Columns["Type"].HeaderText = "Loại hình"; // Cột mới
                 dgvPackages.Columns["DurationMonths"].HeaderText = "Tháng";
                 dgvPackages.Columns["Price"].HeaderText = "Giá tiền";
+                dgvPackages.Columns["PTSessionsPerWeek"].HeaderText = "Buổi/Tuần"; // Cột mới
                 dgvPackages.Columns["TotalMembers"].HeaderText = "Số người dùng";
-                
+                dgvPackages.Columns["Status"].HeaderText = "Trạng thái";
+
                 dgvPackages.Columns["Price"].DefaultCellStyle.Format = "N0";
+                //dgvPackages.Columns["DurationMonths"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                //dgvPackages.Columns["PTSessionsPerWeek"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
                 dgvPackages.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
         }
@@ -173,26 +179,26 @@ namespace desktopapp_GYM
         {
             if (dgvPackages.CurrentRow != null)
             {
-                // 2. Lấy dữ liệu từ dòng đang chọn (Ép kiểu về DTO cho sạch code)
-                // Nếu Huy dùng DataTable thì thay bằng DataRowView
                 var pkg = (PackageDTO)dgvPackages.CurrentRow.DataBoundItem;
 
-                // 3. Chuẩn bị nội dung hiển thị
-                string info = $"--- THÔNG TIN GÓI TẬP ---\n\n" +
+                // Xử lý hiển thị số buổi PT nếu có
+                string ptInfo = pkg.PTSessionsPerWeek.HasValue ? $"{pkg.PTSessionsPerWeek} buổi/tuần" : "N/A";
+
+                string info = $"--- THÔNG TIN CHI TIẾT GÓI TẬP ---\n\n" +
                               $"Mã gói: {pkg.PackageID}\n" +
                               $"Tên gói: {pkg.PackageName}\n" +
+                              $"Loại hình: {pkg.Type}\n" + // Thêm Type
                               $"Thời hạn: {pkg.DurationMonths} tháng\n" +
                               $"Giá tiền: {pkg.Price.ToString("N0")} VNĐ\n" +
-                              $"Status: {pkg.Status}\n" +
-                              $"Số người dùng: {pkg.TotalMembers}";
+                              $"Số buổi PT/Tuần: {ptInfo}\n" + // Thêm thông tin buổi
+                              $"Trạng thái: {pkg.Status}\n" +
+                              $"Số người đang dùng: {pkg.TotalMembers}";
 
-                // 4. Hiển thị lên MessageBox
                 MessageBox.Show(info, "Chi tiết gói tập", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Vui lòng chọn một gói tập trong danh sách để xem chi tiết!",
-                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một gói tập trong danh sách!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

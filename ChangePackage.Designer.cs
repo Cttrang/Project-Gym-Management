@@ -41,6 +41,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.cboStatus = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cboType = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cboSession = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -74,7 +79,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(53, 166);
+            this.label4.Location = new System.Drawing.Point(72, 249);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 19);
             this.label4.TabIndex = 3;
@@ -90,7 +95,7 @@
             // 
             // txtGia
             // 
-            this.txtGia.Location = new System.Drawing.Point(145, 163);
+            this.txtGia.Location = new System.Drawing.Point(135, 246);
             this.txtGia.Name = "txtGia";
             this.txtGia.Size = new System.Drawing.Size(245, 26);
             this.txtGia.TabIndex = 5;
@@ -105,7 +110,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(57, 269);
+            this.btnSave.Location = new System.Drawing.Point(72, 358);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(95, 35);
             this.btnSave.TabIndex = 7;
@@ -115,7 +120,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(158, 269);
+            this.btnClear.Location = new System.Drawing.Point(173, 358);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(89, 35);
             this.btnClear.TabIndex = 8;
@@ -126,7 +131,7 @@
             // btnExit
             // 
             this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btnExit.Location = new System.Drawing.Point(313, 269);
+            this.btnExit.Location = new System.Drawing.Point(328, 358);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(120, 35);
             this.btnExit.TabIndex = 9;
@@ -147,7 +152,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(53, 217);
+            this.label6.Location = new System.Drawing.Point(78, 297);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(46, 19);
             this.label6.TabIndex = 11;
@@ -156,16 +161,66 @@
             // cboStatus
             // 
             this.cboStatus.FormattingEnabled = true;
-            this.cboStatus.Location = new System.Drawing.Point(145, 214);
+            this.cboStatus.Location = new System.Drawing.Point(145, 294);
             this.cboStatus.Name = "cboStatus";
             this.cboStatus.Size = new System.Drawing.Size(130, 27);
             this.cboStatus.TabIndex = 12;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(91, 157);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(39, 19);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Type";
+            // 
+            // cboType
+            // 
+            this.cboType.FormattingEnabled = true;
+            this.cboType.Location = new System.Drawing.Point(145, 154);
+            this.cboType.Name = "cboType";
+            this.cboType.Size = new System.Drawing.Size(130, 27);
+            this.cboType.TabIndex = 14;
+            this.cboType.SelectedIndexChanged += new System.EventHandler(this.cboType_SelectedIndexChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(68, 204);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(56, 19);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Số buổi";
+            // 
+            // cboSession
+            // 
+            this.cboSession.FormattingEnabled = true;
+            this.cboSession.Location = new System.Drawing.Point(145, 201);
+            this.cboSession.Name = "cboSession";
+            this.cboSession.Size = new System.Drawing.Size(130, 27);
+            this.cboSession.TabIndex = 16;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(281, 204);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(46, 19);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "/ tuần";
             // 
             // frmPackageChange
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(507, 325);
+            this.ClientSize = new System.Drawing.Size(507, 414);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.cboSession);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.cboType);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.cboStatus);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -206,5 +261,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cboStatus;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cboType;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox cboSession;
+        private System.Windows.Forms.Label label9;
     }
 }
