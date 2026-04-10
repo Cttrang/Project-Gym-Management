@@ -54,7 +54,7 @@ namespace desktopapp_GYM.DAL
                        r.TOTALAMOUNT, r.ORIGINAL_PRICE, r.DISCOUNT_AMOUNT,
                        r.PAYMENTSTATUS,
                        r.SESSIONS_TOTAL, r.SESSIONS_LEFT,
-                       r.IS_ACTIVE, r.NOTES,
+                       r.IS_ACTIVE, r.NOTES, p.TYPE AS PackageType,
                        STUFF((
                            SELECT ', ' + ts.SLOTNAME
                            FROM REGISTRATION_SLOTS rs
@@ -93,7 +93,7 @@ namespace desktopapp_GYM.DAL
                        r.TOTALAMOUNT, r.ORIGINAL_PRICE, r.DISCOUNT_AMOUNT,
                        r.PAYMENTSTATUS,
                        r.SESSIONS_TOTAL, r.SESSIONS_LEFT,
-                       r.IS_ACTIVE, r.NOTES,
+                       r.IS_ACTIVE, r.NOTES, p.TYPE AS PackageType,
                        STUFF((
                            SELECT ', ' + ts.SLOTNAME
                            FROM REGISTRATION_SLOTS rs
@@ -284,6 +284,7 @@ namespace desktopapp_GYM.DAL
                 MemberName = r["MemberName"].ToString(),
                 PackageID = Convert.ToInt32(r["PACKAGEID"]),
                 PackageName = r["PackageName"].ToString(),
+                PackageType = r["PackageType"].ToString(),
 
                 // TRAINERID nullable
                 TrainerID = r["TRAINERID"] == DBNull.Value

@@ -20,5 +20,9 @@ namespace desktopapp_GYM.DTO
         public int MaxMembers { get; set; }
         public int CurrentCount { get; set; } // số người đã đăng ký vào slot
         public string Status { get; set; }
+
+        public string DisplayTime =>
+        $"{StartTime}-{EndTime}  [{SlotName}]" +
+        $"  ({CurrentCount}/{MaxMembers} chỗ)";
     }
 }

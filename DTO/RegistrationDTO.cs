@@ -13,6 +13,7 @@ namespace desktopapp_GYM.DTO
         public string MemberName { get; set; }      // JOIN MEMBERS
         public int PackageID { get; set; }
         public string PackageName { get; set; }     // JOIN PACKAGES
+        public string PackageType { get; set; }
         public int? TrainerID { get; set; }
         public string TrainerName { get; set; }     // JOIN TRAINERS
 

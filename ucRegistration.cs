@@ -117,15 +117,15 @@ namespace desktopapp_GYM
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            frmRegistration frm = new frmRegistration(/*new RegistrationDTO(), true*/);
-            //if (frm.ShowDialog() == DialogResult.OK) LoadData();
+            frmRegistration frm = new frmRegistration(new RegistrationDTO(), true);
+            if (frm.ShowDialog() == DialogResult.OK) LoadData();
         }
         private void btnEdits_Click(object sender, EventArgs e)
         {
-            //if (dgvRegistrations.CurrentRow == null) return;
-            //var selected = (RegistrationDTO)dgvRegistrations.CurrentRow.DataBoundItem;
-            //frmRegistration frm = new frmRegistration(selected, false);
-            //if (frm.ShowDialog() == DialogResult.OK) LoadData();
+            if (dgvRegistrations.CurrentRow == null) return;
+            var selected = (RegistrationDTO)dgvRegistrations.CurrentRow.DataBoundItem;
+            frmRegistration frm = new frmRegistration(selected, false);
+            if (frm.ShowDialog() == DialogResult.OK) LoadData();
         }
         private void btnDelete_Click(object sender, EventArgs e)
         {

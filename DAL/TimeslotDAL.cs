@@ -15,26 +15,28 @@ namespace desktopapp_GYM.DAL
         {
             var list = new List<TimeslotDTO>();
             string sql = @"
-                SELECT 
-                    ts.SLOTID, ts.TRAINERID, ts.PACKAGEID,
-                    t.FULLNAME    AS TrainerName,
-                    p.PACKAGENAME AS PackageName,
-                    ts.SLOTNAME, ts.DAYOFWEEK,
-                    ts.STARTTIME, ts.ENDTIME,
-                    ts.MAXMEMBERS, ts.STATUS,
-                    COUNT(s.SCHEDULEID) AS CurrentCount
-                FROM TIMESLOTS ts
-                JOIN TRAINERS  t ON ts.TRAINERID = t.TRAINERID
-                JOIN PACKAGES  p ON ts.PACKAGEID = p.PACKAGEID
-                LEFT JOIN SCHEDULES s ON ts.SLOTID = s.SLOTID 
-                                      AND s.STATUS != 'Cancelled'
-                GROUP BY 
-                    ts.SLOTID, ts.TRAINERID, ts.PACKAGEID,
-                    t.FULLNAME, p.PACKAGENAME,
-                    ts.SLOTNAME, ts.DAYOFWEEK,
-                    ts.STARTTIME, ts.ENDTIME,
-                    ts.MAXMEMBERS, ts.STATUS
-                ORDER BY ts.DAYOFWEEK, ts.STARTTIME";
+        SELECT 
+            ts.SLOTID, ts.TRAINERID, ts.PACKAGEID,
+            t.FULLNAME    AS TrainerName,
+            p.PACKAGENAME AS PackageName,
+            ts.SLOTNAME, ts.DAYOFWEEK,
+            CONVERT(VARCHAR(5), ts.STARTTIME, 108) AS StartTime,
+            CONVERT(VARCHAR(5), ts.ENDTIME,   108) AS EndTime,
+            ts.MAXMEMBERS, ts.STATUS,
+            COUNT(DISTINCT rs.REGID) AS CurrentCount
+        FROM TIMESLOTS ts
+        JOIN TRAINERS  t  ON ts.TRAINERID = t.TRAINERID
+        JOIN PACKAGES  p  ON ts.PACKAGEID = p.PACKAGEID
+        LEFT JOIN REGISTRATION_SLOTS rs ON ts.SLOTID = rs.SLOTID
+        LEFT JOIN REGISTRATIONS r ON rs.REGID = r.REGID 
+                                  AND r.IS_ACTIVE = 1
+        GROUP BY 
+            ts.SLOTID, ts.TRAINERID, ts.PACKAGEID,
+            t.FULLNAME, p.PACKAGENAME,
+            ts.SLOTNAME, ts.DAYOFWEEK,
+            ts.STARTTIME, ts.ENDTIME,
+            ts.MAXMEMBERS, ts.STATUS
+        ORDER BY ts.DAYOFWEEK, ts.STARTTIME";
 
             using (SqlConnection con = GetConnection())
             {
@@ -52,11 +54,61 @@ namespace desktopapp_GYM.DAL
                         PackageName = r["PackageName"].ToString(),
                         SlotName = r["SLOTNAME"].ToString(),
                         DayOfWeek = r["DAYOFWEEK"].ToString(),
-                        StartTime = r["STARTTIME"].ToString(),
-                        EndTime = r["ENDTIME"].ToString(),
+                        StartTime = r["StartTime"].ToString(),  // ← alias, không phải STARTTIME
+                        EndTime = r["EndTime"].ToString(),    // ← alias, không phải ENDTIME
                         MaxMembers = Convert.ToInt32(r["MAXMEMBERS"]),
                         CurrentCount = Convert.ToInt32(r["CurrentCount"]),
                         Status = r["STATUS"].ToString()
+                    });
+                }
+            }
+            return list;
+        }
+
+        public List<TimeslotDTO> GetByTrainerPackageDay(int trainerId, int packageId, string dayOfWeek)
+        {
+            var list = new List<TimeslotDTO>();
+            string sql = @"
+        SELECT ts.SLOTID, ts.SLOTNAME, ts.DAYOFWEEK,
+               CONVERT(VARCHAR(5), ts.STARTTIME, 108) AS StartTime,
+               CONVERT(VARCHAR(5), ts.ENDTIME,   108) AS EndTime,
+               ts.MAXMEMBERS, ts.STATUS,
+               t.FULLNAME AS TrainerName,
+               -- Đếm số member đã đăng ký slot này (đang active)
+               COUNT(DISTINCT rs.REGID) AS CurrentCount
+        FROM TIMESLOTS ts
+        JOIN TRAINERS t ON ts.TRAINERID = t.TRAINERID
+        LEFT JOIN REGISTRATION_SLOTS rs ON ts.SLOTID = rs.SLOTID
+        LEFT JOIN REGISTRATIONS r ON rs.REGID = r.REGID AND r.IS_ACTIVE = 1
+        WHERE ts.TRAINERID = @tid
+          AND ts.PACKAGEID = @pid
+          AND ts.DAYOFWEEK = @day
+          AND ts.STATUS    = 'Active'
+        GROUP BY ts.SLOTID, ts.SLOTNAME, ts.DAYOFWEEK,
+                 ts.STARTTIME, ts.ENDTIME, ts.MAXMEMBERS, ts.STATUS,
+                 t.FULLNAME";
+
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@tid", trainerId);
+                cmd.Parameters.AddWithValue("@pid", packageId);
+                cmd.Parameters.AddWithValue("@day", dayOfWeek);
+                con.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    list.Add(new TimeslotDTO
+                    {
+                        SlotID = Convert.ToInt32(r["SLOTID"]),
+                        SlotName = r["SLOTNAME"].ToString(),
+                        DayOfWeek = r["DAYOFWEEK"].ToString(),
+                        StartTime = r["StartTime"].ToString(),
+                        EndTime = r["EndTime"].ToString(),
+                        MaxMembers = Convert.ToInt32(r["MAXMEMBERS"]),
+                        Status = r["STATUS"].ToString(),
+                        TrainerName = r["TrainerName"].ToString(),
+                        CurrentCount = Convert.ToInt32(r["CurrentCount"])
                     });
                 }
             }
@@ -157,6 +209,8 @@ namespace desktopapp_GYM.DAL
             }
             return list;
         }
+
+
 
     }
 

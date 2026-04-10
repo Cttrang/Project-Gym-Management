@@ -53,5 +53,12 @@ namespace desktopapp_GYM.BLL
             return dal.GetSlotIdsByMember(memberId);
         }
 
+        public List<TimeslotDTO> GetByTrainerPackageDay(int trainerId, int packageId, string dayOfWeek)
+        {
+            if (trainerId <= 0 || packageId <= 0 || string.IsNullOrWhiteSpace(dayOfWeek))
+                return new List<TimeslotDTO>();
+            return dal.GetByTrainerPackageDay(trainerId, packageId, dayOfWeek);
+        }
+
     }
 }
