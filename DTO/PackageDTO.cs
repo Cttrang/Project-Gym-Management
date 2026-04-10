@@ -10,8 +10,10 @@ namespace desktopapp_GYM.DTO
     {
         public int PackageID { get; set; }
         public string PackageName { get; set; }
+        public string Type { get; set; }
         public int DurationMonths { get; set; }
         public decimal Price { get; set; }
+        public int? PTSessionsPerWeek { get; set; }
         public string Status { get; set; }
         public int TotalMembers { get; set; }
     }

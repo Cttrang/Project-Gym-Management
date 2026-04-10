@@ -16,7 +16,15 @@ namespace desktopapp_GYM.BLL
 
         public bool SavePackage(PackageDTO pkg, bool isAdd)
         {
+            // Kiểm tra cơ bản
             if (string.IsNullOrWhiteSpace(pkg.PackageName)) return false;
+
+            // Logic nghiệp vụ: Nếu gói là PT hoặc CLASS thì bắt buộc phải có số buổi/tuần
+            if (pkg.Type != "FREE" && (!pkg.PTSessionsPerWeek.HasValue || pkg.PTSessionsPerWeek <= 0))
+            {
+                throw new Exception("Gói tập PT hoặc CLASS cần nhập số buổi mỗi tuần!");
+            }
+
             return dal.Save(pkg, isAdd);
         }
 
@@ -30,5 +38,21 @@ namespace desktopapp_GYM.BLL
 
             return dal.Delete(pkg.PackageID);
         }
+
+        public int CalculateTotalSessions(PackageDTO pkg)
+        {
+            if (pkg.Type == "FREE" || !pkg.PTSessionsPerWeek.HasValue)
+                return 0;
+
+            // Công thức trung bình 52 tuần: (Số buổi/tuần * 52) / 12 * Số tháng
+            double avgSessionsPerMonth = (pkg.PTSessionsPerWeek.Value * 52.0) / 12.0;
+            double total = avgSessionsPerMonth * pkg.DurationMonths;
+
+            // Làm tròn lên (Ceiling) để đảm bảo quyền lợi hội viên
+            return (int)Math.Ceiling(total);
+        }
+
+        public List<PackageDTO> GetPackagesByTrainer(int trainerId) => dal.GetPackagesByTrainer(trainerId);
+
     }
 }

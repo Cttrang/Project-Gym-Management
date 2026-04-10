@@ -53,6 +53,7 @@
             this.lblWelcome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.ucRevenueCard1 = new desktopapp_GYM.ucRevenueCard();
             this.pnlSidebarGuest.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -255,6 +256,7 @@
             this.flowLayoutPanel1.Controls.Add(this.ucExpiredAlert1);
             this.flowLayoutPanel1.Controls.Add(this.ucMemberStats1);
             this.flowLayoutPanel1.Controls.Add(this.ucPackagePrice1);
+            this.flowLayoutPanel1.Controls.Add(this.ucRevenueCard1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
@@ -349,6 +351,16 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
             // 
+            // ucRevenueCard1
+            // 
+            this.ucRevenueCard1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.ucRevenueCard1.BorderRadius = 30;
+            this.ucRevenueCard1.Location = new System.Drawing.Point(698, 1570);
+            this.ucRevenueCard1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ucRevenueCard1.Name = "ucRevenueCard1";
+            this.ucRevenueCard1.Size = new System.Drawing.Size(400, 300);
+            this.ucRevenueCard1.TabIndex = 4;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -401,5 +413,6 @@
         private System.Windows.Forms.Button btnClassRegis;
         private System.Windows.Forms.Button btnEditAcc;
         private System.Windows.Forms.Button btnManagerAcc;
+        private ucRevenueCard ucRevenueCard1;
     }
 }

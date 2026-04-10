@@ -38,7 +38,7 @@ namespace desktopapp_GYM.GUI
                 btnManagerAcc.Visible = false;
             }
 
-            if (role == "Admin") btnEditAcc.Visible = false;
+            //if (role == "Admin") btnEditAcc.Visible = false;
 
             UpdateUserDisplay();
             ShowUc();
@@ -70,6 +70,10 @@ namespace desktopapp_GYM.GUI
                 else if (ctrl is ucPackagePrice ucPackagePrice1)
                 {
                     ucPackagePrice1.RefreshData();
+                }
+                else if (ctrl is ucRevenueCard ucRevenueCard1)
+                {
+                    ucRevenueCard1.RefreshData();
                 }
             }
         }
@@ -139,7 +143,7 @@ namespace desktopapp_GYM.GUI
 
         private void btnClassRegis_Click(object sender, EventArgs e)
         {
-            ShowDetail(new ucTimeSlotRegis());
+            ShowDetail(new ucTimeSlotReg());
         }
 
         private void btnManagerAcc_Click(object sender, EventArgs e)

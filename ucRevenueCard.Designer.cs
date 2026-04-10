@@ -33,11 +33,12 @@
             this.lblRevenueSubText = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panelFooter.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPin
             // 
-            this.btnPin.Location = new System.Drawing.Point(764, 6);
+            this.btnPin.Location = new System.Drawing.Point(1364, 6);
             // 
             // panel2
             // 
@@ -58,14 +59,19 @@
             this.panelFooter.Location = new System.Drawing.Point(0, 266);
             this.panelFooter.Size = new System.Drawing.Size(400, 34);
             // 
+            // btnViewDetail
+            // 
+            this.btnViewDetail.Location = new System.Drawing.Point(300, 0);
+            this.btnViewDetail.Size = new System.Drawing.Size(100, 34);
+            // 
             // lblTotalRevenue
             // 
             this.lblTotalRevenue.AutoSize = true;
             this.lblTotalRevenue.Location = new System.Drawing.Point(44, 8);
             this.lblTotalRevenue.Name = "lblTotalRevenue";
-            this.lblTotalRevenue.Size = new System.Drawing.Size(171, 25);
+            this.lblTotalRevenue.Size = new System.Drawing.Size(212, 25);
             this.lblTotalRevenue.TabIndex = 1;
-            this.lblTotalRevenue.Text = "Doanh thu tháng";
+            this.lblTotalRevenue.Text = "Doanh thu tháng này";
             // 
             // lblRevenue
             // 
@@ -101,6 +107,7 @@
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panelFooter.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

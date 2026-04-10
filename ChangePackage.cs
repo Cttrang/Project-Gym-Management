@@ -46,14 +46,32 @@ namespace desktopapp_GYM
                 txtTenGoi.TextChanged += MarkAsChanged;
                 txtHanGoi.TextChanged += MarkAsChanged;
                 txtGia.TextChanged += MarkAsChanged;
-                cboStatus.SelectedIndexChanged += MarkAsChanged; // thêm
+                cboStatus.SelectedIndexChanged += MarkAsChanged;
+                cboType.SelectedIndexChanged += MarkAsChanged; // Thêm
+                cboSession.SelectedIndexChanged += MarkAsChanged; // Thêm // thêm
             }
             else
             {
                 txtTenGoi.TextChanged -= MarkAsChanged;
                 txtHanGoi.TextChanged -= MarkAsChanged;
                 txtGia.TextChanged -= MarkAsChanged;
-                cboStatus.SelectedIndexChanged -= MarkAsChanged; // thêm
+                cboStatus.SelectedIndexChanged -= MarkAsChanged;
+                cboType.SelectedIndexChanged -= MarkAsChanged;
+                cboSession.SelectedIndexChanged -= MarkAsChanged; // thêm
+            }
+        }
+
+        private void UpdateSessionComboBoxState()
+        {
+            if (cboType.Text == "FREE")
+            {
+                cboSession.SelectedIndex = -1;
+                cboSession.Enabled = false;
+            }
+            else
+            {
+                cboSession.Enabled = true;
+                if (cboSession.SelectedIndex == -1) cboSession.SelectedIndex = 0; // Mặc định 3 buổi nếu là PT/CLASS
             }
         }
 
@@ -63,7 +81,17 @@ namespace desktopapp_GYM
             txtTenGoi.Text = _selectedPkg.PackageName;
             txtHanGoi.Text = _selectedPkg.DurationMonths.ToString();
             txtGia.Text = _selectedPkg.Price.ToString("N0");
-            cboStatus.Text = _selectedPkg.Status;  // thêm — bỏ comment cũ đi
+            cboStatus.Text = _selectedPkg.Status;
+            cboType.Text = _selectedPkg.Type;
+
+            // Hiển thị số buổi nếu có
+            if (_selectedPkg.PTSessionsPerWeek.HasValue)
+                cboSession.Text = _selectedPkg.PTSessionsPerWeek.Value.ToString();
+            else
+                cboSession.SelectedIndex = -1;
+
+            // Cập nhật trạng thái đóng/mở của cboSession
+            UpdateSessionComboBoxState();  // thêm — bỏ comment cũ đi
             ToggleEvents(true);
             isDataChanged = false;
         }
@@ -85,11 +113,24 @@ namespace desktopapp_GYM
 
                 PackageDTO dto = isAddMode ? new PackageDTO() : _selectedPkg;
                 dto.PackageName = txtTenGoi.Text.Trim();
+                dto.Type = cboType.Text;
                 dto.DurationMonths = int.TryParse(txtHanGoi.Text, out int m) ? m : 0;
                 dto.Status = cboStatus.Text; // thêm
 
                 string priceRaw = txtGia.Text.Replace(".", "").Replace(",", "");
                 dto.Price = decimal.TryParse(priceRaw, out decimal p) ? p : 0;
+
+                if (dto.Type == "FREE")
+                {
+                    dto.PTSessionsPerWeek = null;
+                }
+                else
+                {
+                    if (int.TryParse(cboSession.Text, out int s))
+                        dto.PTSessionsPerWeek = s;
+                    else
+                        throw new Exception("Vui lòng chọn số buổi mỗi tuần!");
+                }
 
                 if (bll.SavePackage(dto, isAddMode))
                 {
@@ -122,16 +163,33 @@ namespace desktopapp_GYM
 
         private void frmPackageChange_Load(object sender, EventArgs e)
         {
+            if (!isAddMode && _selectedPkg.TotalMembers > 0)
+            {
+                txtHanGoi.Enabled = false;
+                cboType.Enabled = false;
+                txtGia.Enabled = false;
+                cboType.Enabled = false;
+                // Vẫn cho sửa Tên và Trạng thái (Active/Inactive)
+            }
 
-            cboStatus.Items.AddRange(new string[] { "Active", "Inactive" }); // thêm
+            cboStatus.Items.AddRange(new string[] { "Active", "Inactive" });
+            cboType.Items.AddRange(new string[] { "FREE", "PT", "CLASS" });
+            cboSession.Items.AddRange(new object[] { 3, 4, 5 });
 
             if (!isAddMode && _selectedPkg != null)
+            {
                 FillData();
+            }
             else
             {
-                cboStatus.SelectedIndex = 0; // mặc định Active khi Add
+                //ToggleEvents(false);
+                cboStatus.SelectedIndex = 0; // Active
+                cboType.SelectedIndex = 0;   // FREE
+                cboSession.Enabled = false;  // FREE thì mặc định khóa số buổi
                 ToggleEvents(true);
+                isDataChanged = false;
             }
+            
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -142,7 +200,10 @@ namespace desktopapp_GYM
                 txtTenGoi.Clear();
                 txtHanGoi.Clear();
                 txtGia.Clear();
-                cboStatus.SelectedIndex = 0; // thêm
+                cboType.SelectedIndex = 0;
+                cboStatus.SelectedIndex = 0;
+                cboSession.SelectedIndex = -1;
+                cboSession.Enabled = false; // thêm
                 ToggleEvents(true);
             }
             else
@@ -160,6 +221,12 @@ namespace desktopapp_GYM
         private void txtHanGoi_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cboType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateSessionComboBoxState();
+            isDataChanged = true;
         }
     }
 }

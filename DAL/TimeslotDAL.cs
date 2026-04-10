@@ -26,7 +26,7 @@ namespace desktopapp_GYM.DAL
                 FROM TIMESLOTS ts
                 JOIN TRAINERS  t ON ts.TRAINERID = t.TRAINERID
                 JOIN PACKAGES  p ON ts.PACKAGEID = p.PACKAGEID
-                LEFT JOIN SCHEDULES s ON ts.SLOTID = s.SLOTID
+                LEFT JOIN SCHEDULES s ON ts.SLOTID = s.SLOTID 
                                       AND s.STATUS != 'Cancelled'
                 GROUP BY 
                     ts.SLOTID, ts.TRAINERID, ts.PACKAGEID,
@@ -45,17 +45,17 @@ namespace desktopapp_GYM.DAL
                 {
                     list.Add(new TimeslotDTO
                     {
-                        SlotID = (int)r["SLOTID"],
-                        TrainerID = (int)r["TRAINERID"],
-                        PackageID = (int)r["PACKAGEID"],
+                        SlotID = Convert.ToInt32(r["SLOTID"]),
+                        TrainerID = Convert.ToInt32(r["TRAINERID"]),
+                        PackageID = Convert.ToInt32(r["PACKAGEID"]),
                         TrainerName = r["TrainerName"].ToString(),
                         PackageName = r["PackageName"].ToString(),
                         SlotName = r["SLOTNAME"].ToString(),
                         DayOfWeek = r["DAYOFWEEK"].ToString(),
                         StartTime = r["STARTTIME"].ToString(),
                         EndTime = r["ENDTIME"].ToString(),
-                        MaxMembers = (int)r["MAXMEMBERS"],
-                        CurrentCount = (int)r["CurrentCount"],
+                        MaxMembers = Convert.ToInt32(r["MAXMEMBERS"]),
+                        CurrentCount = Convert.ToInt32(r["CurrentCount"]),
                         Status = r["STATUS"].ToString()
                     });
                 }
@@ -79,7 +79,8 @@ namespace desktopapp_GYM.DAL
             using (SqlConnection con = GetConnection())
             {
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@id", ts.SlotID);
+                if (!isAdd) cmd.Parameters.AddWithValue("@id", ts.SlotID);
+
                 cmd.Parameters.AddWithValue("@tid", ts.TrainerID);
                 cmd.Parameters.AddWithValue("@pid", ts.PackageID);
                 cmd.Parameters.AddWithValue("@name", ts.SlotName);
@@ -132,6 +133,30 @@ namespace desktopapp_GYM.DAL
             }
         }
 
+        public List<int> GetSlotIdsByMember(int memberId)
+        {
+            List<int> list = new List<int>();
+            string sql = @"SELECT rs.SLOTID 
+                   FROM REGISTRATION_SLOTS rs
+                   JOIN REGISTRATIONS r ON rs.REGID = r.REGID
+                   WHERE r.MEMBERID = @MemberID";
+
+            using (SqlConnection con = GetConnection()) // Sử dụng GetConnection() giống hàm trên
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@MemberID", memberId);
+
+                con.Open(); // Mở kết nối trước khi thực thi
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(Convert.ToInt32(dr["SLOTID"]));
+                    }
+                }
+            }
+            return list;
+        }
 
     }
 

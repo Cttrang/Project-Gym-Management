@@ -1,5 +1,6 @@
 ﻿using desktopapp_GYM.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -16,11 +17,10 @@ namespace desktopapp_GYM.DAL
             List<PackageDTO> list = new List<PackageDTO>();
 
             // Câu SQL lấy thông tin gói tập và đếm số người đăng ký
-            string query = @"SELECT p.PACKAGEID, p.PACKAGENAME, p.DURATIONMONTHS, p.PRICE, p.STATUS, 
-                             COUNT(r.REGID) AS TotalMembers 
-                             FROM PACKAGES p 
-                             LEFT JOIN REGISTRATIONS r ON p.PACKAGEID = r.PACKAGEID 
-                             GROUP BY p.PACKAGEID, p.PACKAGENAME, p.DURATIONMONTHS, p.PRICE, p.STATUS";
+            string query = @"
+            SELECT p.*, 
+                   (SELECT COUNT(*) FROM REGISTRATIONS r WHERE r.PACKAGEID = p.PACKAGEID) as TotalMembers
+            FROM PACKAGES p";
 
             try
             {
@@ -32,15 +32,19 @@ namespace desktopapp_GYM.DAL
 
                     while (reader.Read())
                     {
-                        PackageDTO pkg = new PackageDTO();
-                        pkg.PackageID = Convert.ToInt32(reader["PACKAGEID"]);
-                        pkg.PackageName = reader["PACKAGENAME"].ToString();
-                        pkg.DurationMonths = Convert.ToInt32(reader["DURATIONMONTHS"]);
-                        pkg.Price = Convert.ToDecimal(reader["PRICE"]);
-                        pkg.Status = reader["status"].ToString();
-                        pkg.TotalMembers = Convert.ToInt32(reader["TotalMembers"]);
-
-                        list.Add(pkg);
+                        list.Add(new PackageDTO
+                        {
+                            PackageID = Convert.ToInt32(reader["PACKAGEID"]),
+                            PackageName = reader["PACKAGENAME"].ToString(),
+                            Type = reader["TYPE"].ToString(),
+                            DurationMonths = Convert.ToInt32(reader["DURATIONMONTHS"]),
+                            Price = Convert.ToDecimal(reader["PRICE"]),
+                            // Xử lý giá trị Null cho số buổi
+                            PTSessionsPerWeek = reader["PT_SESSIONS_PER_WEEK"] == DBNull.Value ?
+                                         (int?)null : Convert.ToInt32(reader["PT_SESSIONS_PER_WEEK"]),
+                            Status = reader["STATUS"].ToString(),
+                            TotalMembers = Convert.ToInt32(reader["TotalMembers"])
+                        });
                     }
                 }
             }
@@ -55,17 +59,25 @@ namespace desktopapp_GYM.DAL
         public bool Save(PackageDTO pkg, bool isAdd)
         {
             string sql = isAdd ?
-        "INSERT INTO PACKAGES (PACKAGENAME, DURATIONMONTHS, PRICE, STATUS) VALUES (@name, @dur, @pri, @status)" :
-        "UPDATE PACKAGES SET PACKAGENAME=@name, DURATIONMONTHS=@dur, PRICE=@pri, STATUS=@status WHERE PACKAGEID=@id";
+            @"INSERT INTO PACKAGES (PACKAGENAME, TYPE, DURATIONMONTHS, PRICE, PT_SESSIONS_PER_WEEK, STATUS) 
+              VALUES (@name, @type, @dur, @price, @ptSessions, @status)" :
+            @"UPDATE PACKAGES SET PACKAGENAME=@name, TYPE=@type, DURATIONMONTHS=@dur, 
+              PRICE=@price, PT_SESSIONS_PER_WEEK=@ptSessions, STATUS=@status 
+              WHERE PACKAGEID=@id";
 
             using (SqlConnection con = GetConnection())
             {
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@id", pkg.PackageID);
+                if (!isAdd) cmd.Parameters.AddWithValue("@id", pkg.PackageID);
+
                 cmd.Parameters.AddWithValue("@name", pkg.PackageName);
+                cmd.Parameters.AddWithValue("@type", pkg.Type);
                 cmd.Parameters.AddWithValue("@dur", pkg.DurationMonths);
-                cmd.Parameters.AddWithValue("@pri", pkg.Price);
-                cmd.Parameters.AddWithValue("@status", pkg.Status ?? "Active"); // thêm dòng này
+                cmd.Parameters.AddWithValue("@price", pkg.Price);
+                // Nếu là gói FREE thì lưu DBNull
+                cmd.Parameters.AddWithValue("@ptSessions", (object)pkg.PTSessionsPerWeek ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@status", pkg.Status ?? "Active");
+
                 con.Open();
                 return cmd.ExecuteNonQuery() > 0;
             }
@@ -102,6 +114,50 @@ namespace desktopapp_GYM.DAL
                 da.Fill(dt);
                 return dt; // Trả về DataTable chứa Tên gói và Số người
             }
+        }
+
+        public List<PackageDTO> GetPackagesByTrainer(int trainerId)
+        {
+            List<PackageDTO> list = new List<PackageDTO>();
+            // Câu truy vấn lấy các gói tập mà HLV này được phép dạy
+            string query = @"
+        SELECT p.PACKAGEID, p.PACKAGENAME 
+        FROM PACKAGES p
+        JOIN TRAINER_PACKAGES tp ON p.PACKAGEID = tp.PACKAGEID
+        WHERE tp.TRAINERID = @TrainerID";
+            try
+            {
+                // Giả sử bạn dùng hàm GetConnection() đã viết sẵn từ các phần trước
+                using (SqlConnection conn = GetConnection())
+                {
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    // Truyền tham số để tránh SQL Injection
+                    cmd.Parameters.AddWithValue("@TrainerID", trainerId);
+
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(new PackageDTO
+                            {
+                                // Đảm bảo tên thuộc tính PackageID và PackageName khớp với DTO của bạn
+                                PackageID = Convert.ToInt32(reader["PACKAGEID"]),
+                                PackageName = reader["PACKAGENAME"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Ném lỗi ra ngoài để UI hoặc BLL có thể bắt được và hiển thị MessageBox
+                throw new Exception("Lỗi khi lấy danh sách gói tập của HLV: " + ex.Message);
+            }
+
+            return list;
+            // Thực hiện truy vấn và trả về List<PackageDTO> giống như hàm GetAll
         }
 
     }
