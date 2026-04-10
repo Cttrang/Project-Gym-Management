@@ -143,7 +143,7 @@ namespace desktopapp_GYM.GUI
 
         private void btnClassRegis_Click(object sender, EventArgs e)
         {
-            ShowDetail(new ucTimeSlotRegis());
+            ShowDetail(new ucTimeSlotReg());
         }
 
         private void btnManagerAcc_Click(object sender, EventArgs e)

@@ -181,12 +181,6 @@
     <Compile Include="ucPackagePrice.Designer.cs">
       <DependentUpon>ucPackagePrice.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucRegistration.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ucRegistration.Designer.cs">
-      <DependentUpon>ucRegistration.cs</DependentUpon>
-    </Compile>
     <Compile Include="ucRevenueCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -199,11 +193,11 @@
     <Compile Include="ucRevenueChart.Designer.cs">
       <DependentUpon>ucRevenueChart.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucTest.cs">
+    <Compile Include="ucTimeSlotReg.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucTest.Designer.cs">
-      <DependentUpon>ucTest.cs</DependentUpon>
+    <Compile Include="ucTimeSlotReg.Designer.cs">
+      <DependentUpon>ucTimeSlotReg.cs</DependentUpon>
     </Compile>
     <Compile Include="ucTimeSlot.cs">
       <SubType>UserControl</SubType>
@@ -211,11 +205,11 @@
     <Compile Include="ucTimeSlot.Designer.cs">
       <DependentUpon>ucTimeSlot.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucTimeSlotRegis.cs">
+    <Compile Include="ucRegistration.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucTimeSlotRegis.Designer.cs">
-      <DependentUpon>ucTimeSlotRegis.cs</DependentUpon>
+    <Compile Include="ucRegistration.Designer.cs">
+      <DependentUpon>ucRegistration.cs</DependentUpon>
     </Compile>
     <Compile Include="ucTrainerList.cs">
       <SubType>UserControl</SubType>
@@ -286,20 +280,20 @@
     <EmbeddedResource Include="ucPackagePrice.resx">
       <DependentUpon>ucPackagePrice.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ucRegistration.resx">
-      <DependentUpon>ucRegistration.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ucRevenueCard.resx">
       <DependentUpon>ucRevenueCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucRevenueChart.resx">
       <DependentUpon>ucRevenueChart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ucTest.resx">
-      <DependentUpon>ucTest.cs</DependentUpon>
+    <EmbeddedResource Include="ucTimeSlot.resx">
+      <DependentUpon>ucTimeSlot.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ucTimeSlotRegis.resx">
-      <DependentUpon>ucTimeSlotRegis.cs</DependentUpon>
+    <EmbeddedResource Include="ucTimeSlotReg.resx">
+      <DependentUpon>ucTimeSlotReg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucRegistration.resx">
+      <DependentUpon>ucRegistration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucTrainerList.resx">
       <DependentUpon>ucTrainerList.cs</DependentUpon>

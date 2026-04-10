@@ -52,5 +52,7 @@ namespace desktopapp_GYM.BLL
             return (int)Math.Ceiling(total);
         }
 
+        public List<PackageDTO> GetPackagesByTrainer(int trainerId) => dal.GetPackagesByTrainer(trainerId);
+
     }
 }

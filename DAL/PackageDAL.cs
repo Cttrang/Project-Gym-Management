@@ -1,5 +1,6 @@
 ﻿using desktopapp_GYM.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -113,6 +114,50 @@ namespace desktopapp_GYM.DAL
                 da.Fill(dt);
                 return dt; // Trả về DataTable chứa Tên gói và Số người
             }
+        }
+
+        public List<PackageDTO> GetPackagesByTrainer(int trainerId)
+        {
+            List<PackageDTO> list = new List<PackageDTO>();
+            // Câu truy vấn lấy các gói tập mà HLV này được phép dạy
+            string query = @"
+        SELECT p.PACKAGEID, p.PACKAGENAME 
+        FROM PACKAGES p
+        JOIN TRAINER_PACKAGES tp ON p.PACKAGEID = tp.PACKAGEID
+        WHERE tp.TRAINERID = @TrainerID";
+            try
+            {
+                // Giả sử bạn dùng hàm GetConnection() đã viết sẵn từ các phần trước
+                using (SqlConnection conn = GetConnection())
+                {
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    // Truyền tham số để tránh SQL Injection
+                    cmd.Parameters.AddWithValue("@TrainerID", trainerId);
+
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(new PackageDTO
+                            {
+                                // Đảm bảo tên thuộc tính PackageID và PackageName khớp với DTO của bạn
+                                PackageID = Convert.ToInt32(reader["PACKAGEID"]),
+                                PackageName = reader["PACKAGENAME"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Ném lỗi ra ngoài để UI hoặc BLL có thể bắt được và hiển thị MessageBox
+                throw new Exception("Lỗi khi lấy danh sách gói tập của HLV: " + ex.Message);
+            }
+
+            return list;
+            // Thực hiện truy vấn và trả về List<PackageDTO> giống như hàm GetAll
         }
 
     }
