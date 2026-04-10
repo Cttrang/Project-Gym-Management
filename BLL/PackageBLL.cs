@@ -53,6 +53,6 @@ namespace desktopapp_GYM.BLL
         }
 
         public List<PackageDTO> GetPackagesByTrainer(int trainerId) => dal.GetPackagesByTrainer(trainerId);
-
+        public List<PackageDTO> GetByType(string type) => dal.GetByType(type);
     }
 }

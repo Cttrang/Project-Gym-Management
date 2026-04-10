@@ -160,5 +160,44 @@ namespace desktopapp_GYM.DAL
             // Thực hiện truy vấn và trả về List<PackageDTO> giống như hàm GetAll
         }
 
+        public List<PackageDTO> GetByType(string type)
+        {
+            var list = new List<PackageDTO>();
+            string sql = @"
+        SELECT p.PACKAGEID, p.PACKAGENAME, p.TYPE, 
+               p.DURATIONMONTHS, p.PRICE, p.PT_SESSIONS_PER_WEEK, p.STATUS,
+               COUNT(DISTINCT r.REGID) AS TotalMembers
+        FROM PACKAGES p
+        LEFT JOIN REGISTRATIONS r ON p.PACKAGEID = r.PACKAGEID
+        WHERE p.TYPE = @type AND p.STATUS = 'Active'
+        GROUP BY p.PACKAGEID, p.PACKAGENAME, p.TYPE,
+                 p.DURATIONMONTHS, p.PRICE, p.PT_SESSIONS_PER_WEEK, p.STATUS";
+
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@type", type);
+                con.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    list.Add(new PackageDTO
+                    {
+                        PackageID = Convert.ToInt32(r["PACKAGEID"]),
+                        PackageName = r["PACKAGENAME"].ToString(),
+                        Type = r["TYPE"].ToString(),
+                        DurationMonths = Convert.ToInt32(r["DURATIONMONTHS"]),
+                        Price = Convert.ToDecimal(r["PRICE"]),
+                        PTSessionsPerWeek = r["PT_SESSIONS_PER_WEEK"] == DBNull.Value
+                                                ? (int?)null
+                                                : Convert.ToInt32(r["PT_SESSIONS_PER_WEEK"]),
+                        Status = r["STATUS"].ToString(),
+                        TotalMembers = Convert.ToInt32(r["TotalMembers"])
+                    });
+                }
+            }
+            return list;
+        }
+
     }
 }

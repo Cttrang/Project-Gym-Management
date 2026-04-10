@@ -20,6 +20,7 @@ namespace desktopapp_GYM.DTO
         public DateTime EndDate { get; set; }
         public decimal TotalAmount { get; set; }
         public string PaymentStatus { get; set; }
-        
+        public DateTime JoinDate { get; set; }
+
     }
 }

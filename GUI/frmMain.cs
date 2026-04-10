@@ -162,6 +162,11 @@ namespace desktopapp_GYM.GUI
                 UpdateUserDisplay();
             }
         }
+
+        private void btnRegis_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucRegistration());
+        }
     }
 
 }

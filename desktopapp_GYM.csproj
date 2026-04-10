@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="BLL\MemberBLL.cs" />
     <Compile Include="BLL\PackageBLL.cs" />
+    <Compile Include="BLL\RegistrationBLL.cs" />
     <Compile Include="BLL\Session.cs" />
     <Compile Include="BLL\TimeslotBLL.cs" />
     <Compile Include="BLL\TrainerBLL.cs" />
@@ -68,6 +69,8 @@
     <Compile Include="DAL\UserDAL.cs" />
     <Compile Include="DTO\MemberDTO.cs" />
     <Compile Include="DTO\PackageDTO.cs" />
+    <Compile Include="DTO\RegistrationDTO.cs" />
+    <Compile Include="DTO\RegistrationSlotDTO.cs" />
     <Compile Include="DTO\TimeslotDTO.cs" />
     <Compile Include="DTO\TrainerDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
@@ -88,6 +91,12 @@
     </Compile>
     <Compile Include="frmEditAccount.Designer.cs">
       <DependentUpon>frmEditAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRegistration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRegistration.Designer.cs">
+      <DependentUpon>frmRegistration.cs</DependentUpon>
     </Compile>
     <Compile Include="frmTimeslotEdits.cs">
       <SubType>Form</SubType>
@@ -231,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmEditAccount.resx">
       <DependentUpon>frmEditAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRegistration.resx">
+      <DependentUpon>frmRegistration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTimeslotEdits.resx">
       <DependentUpon>frmTimeslotEdits.cs</DependentUpon>

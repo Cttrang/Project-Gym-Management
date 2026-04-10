@@ -304,5 +304,54 @@ namespace desktopapp_GYM.DAL
             }
         }
 
+        public MemberDTO GetById(int memberId)
+        {
+            string sql = @"
+        SELECT MEMBERID, FULLNAME, PHONE, JOINDATE, STATUS
+        FROM MEMBERS
+        WHERE MEMBERID = @id";
+
+            using (SqlConnection con = dc.GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@id", memberId);
+                con.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+                if (r.Read())
+                {
+                    return new MemberDTO
+                    {
+                        ID = Convert.ToInt32(r["MEMBERID"]),
+                        FullName = r["FULLNAME"].ToString(),
+                        Phone = r["PHONE"].ToString(),
+                        JoinDate = Convert.ToDateTime(r["JOINDATE"]),
+                        Status = r["STATUS"].ToString()
+                    };
+                }
+            }
+            return null;
+        }
+
+        public int InsertAndGetID(MemberDTO m)
+        {
+            string sql = @"
+        INSERT INTO MEMBERS (FULLNAME, PHONE, JOINDATE, STATUS)
+        OUTPUT INSERTED.MEMBERID
+        VALUES (@name, @phone, @join, @status)";
+
+            using (SqlConnection con = dc.GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@name", m.FullName);
+                cmd.Parameters.AddWithValue("@phone", m.Phone ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@join", m.JoinDate == default
+                                                           ? DateTime.Today
+                                                           : m.JoinDate);
+                cmd.Parameters.AddWithValue("@status", m.Status ?? "Active");
+                con.Open();
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+
     }
 }

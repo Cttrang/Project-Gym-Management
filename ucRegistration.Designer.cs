@@ -40,11 +40,11 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.dgvTimeslots = new System.Windows.Forms.DataGridView();
+            this.dgvRegistrations = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTimeslots)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRegistrations)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -81,7 +81,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dgvTimeslots, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.dgvRegistrations, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 34);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -199,23 +199,23 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // dgvTimeslots
+            // dgvRegistrations
             // 
-            this.dgvTimeslots.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dgvRegistrations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvTimeslots.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvTimeslots.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.dgvTimeslots.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTimeslots.Location = new System.Drawing.Point(2, 2);
-            this.dgvTimeslots.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvTimeslots.Name = "dgvTimeslots";
-            this.dgvTimeslots.RowHeadersWidth = 82;
-            this.dgvTimeslots.RowTemplate.Height = 33;
-            this.dgvTimeslots.Size = new System.Drawing.Size(482, 388);
-            this.dgvTimeslots.TabIndex = 1;
-            this.dgvTimeslots.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvTimeslots_CellFormatting);
-            this.dgvTimeslots.SelectionChanged += new System.EventHandler(this.dgvTimeslots_SelectionChanged);
+            this.dgvRegistrations.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvRegistrations.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dgvRegistrations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRegistrations.Location = new System.Drawing.Point(2, 2);
+            this.dgvRegistrations.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvRegistrations.Name = "dgvRegistrations";
+            this.dgvRegistrations.RowHeadersWidth = 82;
+            this.dgvRegistrations.RowTemplate.Height = 33;
+            this.dgvRegistrations.Size = new System.Drawing.Size(482, 388);
+            this.dgvRegistrations.TabIndex = 1;
+            this.dgvRegistrations.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvRegistration_CellFormatting);
+            this.dgvRegistrations.SelectionChanged += new System.EventHandler(this.dgvRegistration_SelectionChanged);
             // 
             // ucRegistration
             // 
@@ -233,7 +233,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTimeslots)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRegistrations)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -252,6 +252,6 @@
         private System.Windows.Forms.Button btnClearS;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnEdits;
-        private System.Windows.Forms.DataGridView dgvTimeslots;
+        private System.Windows.Forms.DataGridView dgvRegistrations;
     }
 }
