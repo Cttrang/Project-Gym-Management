@@ -9,6 +9,7 @@ namespace desktopapp_GYM.DTO
     public class MemberDTO
     {
         public int ID { get; set; }
+        public int MemberID => ID;
         public string FullName { get; set; }
         public string Phone { get; set; }
         public string Role { get; set; } // Chỉ nhận "Member" hoặc "Trainer"

@@ -152,6 +152,6 @@ namespace desktopapp_GYM.BLL
             }
         }
 
-
+        public List<MemberDTO> GetData() => dal.GetAllMembers();
     }
 }

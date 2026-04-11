@@ -199,5 +199,38 @@ namespace desktopapp_GYM.DAL
             return list;
         }
 
+        public PackageDTO GetById(int packageId)
+        {
+            string sql = @"
+        SELECT PACKAGEID, PACKAGENAME, TYPE, DURATIONMONTHS, 
+               PRICE, PT_SESSIONS_PER_WEEK, STATUS
+        FROM PACKAGES 
+        WHERE PACKAGEID = @id";
+
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@id", packageId);
+                con.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+                if (r.Read())
+                {
+                    return new PackageDTO
+                    {
+                        PackageID = Convert.ToInt32(r["PACKAGEID"]),
+                        PackageName = r["PACKAGENAME"].ToString(),
+                        Type = r["TYPE"].ToString(),
+                        DurationMonths = Convert.ToInt32(r["DURATIONMONTHS"]),
+                        Price = Convert.ToDecimal(r["PRICE"]),
+                        PTSessionsPerWeek = r["PT_SESSIONS_PER_WEEK"] == DBNull.Value
+                                                ? (int?)null
+                                                : Convert.ToInt32(r["PT_SESSIONS_PER_WEEK"]),
+                        Status = r["STATUS"].ToString()
+                    };
+                }
+            }
+            return null;
+        }
+
     }
 }

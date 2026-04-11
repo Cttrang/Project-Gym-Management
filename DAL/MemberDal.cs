@@ -28,19 +28,26 @@ namespace desktopapp_GYM.DAL
         public int UpdateExpiredStatus()
         {
             string sql = @"
-                -- 1. Khóa những người hết hạn
-                UPDATE MEMBERS SET STATUS = 'Inactive' 
-                WHERE MEMBERID IN (
-                    SELECT MEMBERID FROM REGISTRATIONS 
-                    WHERE ENDDATE < GETDATE()
-                ) AND STATUS = 'Active';
+        -- Khóa: chỉ khóa nếu KHÔNG CÒN registration nào active và còn hạn
+        UPDATE MEMBERS SET STATUS = 'Inactive'
+        WHERE STATUS = 'Active'
+          AND MEMBERID NOT IN (
+              SELECT MEMBERID FROM REGISTRATIONS
+              WHERE ENDDATE >= CAST(GETDATE() AS DATE)
+                AND IS_ACTIVE = 1
+          )
+          AND MEMBERID IN (
+              SELECT MEMBERID FROM REGISTRATIONS
+          ); -- Chỉ xét member đã từng đăng ký
 
-                -- 2. Mở khóa những người đã gia hạn (quan trọng!)
-                UPDATE MEMBERS SET STATUS = 'Active' 
-                WHERE MEMBERID IN (
-                    SELECT MEMBERID FROM REGISTRATIONS 
-                    WHERE ENDDATE >= GETDATE()
-                ) AND STATUS = 'Inactive';";
+        -- Mở khóa: nếu có ít nhất 1 registration còn hạn và active
+        UPDATE MEMBERS SET STATUS = 'Active'
+        WHERE STATUS = 'Inactive'
+          AND MEMBERID IN (
+              SELECT MEMBERID FROM REGISTRATIONS
+              WHERE ENDDATE >= CAST(GETDATE() AS DATE)
+                AND IS_ACTIVE = 1
+          );";
             using (SqlConnection con = dc.GetConnection())
             {
                 try
@@ -351,6 +358,32 @@ namespace desktopapp_GYM.DAL
                 con.Open();
                 return (int)cmd.ExecuteScalar();
             }
+        }
+
+        // Dùng cho ComboBox chọn member cũ
+        public List<MemberDTO> GetAllMembers()
+        {
+            var list = new List<MemberDTO>();
+            string sql = "SELECT MEMBERID, FULLNAME, PHONE, JOINDATE, STATUS FROM MEMBERS ORDER BY FULLNAME";
+
+            using (SqlConnection con = dc.GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                con.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    list.Add(new MemberDTO
+                    {
+                        ID = Convert.ToInt32(r["MEMBERID"]),
+                        FullName = r["FULLNAME"].ToString(),
+                        Phone = r["PHONE"].ToString(),
+                        JoinDate = Convert.ToDateTime(r["JOINDATE"]),
+                        Status = r["STATUS"].ToString()
+                    });
+                }
+            }
+            return list;
         }
 
     }

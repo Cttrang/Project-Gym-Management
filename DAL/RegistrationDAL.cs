@@ -32,7 +32,7 @@ namespace desktopapp_GYM.DAL
                        SUM(TOTALAMOUNT) AS Total 
                 FROM REGISTRATIONS 
                 GROUP BY FORMAT(REGDATE, 'MM/yyyy'), YEAR(REGDATE), MONTH(REGDATE)
-                ORDER BY YEAR(REGDATE) DESC, MONTH(REGDATE) DESC";
+                ORDER BY YEAR(REGDATE) ASC, MONTH(REGDATE) ASC";
 
             DataTable dt = new DataTable();
             using (SqlConnection con = GetConnection())
@@ -50,9 +50,9 @@ namespace desktopapp_GYM.DAL
                 SELECT r.REGID, r.MEMBERID, m.FULLNAME AS MemberName,
                        r.PACKAGEID, p.PACKAGENAME AS PackageName,
                        r.TRAINERID, t.FULLNAME AS TrainerName,
-                       r.REGDATE, r.ENDDATE,
+                       r.REGDATE, r.ENDDATE, m.PHONE AS MemberPhone,
                        r.TOTALAMOUNT, r.ORIGINAL_PRICE, r.DISCOUNT_AMOUNT,
-                       r.PAYMENTSTATUS,
+                       r.PAYMENTSTATUS, p.PT_SESSIONS_PER_WEEK AS SessionsPerWeek,
                        r.SESSIONS_TOTAL, r.SESSIONS_LEFT,
                        r.IS_ACTIVE, r.NOTES, p.TYPE AS PackageType,
                        STUFF((
@@ -89,9 +89,9 @@ namespace desktopapp_GYM.DAL
                 SELECT r.REGID, r.MEMBERID, m.FULLNAME AS MemberName,
                        r.PACKAGEID, p.PACKAGENAME AS PackageName,
                        r.TRAINERID, t.FULLNAME AS TrainerName,
-                       r.REGDATE, r.ENDDATE,
+                       r.REGDATE, r.ENDDATE, m.PHONE AS MemberPhone,
                        r.TOTALAMOUNT, r.ORIGINAL_PRICE, r.DISCOUNT_AMOUNT,
-                       r.PAYMENTSTATUS,
+                       r.PAYMENTSTATUS, p.PT_SESSIONS_PER_WEEK AS SessionsPerWeek,
                        r.SESSIONS_TOTAL, r.SESSIONS_LEFT,
                        r.IS_ACTIVE, r.NOTES, p.TYPE AS PackageType,
                        STUFF((
@@ -285,6 +285,9 @@ namespace desktopapp_GYM.DAL
                 PackageID = Convert.ToInt32(r["PACKAGEID"]),
                 PackageName = r["PackageName"].ToString(),
                 PackageType = r["PackageType"].ToString(),
+
+                MemberPhone = r["MemberPhone"] == DBNull.Value ? "" : r["MemberPhone"].ToString(),
+                SessionsPerWeek = r["SessionsPerWeek"] == DBNull.Value ? 0 : Convert.ToInt32(r["SessionsPerWeek"]),
 
                 // TRAINERID nullable
                 TrainerID = r["TRAINERID"] == DBNull.Value

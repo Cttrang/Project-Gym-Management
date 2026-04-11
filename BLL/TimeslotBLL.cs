@@ -60,5 +60,11 @@ namespace desktopapp_GYM.BLL
             return dal.GetByTrainerPackageDay(trainerId, packageId, dayOfWeek);
         }
 
+        public List<string> GetDaysByTrainerPackage(int trainerId, int packageId)
+        {
+            if (trainerId <= 0 || packageId <= 0) return new List<string>();
+            return dal.GetDaysByTrainerPackage(trainerId, packageId);
+        }
+
     }
 }

@@ -210,7 +210,41 @@ namespace desktopapp_GYM.DAL
             return list;
         }
 
+        public List<string> GetDaysByTrainerPackage(int trainerId, int packageId)
+        {
+            var list = new List<string>();
+            string sql = @"
+    SELECT DAYOFWEEK FROM (
+        SELECT DISTINCT DAYOFWEEK,
+            CASE DAYOFWEEK
+                WHEN N'Thứ 2'    THEN 1
+                WHEN N'Thứ 3'    THEN 2
+                WHEN N'Thứ 4'    THEN 3
+                WHEN N'Thứ 5'    THEN 4
+                WHEN N'Thứ 6'    THEN 5
+                WHEN N'Thứ 7'    THEN 6
+                WHEN N'Chủ Nhật' THEN 7
+                ELSE 8
+            END AS SortOrder
+        FROM TIMESLOTS
+        WHERE TRAINERID = @tid
+          AND PACKAGEID = @pid
+          AND STATUS    = 'Active'
+    ) sub
+    ORDER BY SortOrder";
 
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@tid", trainerId);
+                cmd.Parameters.AddWithValue("@pid", packageId);
+                con.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                    list.Add(r["DAYOFWEEK"].ToString());
+            }
+            return list;
+        }
 
     }
 

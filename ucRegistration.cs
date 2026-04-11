@@ -65,8 +65,15 @@ namespace desktopapp_GYM
                 if (dgvRegistrations.Columns.Contains(kv.Key))
                     dgvRegistrations.Columns[kv.Key].HeaderText = kv.Value;
 
+            if (dgvRegistrations.Columns.Contains("RegDate"))
+                dgvRegistrations.Columns["RegDate"].DefaultCellStyle.Format = "dd/MM/yyyy";
+
+            if (dgvRegistrations.Columns.Contains("EndDate"))
+                dgvRegistrations.Columns["EndDate"].DefaultCellStyle.Format = "dd/MM/yyyy";
+
             if (dgvRegistrations.Columns.Contains("TotalAmount"))
                 dgvRegistrations.Columns["TotalAmount"].DefaultCellStyle.Format = "N0";
+
 
             dgvRegistrations.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
@@ -102,14 +109,9 @@ namespace desktopapp_GYM
 
             if (role == "Receptionist")
             {
-                btnAdd.Enabled = btnEdits.Enabled = btnDelete.Enabled = false;
-            }
-            else if (role == "Manager")
-            {
-                btnAdd.Enabled = btnEdits.Enabled = true;
                 btnDelete.Enabled = false;
             }
-            else // Admin
+            else // Admin & Mangager
             {
                 btnAdd.Enabled = btnEdits.Enabled = btnDelete.Enabled = true;
             }

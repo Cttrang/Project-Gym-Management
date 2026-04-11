@@ -35,5 +35,7 @@ namespace desktopapp_GYM.DTO
         // Dùng khi add/edit — không lưu DB trực tiếp
         public List<int> SelectedSlotIDs { get; set; } = new List<int>();
         public string SlotSummary { get; set; }
+        public string MemberPhone { get; set; }  // ← thêm
+        public int SessionsPerWeek { get; set; }
     }
 }

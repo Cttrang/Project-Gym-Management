@@ -709,12 +709,20 @@ namespace desktopapp_GYM
                 {
                     foreach (Control subCtrl in flp.Controls)
                     {
-                        if (subCtrl is ucTimeSlot uc) uc.BackColor = Color.White;
+                        //if (subCtrl is ucTimeSlot uc) uc.BackColor = Color.White;
+                        if (subCtrl is ucTimeSlot uc && uc.Data != null)
+                            uc.UpdateData(uc.Data);
                     }
                 }
             }
         }
 
+        private void btnCLearSearch_Click(object sender, EventArgs e)
+        {
+            txtSearch.Clear();
+            ResetGridHighlight();
+            txtSearch.Focus();
+        }
     }
 }
 
