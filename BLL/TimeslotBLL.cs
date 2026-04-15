@@ -28,8 +28,17 @@ namespace desktopapp_GYM.BLL
             if (ts.MaxMembers <= 0)
                 throw new Exception("Sức chứa phải lớn hơn 0!");
 
-            if (!isAdd && ts.MaxMembers < ts.CurrentCount)
-                throw new Exception($"Không thể giảm sức chứa xuống {ts.MaxMembers} vì đã có {ts.CurrentCount} học viên đăng ký!");
+            if (!isAdd) // Trường hợp Update
+            {
+                // BLL tự đi lấy con số thực tế từ DB để đảm bảo không bị "qua mặt"
+                int actualCount = dal.GetCurrentCount(ts.SlotID);
+
+                if (ts.MaxMembers < actualCount)
+                {
+                    throw new Exception($"Không thể giảm sức chứa xuống {ts.MaxMembers} " +
+                                        $"vì hiện đang có {actualCount} học viên đang đăng ký!");
+                }
+            }
 
             // 3. Kiểm tra logic thời gian (Nếu cần)
             // Ví dụ: StartTime < EndTime
@@ -40,8 +49,10 @@ namespace desktopapp_GYM.BLL
         public bool Delete(TimeslotDTO ts)
         {
             if (ts == null) return false;
-            if (ts.CurrentCount > 0)
-                throw new Exception($"Lớp này đang có {ts.CurrentCount} học viên. Hãy hủy lịch của họ trước khi xóa khung giờ!");
+
+            int actualCount = dal.GetCurrentCount(ts.SlotID);
+            if (actualCount > 0)
+                throw new Exception($"Lớp này đang có {actualCount} học viên. Hãy hủy lịch của họ trước khi xóa khung giờ!");
 
             return dal.Delete(ts.SlotID);
         }
@@ -64,6 +75,17 @@ namespace desktopapp_GYM.BLL
         {
             if (trainerId <= 0 || packageId <= 0) return new List<string>();
             return dal.GetDaysByTrainerPackage(trainerId, packageId);
+        }
+
+        public bool CheckIsFull(int slotId, int maxMembers)
+        {
+            // Gọi DAL để đếm số lượng thực tế tại thời điểm hiện tại
+            return dal.IsSlotFull(slotId, maxMembers);
+        }
+
+        public int GetActualCurrentCount(int slotId)
+        {
+            return dal.GetCurrentCount(slotId);
         }
 
     }

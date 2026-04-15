@@ -110,7 +110,7 @@ namespace desktopapp_GYM.GUI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ShowDetail(new ucRegistration());
+            ShowDetail(new ucSchedules());
         }
     }
 }

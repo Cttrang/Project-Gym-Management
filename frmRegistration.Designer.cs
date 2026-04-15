@@ -35,7 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.grpPersonal = new System.Windows.Forms.GroupBox();
             this.cboStatus = new System.Windows.Forms.ComboBox();
-            this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpRegDate_New = new System.Windows.Forms.DateTimePicker();
             this.txtPhone = new System.Windows.Forms.TextBox();
             this.txtFullName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -61,7 +61,7 @@
             this.txtSessionsTotal = new System.Windows.Forms.TextBox();
             this.txtSessionsPerWeek = new System.Windows.Forms.TextBox();
             this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
-            this.dtpRegDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpStartDate_New = new System.Windows.Forms.DateTimePicker();
             this.cboPackage = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -71,8 +71,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.grpSlot = new System.Windows.Forms.GroupBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.lstSlots = new System.Windows.Forms.ListBox();
-            this.btnReset = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -82,13 +82,13 @@
             this.label17 = new System.Windows.Forms.Label();
             this.cboTrainer = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.btnReset = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
             this.cboPayment = new System.Windows.Forms.ComboBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnOut = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.txtNotes = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
             this.grpOption.SuspendLayout();
             this.grpPersonal.SuspendLayout();
             this.grpType.SuspendLayout();
@@ -159,13 +159,13 @@
             // grpPersonal
             // 
             this.grpPersonal.Controls.Add(this.cboStatus);
-            this.grpPersonal.Controls.Add(this.dtpStartDate);
             this.grpPersonal.Controls.Add(this.txtPhone);
             this.grpPersonal.Controls.Add(this.txtFullName);
             this.grpPersonal.Controls.Add(this.label5);
             this.grpPersonal.Controls.Add(this.label4);
             this.grpPersonal.Controls.Add(this.label3);
             this.grpPersonal.Controls.Add(this.label2);
+            this.grpPersonal.Controls.Add(this.dtpStartDate_New);
             this.grpPersonal.Location = new System.Drawing.Point(23, 185);
             this.grpPersonal.Name = "grpPersonal";
             this.grpPersonal.Size = new System.Drawing.Size(321, 200);
@@ -181,14 +181,15 @@
             this.cboStatus.Size = new System.Drawing.Size(121, 27);
             this.cboStatus.TabIndex = 7;
             // 
-            // dtpStartDate
+            // dtpRegDate_New
             // 
-            this.dtpStartDate.CustomFormat = "dd/MM/yyyy";
-            this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStartDate.Location = new System.Drawing.Point(123, 104);
-            this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(184, 26);
-            this.dtpStartDate.TabIndex = 6;
+            this.dtpRegDate_New.CustomFormat = "dd/MM/yyyy";
+            this.dtpRegDate_New.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpRegDate_New.Location = new System.Drawing.Point(162, 58);
+            this.dtpRegDate_New.Name = "dtpRegDate_New";
+            this.dtpRegDate_New.Size = new System.Drawing.Size(134, 26);
+            this.dtpRegDate_New.TabIndex = 6;
+            this.dtpRegDate_New.ValueChanged += new System.EventHandler(this.dtpRegDate_New_ValueChanged);
             // 
             // txtPhone
             // 
@@ -321,6 +322,7 @@
             // grpPackage
             // 
             this.grpPackage.Controls.Add(this.chkIsActive);
+            this.grpPackage.Controls.Add(this.dtpRegDate_New);
             this.grpPackage.Controls.Add(this.label23);
             this.grpPackage.Controls.Add(this.txtOriginalPrice);
             this.grpPackage.Controls.Add(this.label22);
@@ -331,7 +333,6 @@
             this.grpPackage.Controls.Add(this.txtSessionsTotal);
             this.grpPackage.Controls.Add(this.txtSessionsPerWeek);
             this.grpPackage.Controls.Add(this.dtpEndDate);
-            this.grpPackage.Controls.Add(this.dtpRegDate);
             this.grpPackage.Controls.Add(this.cboPackage);
             this.grpPackage.Controls.Add(this.label16);
             this.grpPackage.Controls.Add(this.label15);
@@ -442,14 +443,14 @@
             this.dtpEndDate.Size = new System.Drawing.Size(134, 26);
             this.dtpEndDate.TabIndex = 16;
             // 
-            // dtpRegDate
+            // dtpStartDate_New
             // 
-            this.dtpRegDate.CustomFormat = "dd/MM/yyyy";
-            this.dtpRegDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpRegDate.Location = new System.Drawing.Point(162, 58);
-            this.dtpRegDate.Name = "dtpRegDate";
-            this.dtpRegDate.Size = new System.Drawing.Size(134, 26);
-            this.dtpRegDate.TabIndex = 15;
+            this.dtpStartDate_New.CustomFormat = "dd/MM/yyyy";
+            this.dtpStartDate_New.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpStartDate_New.Location = new System.Drawing.Point(123, 104);
+            this.dtpStartDate_New.Name = "dtpStartDate_New";
+            this.dtpStartDate_New.Size = new System.Drawing.Size(184, 26);
+            this.dtpStartDate_New.TabIndex = 15;
             // 
             // cboPackage
             // 
@@ -543,6 +544,15 @@
             this.grpSlot.TabStop = false;
             this.grpSlot.Text = "Chọn thời khóa biểu";
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(26, 181);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(104, 19);
+            this.label24.TabIndex = 21;
+            this.label24.Text = "Buổi đã đăng kí";
+            // 
             // lstSlots
             // 
             this.lstSlots.FormattingEnabled = true;
@@ -551,16 +561,6 @@
             this.lstSlots.Name = "lstSlots";
             this.lstSlots.Size = new System.Drawing.Size(251, 137);
             this.lstSlots.TabIndex = 20;
-            // 
-            // btnReset
-            // 
-            this.btnReset.Location = new System.Drawing.Point(360, 709);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(86, 35);
-            this.btnReset.TabIndex = 19;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // btnClear
             // 
@@ -645,6 +645,16 @@
             this.label11.TabIndex = 8;
             this.label11.Text = "Trainer";
             // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(360, 709);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(86, 35);
+            this.btnReset.TabIndex = 19;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -699,15 +709,6 @@
             this.txtNotes.Size = new System.Drawing.Size(174, 26);
             this.txtNotes.TabIndex = 27;
             // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(26, 181);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(104, 19);
-            this.label24.TabIndex = 21;
-            this.label24.Text = "Buổi đã đăng kí";
-            // 
             // frmRegistration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -761,7 +762,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dtpStartDate;
+        private System.Windows.Forms.DateTimePicker dtpRegDate_New;
         private System.Windows.Forms.ComboBox cboOldMember;
         private System.Windows.Forms.ComboBox cboStatus;
         private System.Windows.Forms.GroupBox grpType;
@@ -795,7 +796,7 @@
         private System.Windows.Forms.TextBox txtSessionsTotal;
         private System.Windows.Forms.TextBox txtSessionsPerWeek;
         private System.Windows.Forms.DateTimePicker dtpEndDate;
-        private System.Windows.Forms.DateTimePicker dtpRegDate;
+        private System.Windows.Forms.DateTimePicker dtpStartDate_New;
         private System.Windows.Forms.ComboBox cboPackage;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label label20;

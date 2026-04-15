@@ -46,6 +46,12 @@ namespace desktopapp_GYM
             {
                 // Màu xanh dương modern nếu còn chỗ
                 this.BackColor = Color.FromArgb(52, 152, 219);
+
+                // Nếu lớp còn ít chỗ (ví dụ còn dưới 3 chỗ), có thể đổi màu vàng để cảnh báo
+                if (dto.MaxMembers - dto.CurrentCount <= 2 && dto.MaxMembers > 1)
+                {
+                    this.BackColor = Color.Orange; // Màu cam/vàng
+                }
             }
         }
 

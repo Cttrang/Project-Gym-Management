@@ -86,7 +86,8 @@ namespace desktopapp_GYM.DAL
           AND ts.STATUS    = 'Active'
         GROUP BY ts.SLOTID, ts.SLOTNAME, ts.DAYOFWEEK,
                  ts.STARTTIME, ts.ENDTIME, ts.MAXMEMBERS, ts.STATUS,
-                 t.FULLNAME";
+                 t.FULLNAME
+        HAVING COUNT(DISTINCT rs.REGID) < ts.MAXMEMBERS";
 
             using (SqlConnection con = GetConnection())
             {
@@ -226,11 +227,16 @@ namespace desktopapp_GYM.DAL
                 WHEN N'Chủ Nhật' THEN 7
                 ELSE 8
             END AS SortOrder
-        FROM TIMESLOTS
-        WHERE TRAINERID = @tid
-          AND PACKAGEID = @pid
-          AND STATUS    = 'Active'
+        FROM TIMESLOTS ts
+        LEFT JOIN REGISTRATION_SLOTS rs ON ts.SLOTID = rs.SLOTID
+        LEFT JOIN REGISTRATIONS r ON rs.REGID = r.REGID AND r.IS_ACTIVE = 1
+        WHERE ts.TRAINERID = @tid
+          AND ts.PACKAGEID = @pid
+          AND ts.STATUS    = 'Active'
+        GROUP BY ts.DAYOFWEEK, ts.SLOTID, ts.MAXMEMBERS -- Nhóm theo slot để đếm sĩ số từng ca
+        HAVING COUNT(DISTINCT rs.REGID) < ts.MAXMEMBERS -- Chỉ lấy các ca còn chỗ
     ) sub
+    GROUP BY DAYOFWEEK, SortOrder
     ORDER BY SortOrder";
 
             using (SqlConnection con = GetConnection())
@@ -244,6 +250,30 @@ namespace desktopapp_GYM.DAL
                     list.Add(r["DAYOFWEEK"].ToString());
             }
             return list;
+        }
+
+        public int GetCurrentCount(int slotId)
+        {
+            string sql = @"
+        SELECT COUNT(DISTINCT rs.REGID) 
+        FROM REGISTRATION_SLOTS rs
+        JOIN REGISTRATIONS r ON rs.REGID = r.REGID
+        WHERE rs.SLOTID = @sid AND r.IS_ACTIVE = 1";
+
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@sid", slotId);
+                con.Open();
+                object result = cmd.ExecuteScalar();
+                return result != null ? Convert.ToInt32(result) : 0;
+            }
+        }
+
+        public bool IsSlotFull(int slotId, int maxMembers)
+        {
+            // Gọi hàm đếm ở trên và so sánh với Max
+            return GetCurrentCount(slotId) >= maxMembers;
         }
 
     }

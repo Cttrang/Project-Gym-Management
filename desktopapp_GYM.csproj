@@ -202,6 +202,12 @@
     <Compile Include="ucRevenueChart.Designer.cs">
       <DependentUpon>ucRevenueChart.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucSchedules.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucSchedules.Designer.cs">
+      <DependentUpon>ucSchedules.cs</DependentUpon>
+    </Compile>
     <Compile Include="ucTimeSlotReg.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -297,6 +303,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ucRevenueChart.resx">
       <DependentUpon>ucRevenueChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucSchedules.resx">
+      <DependentUpon>ucSchedules.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucTimeSlot.resx">
       <DependentUpon>ucTimeSlot.cs</DependentUpon>

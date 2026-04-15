@@ -38,7 +38,9 @@ namespace desktopapp_GYM
             InitializeComponent();
             _dto = dto;
             _isAdd = isAdd;
-        }
+            if (_isAdd) 
+                _dto = new RegistrationDTO();
+            }
 
         private void ApplyEditPermissions(string paymentStatus)
         {
@@ -74,8 +76,8 @@ namespace desktopapp_GYM
         {
             txtFullName.Text = _dto.MemberName;
             txtPhone.Text = _dto.MemberPhone; ;   // Không có trong DTO, chỉ hiển thị tên
-            dtpRegDate.Value = _dto.RegDate;
-            dtpStartDate.Value = _dto.RegDate;
+            dtpRegDate_New.Value = _dto.RegDate;
+            //dtpStartDate_New.Value = DateTime.Today;
             dtpEndDate.Value = _dto.EndDate;
 
             // Tick đúng loại gói
@@ -238,11 +240,11 @@ namespace desktopapp_GYM
             if (_isAdd)
             {
                 // Mặc định chế độ thêm mới
-                dtpRegDate.Value = DateTime.Today;
-                dtpRegDate.Enabled = false; // REGDATE = hôm nay, không cho sửa
-                dtpRegDate.Value = DateTime.Today;
-                dtpRegDate.Enabled = false;
-                dtpEndDate.Value = DateTime.Today.AddMonths(1);
+                dtpStartDate_New.Value = DateTime.Today;
+                dtpStartDate_New.Enabled = false; // REGDATE = hôm nay, không cho sửa
+                dtpRegDate_New.Value = DateTime.Today;
+                dtpRegDate_New.Enabled = true;
+                dtpEndDate.Value = dtpRegDate_New.Value.AddMonths(1);
                 chkIsActive.Checked = true;
                 cboPayment.SelectedIndex = 0;
 
@@ -365,7 +367,17 @@ namespace desktopapp_GYM
                 return;
             }
 
-            cboTime.DataSource = slots;
+            var availableSlots = slots.Where(s => s.CurrentCount < s.MaxMembers).ToList();
+
+            if (availableSlots.Count == 0)
+            {
+                MessageBox.Show("Tất cả khung giờ trong ngày này đã đầy chỗ!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                cboTime.DataSource = null;
+                return;
+            }
+
+            cboTime.DataSource = availableSlots;
             cboTime.DisplayMember = "DisplayTime";
             cboTime.ValueMember = "SlotID";
             cboTime.SelectedIndex = -1;
@@ -389,7 +401,7 @@ namespace desktopapp_GYM
             if (pkg == null) return;
 
             // Tự fill thông tin gói
-            dtpEndDate.Value = DateTime.Today.AddMonths(pkg.DurationMonths);
+            dtpEndDate.Value = dtpRegDate_New.Value.AddMonths(pkg.DurationMonths);
             txtOriginalPrice.Text = pkg.Price.ToString("N0");
             txtDiscount.Text = "0";
             RecalcTotal();
@@ -445,6 +457,15 @@ namespace desktopapp_GYM
             }
 
             var slot = (TimeslotDTO)cboTime.SelectedItem;
+            if (slot == null) return;
+            if (slot.CurrentCount >= slot.MaxMembers)
+            {
+                MessageBox.Show($"Lớp {slot.SlotName} đã vừa đủ {slot.MaxMembers} người. Vui lòng chọn giờ khác!",
+                                "Lớp đầy", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                RefreshTimeSlots(); // Load lại combo để cập nhật danh sách mới nhất
+                return;
+            }
+
             _selectedSlots.Add(slot);
             RefreshSlotListBox();
         }
@@ -490,6 +511,7 @@ namespace desktopapp_GYM
                 // 1. Xử lý Member
                 if (_isAdd)
                 {
+                    
                     if (rdoNewMember.Checked)
                     {
                         // Validate
@@ -506,7 +528,7 @@ namespace desktopapp_GYM
                         {
                             FullName = txtFullName.Text.Trim(),
                             Phone = txtPhone.Text.Trim(),
-                            JoinDate = dtpRegDate.Value.Date,
+                            JoinDate = dtpStartDate_New.Value.Date,
                             Status = cboStatus.Text
                         };
                         _resolvedMemberID = memberBll.AddAndGetID(newMember);
@@ -516,9 +538,13 @@ namespace desktopapp_GYM
                             return;
                         }
                         var members = memberBll.GetData();
+
+                        cboOldMember.SelectedIndexChanged -= cboOldMember_SelectedIndexChanged;
                         cboOldMember.DataSource = members;
                         cboOldMember.DisplayMember = "FullName";
-                        cboOldMember.ValueMember = "ID";
+                        cboOldMember.ValueMember = "MemberID";
+                        cboOldMember.SelectedIndex = -1;
+                        cboOldMember.SelectedIndexChanged += cboOldMember_SelectedIndexChanged;
                     }
                     else // Member cũ
                     {
@@ -584,7 +610,7 @@ namespace desktopapp_GYM
                 reg.TrainerID = cboTrainer.SelectedValue is int tid && tid > 0
                                     ? tid : (int?)null;
                 reg.EndDate = dtpEndDate.Value.Date;
-
+                reg.RegDate = dtpRegDate_New.Value.Date;
                 reg.OriginalPrice = decimal.TryParse(
                     txtOriginalPrice.Text.Replace(",", ""), out decimal orig) ? orig : 0;
                 reg.DiscountAmount = decimal.TryParse(
@@ -730,6 +756,26 @@ namespace desktopapp_GYM
         {
             if (_isAdd) return;
             ApplyEditPermissions(cboPayment.Text);
+            MarkAsChanged(sender, e);
+        }
+
+        private void UpdateEndDate()
+        {
+            // 1. Kiểm tra xem đã chọn gói tập chưa
+            if (cboPackage.SelectedValue is int pkgId && pkgId > 0)
+            {
+                var pkg = pkgBll.GetById(pkgId);
+                if (pkg != null)
+                {
+                    // EndDate = RegDate + số tháng thời hạn của gói
+                    dtpEndDate.Value = dtpRegDate_New.Value.Date.AddMonths(pkg.DurationMonths);
+                }
+            }
+        }
+
+        private void dtpRegDate_New_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateEndDate();
             MarkAsChanged(sender, e);
         }
     }
