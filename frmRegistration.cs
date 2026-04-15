@@ -523,20 +523,6 @@ namespace desktopapp_GYM
                             return;
                         }
 
-                        // Tạo member mới → lấy ID
-                        var newMember = new MemberDTO
-                        {
-                            FullName = txtFullName.Text.Trim(),
-                            Phone = txtPhone.Text.Trim(),
-                            JoinDate = dtpStartDate_New.Value.Date,
-                            Status = cboStatus.Text
-                        };
-                        _resolvedMemberID = memberBll.AddAndGetID(newMember);
-                        if (_resolvedMemberID <= 0)
-                        {
-                            MessageBox.Show("Tạo hội viên mới thất bại!");
-                            return;
-                        }
                         var members = memberBll.GetData();
 
                         cboOldMember.SelectedIndexChanged -= cboOldMember_SelectedIndexChanged;
@@ -627,7 +613,31 @@ namespace desktopapp_GYM
                 reg.SelectedSlotIDs = _selectedSlots.Select(s => s.SlotID).ToList();
 
                 // 4. Lưu
-                if (regBll.Save(reg, _isAdd))
+
+                bool result = false;
+
+                if (_isAdd && rdoNewMember.Checked)
+                {
+                    // TẠO ĐỐI TƯỢNG MEMBER MỚI (Nhưng chưa gọi hàm Add ở MemberBLL)
+                    var newMember = new MemberDTO
+                    {
+                        FullName = txtFullName.Text.Trim(),
+                        Phone = txtPhone.Text.Trim(),
+                        JoinDate = dtpStartDate_New.Value.Date,
+                        Status = cboStatus.Text
+                    };
+
+                    // GỌI HÀM TRỌN GÓI: Hàm này sẽ tự lo việc lưu Member + lưu Gói + Rollback nếu lỗi
+                    result = regBll.RegisterFullService(newMember, reg);
+                }
+                else
+                {
+                    // TRƯỜNG HỢP MEMBER CŨ: Dùng hàm Save thông thường
+                    reg.MemberID = _resolvedMemberID;
+                    result = regBll.Save(reg, _isAdd);
+                }
+
+                if (result)
                 {
                     MessageBox.Show(_isAdd ? "Đăng ký thành công!" : "Cập nhật thành công!");
                     this.DialogResult = DialogResult.OK;
