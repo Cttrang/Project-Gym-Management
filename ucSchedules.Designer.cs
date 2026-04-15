@@ -32,6 +32,7 @@
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.pnlFilter = new System.Windows.Forms.Panel();
+            this.btnResetFilter = new System.Windows.Forms.Button();
             this.lblTrainer = new System.Windows.Forms.Label();
             this.cboTrainer = new System.Windows.Forms.ComboBox();
             this.lblSlot = new System.Windows.Forms.Label();
@@ -39,12 +40,15 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.cboStatus = new System.Windows.Forms.ComboBox();
             this.lblFromDate = new System.Windows.Forms.Label();
-            this.dtpFromDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.lblMember = new System.Windows.Forms.Label();
-            this.txtMember = new System.Windows.Forms.TextBox();
-            this.btnFilter = new System.Windows.Forms.Button();
-            this.btnClearFilter = new System.Windows.Forms.Button();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.btnClearSearch = new System.Windows.Forms.Button();
             this.pnlRight = new System.Windows.Forms.Panel();
+            this.lblAbsent = new System.Windows.Forms.Label();
+            this.lblAttended = new System.Windows.Forms.Label();
+            this.lblTong = new System.Windows.Forms.Label();
             this.grpDetail = new System.Windows.Forms.GroupBox();
             this.lblMemberNameLbl = new System.Windows.Forms.Label();
             this.lblMemberNameVal = new System.Windows.Forms.Label();
@@ -68,10 +72,6 @@
             this.btnExport = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.dgvSchedules = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.pnlHeader.SuspendLayout();
             this.pnlMain.SuspendLayout();
             this.pnlFilter.SuspendLayout();
@@ -105,9 +105,9 @@
             // 
             // pnlMain
             // 
+            this.pnlMain.Controls.Add(this.dgvSchedules);
             this.pnlMain.Controls.Add(this.pnlFilter);
             this.pnlMain.Controls.Add(this.pnlRight);
-            this.pnlMain.Controls.Add(this.dgvSchedules);
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.Location = new System.Drawing.Point(0, 40);
             this.pnlMain.Name = "pnlMain";
@@ -117,7 +117,7 @@
             // pnlFilter
             // 
             this.pnlFilter.BackColor = System.Drawing.SystemColors.Window;
-            this.pnlFilter.Controls.Add(this.button1);
+            this.pnlFilter.Controls.Add(this.btnResetFilter);
             this.pnlFilter.Controls.Add(this.lblTrainer);
             this.pnlFilter.Controls.Add(this.cboTrainer);
             this.pnlFilter.Controls.Add(this.lblSlot);
@@ -125,17 +125,32 @@
             this.pnlFilter.Controls.Add(this.lblStatus);
             this.pnlFilter.Controls.Add(this.cboStatus);
             this.pnlFilter.Controls.Add(this.lblFromDate);
-            this.pnlFilter.Controls.Add(this.dtpFromDate);
+            this.pnlFilter.Controls.Add(this.dtpDate);
             this.pnlFilter.Controls.Add(this.lblMember);
-            this.pnlFilter.Controls.Add(this.txtMember);
-            this.pnlFilter.Controls.Add(this.btnFilter);
-            this.pnlFilter.Controls.Add(this.btnClearFilter);
+            this.pnlFilter.Controls.Add(this.txtSearch);
+            this.pnlFilter.Controls.Add(this.btnSearch);
+            this.pnlFilter.Controls.Add(this.btnClearSearch);
             this.pnlFilter.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFilter.Location = new System.Drawing.Point(0, 0);
             this.pnlFilter.Name = "pnlFilter";
             this.pnlFilter.Padding = new System.Windows.Forms.Padding(10, 8, 10, 8);
             this.pnlFilter.Size = new System.Drawing.Size(790, 80);
             this.pnlFilter.TabIndex = 3;
+            // 
+            // btnResetFilter
+            // 
+            this.btnResetFilter.BackColor = System.Drawing.Color.Salmon;
+            this.btnResetFilter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(239)))), ((int)(((byte)(172)))));
+            this.btnResetFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResetFilter.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnResetFilter.ForeColor = System.Drawing.Color.Black;
+            this.btnResetFilter.Location = new System.Drawing.Point(454, 24);
+            this.btnResetFilter.Name = "btnResetFilter";
+            this.btnResetFilter.Size = new System.Drawing.Size(57, 28);
+            this.btnResetFilter.TabIndex = 14;
+            this.btnResetFilter.Text = "Reset";
+            this.btnResetFilter.UseVisualStyleBackColor = false;
+            this.btnResetFilter.Click += new System.EventHandler(this.btnResetFilter_Click);
             // 
             // lblTrainer
             // 
@@ -212,65 +227,67 @@
             this.lblFromDate.TabIndex = 6;
             this.lblFromDate.Text = "Ngày:";
             // 
-            // dtpFromDate
+            // dtpDate
             // 
-            this.dtpFromDate.CustomFormat = "dd/MM/yyyy";
-            this.dtpFromDate.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFromDate.Location = new System.Drawing.Point(340, 41);
-            this.dtpFromDate.Name = "dtpFromDate";
-            this.dtpFromDate.Size = new System.Drawing.Size(108, 26);
-            this.dtpFromDate.TabIndex = 7;
+            this.dtpDate.CustomFormat = "dd/MM/yyyy";
+            this.dtpDate.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDate.Location = new System.Drawing.Point(340, 41);
+            this.dtpDate.Name = "dtpDate";
+            this.dtpDate.Size = new System.Drawing.Size(108, 26);
+            this.dtpDate.TabIndex = 7;
             // 
             // lblMember
             // 
             this.lblMember.AutoSize = true;
             this.lblMember.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMember.Location = new System.Drawing.Point(566, 12);
+            this.lblMember.Location = new System.Drawing.Point(537, 12);
             this.lblMember.Name = "lblMember";
-            this.lblMember.Size = new System.Drawing.Size(64, 19);
+            this.lblMember.Size = new System.Drawing.Size(84, 19);
             this.lblMember.TabIndex = 10;
-            this.lblMember.Text = "Member:";
+            this.lblMember.Text = "Member ID:";
             // 
-            // txtMember
+            // txtSearch
             // 
-            this.txtMember.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMember.Location = new System.Drawing.Point(627, 9);
-            this.txtMember.Name = "txtMember";
-            this.txtMember.Size = new System.Drawing.Size(150, 26);
-            this.txtMember.TabIndex = 11;
+            this.txtSearch.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(627, 9);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(150, 26);
+            this.txtSearch.TabIndex = 11;
             // 
-            // btnFilter
+            // btnSearch
             // 
-            this.btnFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(252)))), ((int)(((byte)(231)))));
-            this.btnFilter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(239)))), ((int)(((byte)(172)))));
-            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFilter.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(128)))), ((int)(((byte)(61)))));
-            this.btnFilter.Location = new System.Drawing.Point(627, 40);
-            this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(65, 26);
-            this.btnFilter.TabIndex = 12;
-            this.btnFilter.Text = "Lọc";
-            this.btnFilter.UseVisualStyleBackColor = false;
+            this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(252)))), ((int)(((byte)(231)))));
+            this.btnSearch.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(239)))), ((int)(((byte)(172)))));
+            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearch.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(128)))), ((int)(((byte)(61)))));
+            this.btnSearch.Location = new System.Drawing.Point(627, 40);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(65, 26);
+            this.btnSearch.TabIndex = 12;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // btnClearFilter
+            // btnClearSearch
             // 
-            this.btnClearFilter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.btnClearFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearFilter.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClearFilter.Location = new System.Drawing.Point(699, 40);
-            this.btnClearFilter.Name = "btnClearFilter";
-            this.btnClearFilter.Size = new System.Drawing.Size(70, 26);
-            this.btnClearFilter.TabIndex = 13;
-            this.btnClearFilter.Text = "Xoá lọc";
+            this.btnClearSearch.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.btnClearSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearSearch.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearSearch.Location = new System.Drawing.Point(699, 40);
+            this.btnClearSearch.Name = "btnClearSearch";
+            this.btnClearSearch.Size = new System.Drawing.Size(70, 26);
+            this.btnClearSearch.TabIndex = 13;
+            this.btnClearSearch.Text = "Clear";
+            this.btnClearSearch.Click += new System.EventHandler(this.btnClearSearch_Click);
             // 
             // pnlRight
             // 
             this.pnlRight.BackColor = System.Drawing.SystemColors.Window;
-            this.pnlRight.Controls.Add(this.label3);
-            this.pnlRight.Controls.Add(this.label2);
-            this.pnlRight.Controls.Add(this.label1);
+            this.pnlRight.Controls.Add(this.lblAbsent);
+            this.pnlRight.Controls.Add(this.lblAttended);
+            this.pnlRight.Controls.Add(this.lblTong);
             this.pnlRight.Controls.Add(this.grpDetail);
             this.pnlRight.Controls.Add(this.lblStatTotal);
             this.pnlRight.Controls.Add(this.lblStatAttended);
@@ -288,6 +305,36 @@
             this.pnlRight.Padding = new System.Windows.Forms.Padding(10);
             this.pnlRight.Size = new System.Drawing.Size(210, 560);
             this.pnlRight.TabIndex = 2;
+            // 
+            // lblAbsent
+            // 
+            this.lblAbsent.AutoSize = true;
+            this.lblAbsent.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAbsent.Location = new System.Drawing.Point(99, 264);
+            this.lblAbsent.Name = "lblAbsent";
+            this.lblAbsent.Size = new System.Drawing.Size(81, 21);
+            this.lblAbsent.TabIndex = 12;
+            this.lblAbsent.Text = "lblAbsent";
+            // 
+            // lblAttended
+            // 
+            this.lblAttended.AutoSize = true;
+            this.lblAttended.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAttended.Location = new System.Drawing.Point(99, 244);
+            this.lblAttended.Name = "lblAttended";
+            this.lblAttended.Size = new System.Drawing.Size(96, 21);
+            this.lblAttended.TabIndex = 11;
+            this.lblAttended.Text = "lblAttended";
+            // 
+            // lblTong
+            // 
+            this.lblTong.AutoSize = true;
+            this.lblTong.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTong.Location = new System.Drawing.Point(99, 223);
+            this.lblTong.Name = "lblTong";
+            this.lblTong.Size = new System.Drawing.Size(67, 21);
+            this.lblTong.TabIndex = 10;
+            this.lblTong.Text = "lblTong";
             // 
             // grpDetail
             // 
@@ -498,6 +545,7 @@
             this.btnAttended.TabIndex = 5;
             this.btnAttended.Text = "Đánh dấu Attended";
             this.btnAttended.UseVisualStyleBackColor = false;
+            this.btnAttended.Click += new System.EventHandler(this.btnAttended_Click);
             // 
             // btnAbsent
             // 
@@ -512,6 +560,7 @@
             this.btnAbsent.TabIndex = 6;
             this.btnAbsent.Text = "Đánh dấu Absent";
             this.btnAbsent.UseVisualStyleBackColor = false;
+            this.btnAbsent.Click += new System.EventHandler(this.btnAbsent_Click);
             // 
             // btnPostpone
             // 
@@ -558,58 +607,14 @@
             this.dgvSchedules.ColumnHeadersHeight = 30;
             this.dgvSchedules.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSchedules.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.dgvSchedules.Location = new System.Drawing.Point(0, 0);
+            this.dgvSchedules.Location = new System.Drawing.Point(0, 80);
             this.dgvSchedules.MultiSelect = false;
             this.dgvSchedules.Name = "dgvSchedules";
             this.dgvSchedules.ReadOnly = true;
             this.dgvSchedules.RowHeadersVisible = false;
             this.dgvSchedules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSchedules.Size = new System.Drawing.Size(1000, 560);
-            this.dgvSchedules.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Salmon;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(134)))), ((int)(((byte)(239)))), ((int)(((byte)(172)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(454, 24);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(57, 28);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "Reset";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(99, 223);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 21);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "label1";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(99, 244);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 21);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "label2";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(99, 264);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 21);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "label3";
+            this.dgvSchedules.Size = new System.Drawing.Size(790, 480);
+            this.dgvSchedules.TabIndex = 5;
             // 
             // ucSchedules
             // 
@@ -620,6 +625,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.Name = "ucSchedules";
             this.Size = new System.Drawing.Size(1000, 600);
+            this.Load += new System.EventHandler(this.ucSchedules_Load);
             this.pnlHeader.ResumeLayout(false);
             this.pnlMain.ResumeLayout(false);
             this.pnlFilter.ResumeLayout(false);
@@ -646,11 +652,11 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.ComboBox cboStatus;
         private System.Windows.Forms.Label lblFromDate;
-        private System.Windows.Forms.DateTimePicker dtpFromDate;
+        private System.Windows.Forms.DateTimePicker dtpDate;
         private System.Windows.Forms.Label lblMember;
-        private System.Windows.Forms.TextBox txtMember;
-        private System.Windows.Forms.Button btnFilter;
-        private System.Windows.Forms.Button btnClearFilter;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Button btnClearSearch;
         private System.Windows.Forms.Panel pnlRight;
         private System.Windows.Forms.GroupBox grpDetail;
         private System.Windows.Forms.Label lblMemberNameLbl;
@@ -674,10 +680,10 @@
         private System.Windows.Forms.Button btnPostpone;
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.Button btnResetFilter;
+        private System.Windows.Forms.Label lblAbsent;
+        private System.Windows.Forms.Label lblAttended;
+        private System.Windows.Forms.Label lblTong;
         private System.Windows.Forms.DataGridView dgvSchedules;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
     }
 }

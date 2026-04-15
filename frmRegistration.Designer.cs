@@ -647,11 +647,11 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(360, 709);
+            this.btnReset.Location = new System.Drawing.Point(517, 694);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(86, 35);
             this.btnReset.TabIndex = 19;
-            this.btnReset.Text = "Reset";
+            this.btnReset.Text = "Reset All";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
@@ -675,7 +675,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(489, 709);
+            this.btnSave.Location = new System.Drawing.Point(419, 757);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(92, 35);
             this.btnSave.TabIndex = 24;
@@ -685,7 +685,7 @@
             // 
             // btnOut
             // 
-            this.btnOut.Location = new System.Drawing.Point(588, 757);
+            this.btnOut.Location = new System.Drawing.Point(571, 757);
             this.btnOut.Name = "btnOut";
             this.btnOut.Size = new System.Drawing.Size(92, 35);
             this.btnOut.TabIndex = 25;

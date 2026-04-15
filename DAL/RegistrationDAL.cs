@@ -352,5 +352,101 @@ namespace desktopapp_GYM.DAL
             cmd.Parameters.AddWithValue("@notes", reg.Notes ?? (object)DBNull.Value);
         }
 
+        public RegistrationDTO GetByID(int regId)
+        {
+            string sql = @"
+        SELECT r.REGID, r.MEMBERID, m.FULLNAME AS MemberName,
+               r.PACKAGEID, p.PACKAGENAME AS PackageName,
+               r.TRAINERID, t.FULLNAME AS TrainerName,
+               r.REGDATE, r.ENDDATE, m.PHONE AS MemberPhone,
+               r.TOTALAMOUNT, r.ORIGINAL_PRICE, r.DISCOUNT_AMOUNT,
+               r.PAYMENTSTATUS, p.PT_SESSIONS_PER_WEEK AS SessionsPerWeek,
+               r.SESSIONS_TOTAL, r.SESSIONS_LEFT,
+               r.IS_ACTIVE, r.NOTES, p.TYPE AS PackageType,
+               NULL AS SlotSummary -- Không cần STUFF ở đây để tăng tốc độ
+        FROM REGISTRATIONS r
+        JOIN MEMBERS m ON r.MEMBERID = m.MEMBERID
+        JOIN PACKAGES p ON r.PACKAGEID = p.PACKAGEID
+        LEFT JOIN TRAINERS t ON r.TRAINERID = t.TRAINERID
+        WHERE r.REGID = @rid";
+
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@rid", regId);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read()) return MapReader(reader);
+            }
+            return null;
+        }
+
+        public List<RegistrationDTO> GetAllActive()
+        {
+            var list = new List<RegistrationDTO>();
+
+            // Sử dụng câu SQL đầy đủ để có các cột MemberName, PackageName... như hàm GetAll()
+            // Nhưng thêm điều kiện WHERE để lọc Active và còn hạn
+            string sql = @"
+        SELECT r.REGID, r.MEMBERID, m.FULLNAME AS MemberName,
+               r.PACKAGEID, p.PACKAGENAME AS PackageName,
+               r.TRAINERID, t.FULLNAME AS TrainerName,
+               r.REGDATE, r.ENDDATE, m.PHONE AS MemberPhone,
+               r.TOTALAMOUNT, r.ORIGINAL_PRICE, r.DISCOUNT_AMOUNT,
+               r.PAYMENTSTATUS, p.PT_SESSIONS_PER_WEEK AS SessionsPerWeek,
+               r.SESSIONS_TOTAL, r.SESSIONS_LEFT,
+               r.IS_ACTIVE, r.NOTES, p.TYPE AS PackageType,
+               STUFF((
+                   SELECT ', ' + ts.SLOTNAME
+                   FROM REGISTRATION_SLOTS rs
+                   JOIN TIMESLOTS ts ON rs.SLOTID = ts.SLOTID
+                   WHERE rs.REGID = r.REGID
+                   FOR XML PATH('')
+               ), 1, 2, '') AS SlotSummary
+        FROM REGISTRATIONS r
+        JOIN MEMBERS  m ON r.MEMBERID  = m.MEMBERID
+        JOIN PACKAGES p ON r.PACKAGEID = p.PACKAGEID
+        LEFT JOIN TRAINERS t ON r.TRAINERID = t.TRAINERID
+        WHERE r.IS_ACTIVE = 1 
+          AND r.ENDDATE >= CAST(GETDATE() AS DATE)
+        ORDER BY r.REGDATE DESC";
+
+            try
+            {
+                using (SqlConnection con = GetConnection())
+                {
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    // Tận dụng hàm MapReader bạn đã viết bên dưới để đổ dữ liệu vào list
+                    while (reader.Read())
+                    {
+                        list.Add(MapReader(reader));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Quăng lỗi ra để BLL hoặc GUI xử lý
+                throw new Exception("Lỗi khi lấy danh sách đăng ký còn hạn: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public bool DecreaseSession(int regId)
+        {
+            string sql = "UPDATE REGISTRATIONS SET SESSIONS_LEFT = SESSIONS_LEFT - 1 WHERE REGID = @rid AND SESSIONS_LEFT > 0";
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@rid", regId);
+                con.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
+
     }
 }
