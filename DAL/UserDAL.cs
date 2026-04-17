@@ -108,7 +108,7 @@ namespace desktopapp_GYM.DAL
                 {
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@newPass", newPassword); // Nhớ Hash nếu có dùng mã hóa
+                    cmd.Parameters.AddWithValue("@pwd", newPassword); // Nhớ Hash nếu có dùng mã hóa
                     con.Open();
                     return cmd.ExecuteNonQuery() > 0;
                 }

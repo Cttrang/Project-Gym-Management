@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,6 +50,8 @@
   <ItemGroup>
     <Compile Include="BLL\MemberBLL.cs" />
     <Compile Include="BLL\PackageBLL.cs" />
+    <Compile Include="BLL\RegistrationBLL.cs" />
+    <Compile Include="BLL\ScheduleBLL.cs" />
     <Compile Include="BLL\Session.cs" />
     <Compile Include="BLL\TimeslotBLL.cs" />
     <Compile Include="BLL\TrainerBLL.cs" />
@@ -63,11 +66,14 @@
     <Compile Include="DAL\MemberDal.cs" />
     <Compile Include="DAL\PackageDAL.cs" />
     <Compile Include="DAL\RegistrationDAL.cs" />
+    <Compile Include="DAL\ScheduleDAL.cs" />
     <Compile Include="DAL\TimeslotDAL.cs" />
     <Compile Include="DAL\TrainerDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
     <Compile Include="DTO\MemberDTO.cs" />
     <Compile Include="DTO\PackageDTO.cs" />
+    <Compile Include="DTO\RegistrationDTO.cs" />
+    <Compile Include="DTO\RegistrationSlotDTO.cs" />
     <Compile Include="DTO\TimeslotDTO.cs" />
     <Compile Include="DTO\TrainerDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
@@ -88,6 +94,18 @@
     </Compile>
     <Compile Include="frmEditAccount.Designer.cs">
       <DependentUpon>frmEditAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRegistration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRegistration.Designer.cs">
+      <DependentUpon>frmRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSchedules.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSchedules.Designer.cs">
+      <DependentUpon>frmSchedules.cs</DependentUpon>
     </Compile>
     <Compile Include="frmTimeslotEdits.cs">
       <SubType>Form</SubType>
@@ -121,6 +139,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DTO\ScheduleDTO.cs" />
+    <Compile Include="DTO\ScheduleViewDTO.cs" />
     <Compile Include="ucAccountManager.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -132,12 +152,6 @@
     </Compile>
     <Compile Include="ucBaseCard.Designer.cs">
       <DependentUpon>ucBaseCard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ucClassStatus.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ucClassStatus.Designer.cs">
-      <DependentUpon>ucClassStatus.cs</DependentUpon>
     </Compile>
     <Compile Include="ucDashBoard.cs">
       <SubType>UserControl</SubType>
@@ -193,6 +207,12 @@
     <Compile Include="ucRevenueChart.Designer.cs">
       <DependentUpon>ucRevenueChart.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucSchedules.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucSchedules.Designer.cs">
+      <DependentUpon>ucSchedules.cs</DependentUpon>
+    </Compile>
     <Compile Include="ucTimeSlotReg.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -210,6 +230,12 @@
     </Compile>
     <Compile Include="ucRegistration.Designer.cs">
       <DependentUpon>ucRegistration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucTimeslotToday.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucTimeslotToday.Designer.cs">
+      <DependentUpon>ucTimeslotToday.cs</DependentUpon>
     </Compile>
     <Compile Include="ucTrainerList.cs">
       <SubType>UserControl</SubType>
@@ -231,6 +257,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmEditAccount.resx">
       <DependentUpon>frmEditAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRegistration.resx">
+      <DependentUpon>frmRegistration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSchedules.resx">
+      <DependentUpon>frmSchedules.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTimeslotEdits.resx">
       <DependentUpon>frmTimeslotEdits.cs</DependentUpon>
@@ -286,6 +318,9 @@
     <EmbeddedResource Include="ucRevenueChart.resx">
       <DependentUpon>ucRevenueChart.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ucSchedules.resx">
+      <DependentUpon>ucSchedules.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ucTimeSlot.resx">
       <DependentUpon>ucTimeSlot.cs</DependentUpon>
     </EmbeddedResource>
@@ -294,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ucRegistration.resx">
       <DependentUpon>ucRegistration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucTimeslotToday.resx">
+      <DependentUpon>ucTimeslotToday.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucTrainerList.resx">
       <DependentUpon>ucTrainerList.cs</DependentUpon>

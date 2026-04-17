@@ -45,7 +45,6 @@
             this.pnlRightAction = new System.Windows.Forms.Panel();
             this.grpInfo = new System.Windows.Forms.GroupBox();
             this.cboDate = new System.Windows.Forms.ComboBox();
-            this.button6 = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.cboStatus = new System.Windows.Forms.ComboBox();
@@ -64,11 +63,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnCLearSearch = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
+            this.lblCurrentCount = new System.Windows.Forms.Label();
             this.tlpWrapper.SuspendLayout();
             this.pnlTopHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
@@ -329,6 +331,7 @@
             // 
             // grpInfo
             // 
+            this.grpInfo.Controls.Add(this.lblCurrentCount);
             this.grpInfo.Controls.Add(this.cboDate);
             this.grpInfo.Controls.Add(this.btnClear);
             this.grpInfo.Controls.Add(this.btnSave);
@@ -366,22 +369,10 @@
             this.cboDate.Size = new System.Drawing.Size(121, 27);
             this.cboDate.TabIndex = 41;
             // 
-            // button6
-            // 
-            this.button6.BackColor = System.Drawing.Color.IndianRed;
-            this.button6.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(132, 110);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(81, 27);
-            this.button6.TabIndex = 40;
-            this.button6.Text = "Quay lại";
-            this.button6.UseVisualStyleBackColor = false;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
             // btnClear
             // 
             this.btnClear.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.Location = new System.Drawing.Point(138, 309);
+            this.btnClear.Location = new System.Drawing.Point(132, 311);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 39;
@@ -392,7 +383,7 @@
             // btnSave
             // 
             this.btnSave.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(22, 309);
+            this.btnSave.Location = new System.Drawing.Point(37, 311);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 38;
@@ -412,9 +403,9 @@
             // txtMaxMember
             // 
             this.txtMaxMember.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMaxMember.Location = new System.Drawing.Point(113, 227);
+            this.txtMaxMember.Location = new System.Drawing.Point(158, 227);
             this.txtMaxMember.Name = "txtMaxMember";
-            this.txtMaxMember.Size = new System.Drawing.Size(106, 26);
+            this.txtMaxMember.Size = new System.Drawing.Size(61, 26);
             this.txtMaxMember.TabIndex = 36;
             // 
             // dtpEnd
@@ -485,9 +476,9 @@
             this.label7.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(17, 230);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(90, 19);
+            this.label7.Size = new System.Drawing.Size(61, 19);
             this.label7.TabIndex = 28;
-            this.label7.Text = "Max member";
+            this.label7.Text = "Member";
             // 
             // label6
             // 
@@ -551,6 +542,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnCLearSearch);
             this.groupBox1.Controls.Add(this.btnDelete);
             this.groupBox1.Controls.Add(this.button6);
             this.groupBox1.Controls.Add(this.txtSearch);
@@ -565,6 +557,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Control";
             // 
+            // btnCLearSearch
+            // 
+            this.btnCLearSearch.Location = new System.Drawing.Point(158, 43);
+            this.btnCLearSearch.Name = "btnCLearSearch";
+            this.btnCLearSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnCLearSearch.TabIndex = 41;
+            this.btnCLearSearch.Text = "Clear";
+            this.btnCLearSearch.UseVisualStyleBackColor = true;
+            this.btnCLearSearch.Click += new System.EventHandler(this.btnCLearSearch_Click);
+            // 
             // btnDelete
             // 
             this.btnDelete.BackColor = System.Drawing.Color.LightSkyBlue;
@@ -576,12 +578,24 @@
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.IndianRed;
+            this.button6.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Location = new System.Drawing.Point(132, 110);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(81, 27);
+            this.button6.TabIndex = 40;
+            this.button6.Text = "Quay lại";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // txtSearch
             // 
             this.txtSearch.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(49, 41);
+            this.txtSearch.Location = new System.Drawing.Point(18, 41);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(142, 26);
+            this.txtSearch.Size = new System.Drawing.Size(134, 26);
             this.txtSearch.TabIndex = 12;
             this.txtSearch.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -614,6 +628,15 @@
             this.label9.Size = new System.Drawing.Size(142, 19);
             this.label9.TabIndex = 11;
             this.label9.Text = "Search by MemberID";
+            // 
+            // lblCurrentCount
+            // 
+            this.lblCurrentCount.AutoSize = true;
+            this.lblCurrentCount.Location = new System.Drawing.Point(94, 228);
+            this.lblCurrentCount.Name = "lblCurrentCount";
+            this.lblCurrentCount.Size = new System.Drawing.Size(35, 22);
+            this.lblCurrentCount.TabIndex = 42;
+            this.lblCurrentCount.Text = "lab";
             // 
             // ucTimeSlotReg
             // 
@@ -684,6 +707,8 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox cboDate;
+        private System.Windows.Forms.Button btnCLearSearch;
+        private System.Windows.Forms.Label lblCurrentCount;
     }
 }
 

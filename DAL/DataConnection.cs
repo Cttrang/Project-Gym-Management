@@ -28,6 +28,54 @@ namespace desktopapp_GYM.DAL
             }
             return dt;
         }
+
+        // --- BẮT ĐẦU PHẦN BỔ SUNG ---
+
+        // 1. Hàm ExecuteQuery có tham số (Dùng cho ScheduleDAL.GetSchedules)
+        public DataTable ExecuteQuery(string sql, SqlParameter[] parameters)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                if (parameters != null)
+                {
+                    cmd.Parameters.AddRange(parameters);
+                }
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            return dt;
+        }
+
+        // 2. Hàm ExecuteNonQuery có tham số (Dùng cho Update, Insert, Delete)
+        public int ExecuteNonQuery(string sql, SqlParameter[] parameters = null)
+        {
+            int rows = 0;
+            using (SqlConnection con = GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                if (parameters != null)
+                {
+                    cmd.Parameters.AddRange(parameters);
+                }
+                rows = cmd.ExecuteNonQuery();
+            }
+            return rows;
+        }
+
+        public object ExecuteScalar(string sql, SqlParameter[] parameters)
+        {
+            using (SqlConnection con = GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                if (parameters != null) cmd.Parameters.AddRange(parameters);
+                return cmd.ExecuteScalar();
+            }
+        }
+
     }
     
 

@@ -297,7 +297,12 @@ namespace desktopapp_GYM
             txtClassName.Clear();
             txtMaxMember.Clear();
             cboDate.SelectedIndex=-1; // Xóa trắng txtDate
+            // Reset số hiển thị
+            lblCurrentCount.Text = "0 /";
+            lblCurrentCount.ForeColor = Color.Gray;
             // ... reset các combo box ...
+            cboPackage.DataSource = null;
+            cboTrainer.SelectedIndex = -1;
         }
 
         // 3. Event mẫu khi Double Click vào ô trống
@@ -347,6 +352,23 @@ namespace desktopapp_GYM
             isAddMode = false;
             ToggleEvents(false);
             isDataChanged = false;
+
+            // --- CẬP NHẬT SỐ LƯỢNG LÊN LABEL ---
+            lblCurrentCount.Text = slot.CurrentCount.ToString() + " /";
+
+            // Đổi màu để cảnh báo nhanh
+            if (slot.CurrentCount >= slot.MaxMembers)
+            {
+                lblCurrentCount.ForeColor = Color.Red; // Đầy lớp thì hiện màu đỏ
+            }
+            else if (slot.MaxMembers - slot.CurrentCount <= 3)
+            {
+                lblCurrentCount.ForeColor = Color.Orange; // Sắp đầy (còn dưới 3 chỗ) thì màu cam
+            }
+            else
+            {
+                lblCurrentCount.ForeColor = Color.DeepSkyBlue; // Còn nhiều chỗ thì màu xanh
+            }
 
             txtClassName.Text = slot.SlotName;
             txtMaxMember.Text = slot.MaxMembers.ToString();
@@ -709,12 +731,20 @@ namespace desktopapp_GYM
                 {
                     foreach (Control subCtrl in flp.Controls)
                     {
-                        if (subCtrl is ucTimeSlot uc) uc.BackColor = Color.White;
+                        //if (subCtrl is ucTimeSlot uc) uc.BackColor = Color.White;
+                        if (subCtrl is ucTimeSlot uc && uc.Data != null)
+                            uc.UpdateData(uc.Data);
                     }
                 }
             }
         }
 
+        private void btnCLearSearch_Click(object sender, EventArgs e)
+        {
+            txtSearch.Clear();
+            ResetGridHighlight();
+            txtSearch.Focus();
+        }
     }
 }
 

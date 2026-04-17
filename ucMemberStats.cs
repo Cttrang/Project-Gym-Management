@@ -1,4 +1,5 @@
 ﻿using desktopapp_GYM.DAL;
+using desktopapp_GYM.GUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +25,12 @@ namespace desktopapp_GYM
             int count = dalMember.GetTotalMembers();
             // Đổ con số vào Label trên giao diện của thẻ này
             lblMemberCount.Text = count.ToString("N0");
+        }
+
+        private void btnViewDetail_Click(object sender, EventArgs e)
+        {
+            Form parent = this.FindForm();
+            if (parent is frmMain main) main.ShowDetail(new ucMemberList());
         }
     }
 }

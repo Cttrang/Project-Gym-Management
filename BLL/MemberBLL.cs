@@ -118,5 +118,40 @@ namespace desktopapp_GYM.BLL
             
             return dal.DeleteRecord(id, targetRole);
         }
+
+        public MemberDTO GetById(int memberId)
+        {
+            if (memberId <= 0) return null;
+            return dal.GetById(memberId);
+        }
+
+        public int AddAndGetID(MemberDTO m)
+        {
+            if (string.IsNullOrWhiteSpace(m.FullName))
+            {
+                MessageBox.Show("Họ tên không được để trống!",
+                    "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return -1;
+            }
+            if (string.IsNullOrWhiteSpace(m.Phone))
+            {
+                MessageBox.Show("Số điện thoại không được để trống!",
+                    "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return -1;
+            }
+            try
+            {
+                return dal.InsertAndGetID(m);
+            }
+            catch (Exception ex)
+            {
+                // Thường là lỗi UNIQUE constraint trên PHONE
+                MessageBox.Show("Lỗi tạo hội viên: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return -1;
+            }
+        }
+
+        public List<MemberDTO> GetData() => dal.GetAllMembers();
     }
 }

@@ -222,6 +222,18 @@ namespace desktopapp_GYM.DAL
             return ids;
         }
 
+        public DataTable GetTrainersForCombobox()
+        {
+            // Chỉ lấy ID và Tên của những Trainer đang làm việc để lọc
+            string sql = "SELECT TRAINERID, FULLNAME FROM TRAINERS WHERE STATUS = 'Active' ORDER BY FULLNAME ASC";
+            using (SqlConnection con = GetConnection())
+            {
+                SqlDataAdapter da = new SqlDataAdapter(sql, con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
 
     }
 }
