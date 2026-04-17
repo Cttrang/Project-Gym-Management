@@ -153,12 +153,6 @@
     <Compile Include="ucBaseCard.Designer.cs">
       <DependentUpon>ucBaseCard.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucClassStatus.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ucClassStatus.Designer.cs">
-      <DependentUpon>ucClassStatus.cs</DependentUpon>
-    </Compile>
     <Compile Include="ucDashBoard.cs">
       <SubType>UserControl</SubType>
     </Compile>

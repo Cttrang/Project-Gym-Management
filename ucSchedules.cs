@@ -37,7 +37,7 @@ namespace desktopapp_GYM
             try
             {
                 _currentSource = _scheduleBll.GetSchedules(date, trainerId, status, null, slotId);
-                lblDebug.Text = "Số record lấy được: " + _currentSource.Count;
+                lblDebug.Text = "Số hồ sơ lấy được: " + _currentSource.Count;
 
                 // Reset Grid một cách sạch sẽ
                 dgvSchedules.DataSource = null;
@@ -160,7 +160,7 @@ namespace desktopapp_GYM
         private void UpdateStatistics(int regId)
         {
             // Có thể viết thêm 1 hàm trong BLL để lấy thống kê nhanh
-            var allSessions = _currentSource.Where(x => x.RegID == regId).ToList();
+            var allSessions = _currentSource.ToList();
             lblTong.Text = allSessions.Count.ToString();
             lblAttended.Text = allSessions.Count(x => x.Status == "Attended").ToString();
             lblAbsent.Text = allSessions.Count(x => x.Status == "Absent").ToString();
