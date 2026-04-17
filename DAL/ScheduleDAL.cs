@@ -1,4 +1,5 @@
-﻿using System;
+﻿using desktopapp_GYM.DTO;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -15,24 +16,22 @@ namespace desktopapp_GYM.DAL
             List<ScheduleViewDTO> list = new List<ScheduleViewDTO>();
 
             string sql = @"
-        SELECT 
-            S.SCHEDULEID, S.TRAININGDATE, S.STATUS, S.NOTES, S.IS_MAKEUP, S.ORIGINAL_DATE,
-            M.MEMBERID, M.FULLNAME AS MemberName,
-            TS.SLOTID, TS.SLOTNAME, TS.STARTTIME,
-            T.FULLNAME AS TrainerName,
-            P.PACKAGENAME,
-            R.REGID
-        FROM SCHEDULES S
-        JOIN REGISTRATIONS R ON S.REGID = R.REGID
-        JOIN MEMBERS M ON R.MEMBERID = M.MEMBERID
-        JOIN PACKAGES P ON R.PACKAGEID = P.PACKAGEID
-        LEFT JOIN TIMESLOTS TS ON S.SLOTID = TS.SLOTID
-        -- Lấy tên Trainer từ bảng TRAINERS dựa trên TRAINERID của REGISTRATIONS
-        LEFT JOIN TRAINERS T ON R.TRAINERID = T.TRAINERID 
-        WHERE S.TRAININGDATE = @Date";
+                SELECT 
+                    S.SCHEDULEID, S.TRAININGDATE, S.STATUS, S.NOTES, S.IS_MAKEUP, S.ORIGINAL_DATE,
+                    M.MEMBERID, M.FULLNAME AS MemberName,
+                    TS.SLOTID, TS.SLOTNAME, TS.STARTTIME,
+                    T.FULLNAME AS TrainerName,
+                    R.REGID, 
+                    R.PACKAGEID -- <--- Cột này cực kỳ quan trọng để lọc lớp bù [cite: 2026-03-14]
+                FROM SCHEDULES S
+                JOIN REGISTRATIONS R ON S.REGID = R.REGID
+                JOIN MEMBERS M ON R.MEMBERID = M.MEMBERID
+                LEFT JOIN TIMESLOTS TS ON S.SLOTID = TS.SLOTID
+                LEFT JOIN TRAINERS T ON TS.TRAINERID = T.TRAINERID 
+                WHERE S.TRAININGDATE = @Date";
 
             // Logic cộng chuỗi SQL giữ nguyên nhưng nhớ check slotId
-            if (trainerId.HasValue && trainerId > 0) sql += " AND R.TRAINERID = @TrainerID";
+            if (trainerId.HasValue && trainerId > 0) sql += " AND TS.TRAINERID = @TrainerID";
             if (slotId.HasValue && slotId > 0) sql += " AND S.SLOTID = @SlotID"; // <--- Đã có trong code của bạn
             if (!string.IsNullOrEmpty(status) && status != "--- Tất cả ---") sql += " AND S.STATUS = @Status";
             if (memberId.HasValue) sql += " AND M.MEMBERID = @MemberID";
@@ -57,15 +56,16 @@ namespace desktopapp_GYM.DAL
                         ScheduleID = Convert.ToInt32(dr["SCHEDULEID"]),
                         TrainingDate = Convert.ToDateTime(dr["TRAININGDATE"]),
                         Status = dr["STATUS"].ToString(),
-                        Notes = dr["NOTES"].ToString(),
+                        Notes = dr["NOTES"] != DBNull.Value ? dr["NOTES"].ToString() : null,
                         IsMakeup = Convert.ToBoolean(dr["IS_MAKEUP"]),
                         MemberID_Display = dr["MEMBERID"].ToString(),
                         MemberName = dr["MemberName"].ToString(),
-                        SlotName = dr["SLOTNAME"].ToString(),
+                        SlotName = dr["SLOTNAME"] != DBNull.Value ? dr["SLOTNAME"].ToString() : null,
                         StartTime = dr["STARTTIME"] != DBNull.Value ? (TimeSpan)dr["STARTTIME"] : (TimeSpan?)null,
-                        TrainerName = dr["TrainerName"].ToString(),
-                        PackageName = dr["PACKAGENAME"].ToString(),
+                        TrainerName = dr["TrainerName"] != DBNull.Value ? dr["TrainerName"].ToString() : null,
+                        SlotID = dr["SLOTID"] != DBNull.Value ? Convert.ToInt32(dr["SLOTID"]) : (int?)null,
                         RegID = Convert.ToInt32(dr["REGID"]),
+                        PackageID = Convert.ToInt32(dr["PACKAGEID"]),
                         OriginalDate = dr["ORIGINAL_DATE"] != DBNull.Value ? Convert.ToDateTime(dr["ORIGINAL_DATE"]) : (DateTime?)null
                     });
                 }
@@ -94,6 +94,7 @@ namespace desktopapp_GYM.DAL
             };
             ExecuteNonQuery(sql, parameters);
         }
+
 
         // 4. Thêm mới một buổi tập (Dùng cho hàm Generate hoặc Tạo buổi bù)
         public bool Insert(ScheduleDTO item)
@@ -132,6 +133,107 @@ namespace desktopapp_GYM.DAL
             }
         }
 
+        //public DataTable GetTrainersForCombobox()
+        //{
+        //    string sql = "SELECT TRAINERID, FULLNAME FROM TRAINERS WHERE STATUS = 'Active' ORDER BY FULLNAME ASC";
+        //    using (SqlConnection con = GetConnection())
+        //    {
+        //        SqlDataAdapter da = new SqlDataAdapter(sql, con);
+        //        DataTable dt = new DataTable();
+        //        da.Fill(dt);
+        //        return dt;
+        //    }
+        //}
+
+        public ScheduleDTO GetById(int scheduleId)
+        {
+            string sql = "SELECT * FROM SCHEDULES WHERE SCHEDULEID = @ScheduleId";
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@ScheduleId", scheduleId);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                if (dt.Rows.Count == 0) return null;
+
+                DataRow dr = dt.Rows[0];
+                return new ScheduleDTO
+                {
+                    ScheduleID = Convert.ToInt32(dr["SCHEDULEID"]),
+                    RegID = Convert.ToInt32(dr["REGID"]),
+                    SlotID = dr["SLOTID"] != DBNull.Value
+                                          ? Convert.ToInt32(dr["SLOTID"]) : (int?)null,
+                    TrainingDate = Convert.ToDateTime(dr["TRAININGDATE"]),
+                    Status = dr["STATUS"].ToString(),
+                    Notes = dr["NOTES"] != DBNull.Value
+                                          ? dr["NOTES"].ToString() : null,
+                    IsMakeup = Convert.ToBoolean(dr["IS_MAKEUP"]),
+                    OriginalDate = dr["ORIGINAL_DATE"] != DBNull.Value
+                                          ? Convert.ToDateTime(dr["ORIGINAL_DATE"]) : (DateTime?)null,
+                    Reason = dr["REASON"] != DBNull.Value
+                                          ? dr["REASON"].ToString() : null,
+                    MakeupForScheduleID = dr["MAKEUP_FOR_SCHEDULEID"] != DBNull.Value
+                                          ? Convert.ToInt32(dr["MAKEUP_FOR_SCHEDULEID"]) : (int?)null
+                };
+            }
+        }
+
+        public bool HasScheduleInRange(int regId, DateTime from, DateTime to)
+        {
+            // Bỏ lọc STATUS để kiểm tra xem "đã từng" có lịch sinh ra chưa
+            string sql = @"SELECT COUNT(*) FROM SCHEDULES 
+                   WHERE REGID = @RegId 
+                   AND TRAININGDATE BETWEEN @From AND @To";
+
+            SqlParameter[] parameters = {
+        new SqlParameter("@RegId", regId),
+        new SqlParameter("@From",  from.Date),
+        new SqlParameter("@To",    to.Date)
+            };
+
+            // Sử dụng ExecuteScalar là hoàn toàn chính xác
+            object result = ExecuteScalar(sql, parameters);
+            return result != null && Convert.ToInt32(result) > 0;
+        }
+
+        public List<TimeslotDTO> GetSlotsByPackage(int packageId)
+        {
+            List<TimeslotDTO> list = new List<TimeslotDTO>();
+            // JOIN với bảng USERS để lấy TrainerName hiển thị lên lblNewTrainer
+            string sql = @"SELECT t.*, tr.FULLNAME as TrainerName 
+                   FROM TIMESLOTS t
+                   JOIN TRAINERS tr ON t.TrainerID = tr.TRAINERID
+                   WHERE t.PackageID = @PackageID AND t.Status = 'Active' AND t.CURRENTCOUNT<t.MAXMEMBERS
+                   ORDER BY t.StartTime ASC";
+
+            using (SqlConnection con = GetConnection()) // Dùng using theo phong cách của Huy
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@PackageID", packageId);
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(new TimeslotDTO
+                        {
+                            SlotID = Convert.ToInt32(dr["SlotID"]),
+                            SlotName = dr["SlotName"].ToString(),
+                            DayOfWeek = dr["DayOfWeek"].ToString(),
+                            StartTime = dr["StartTime"].ToString(), // Ví dụ: "06:00"
+                            EndTime = dr["EndTime"].ToString(),
+                            TrainerName = dr["TrainerName"].ToString(),
+                            CurrentCount = Convert.ToInt32(dr["CurrentCount"]),
+                            MaxMembers = Convert.ToInt32(dr["MaxMembers"])
+                        });
+                    }
+                }
+            }
+            return list;
+        }
 
     }
 }

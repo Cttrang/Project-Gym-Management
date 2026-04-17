@@ -301,6 +301,8 @@ namespace desktopapp_GYM
             lblCurrentCount.Text = "0 /";
             lblCurrentCount.ForeColor = Color.Gray;
             // ... reset các combo box ...
+            cboPackage.DataSource = null;
+            cboTrainer.SelectedIndex = -1;
         }
 
         // 3. Event mẫu khi Double Click vào ô trống

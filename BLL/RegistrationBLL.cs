@@ -15,6 +15,7 @@ namespace desktopapp_GYM.BLL
     {
         private readonly RegistrationDAL dal = new RegistrationDAL();
         private readonly MemberDal memberDal = new MemberDal();
+        private readonly TimeslotBLL timeslotBll = new TimeslotBLL(); // Thêm dòng này
         public List<RegistrationDTO> GetAll() => dal.GetAll();
 
         public List<RegistrationDTO> GetByMember(int memberId) => dal.GetByMember(memberId);
@@ -99,14 +100,53 @@ namespace desktopapp_GYM.BLL
                 }
             }
 
-            return dal.Save(reg, isAdd);
+            bool result = dal.Save(reg, isAdd);
+
+            // 4. Nếu lưu thành công, tiến hành đồng bộ số lượng người ở bảng TimeSlot
+            if (result && reg.SelectedSlotIDs != null && reg.SelectedSlotIDs.Count > 0)
+            {
+                try
+                {
+                    foreach (int slotId in reg.SelectedSlotIDs)
+                    {
+                        // Gọi hàm refresh từ TimeSlotBLL để tính toán lại số người đang tập
+                        timeslotBll.RefreshSlotAttendance(slotId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Không nên chặn return true nếu chỉ lỗi refresh, nhưng nên thông báo lỗi
+                    MessageBox.Show("Lưu thành công nhưng lỗi cập nhật sĩ số: " + ex.Message);
+                }
+            }
+
+            return result;
         }
 
         public bool Delete(int regId)
         {
             if (Session.CurrentRole == "Receptionist")
                 throw new Exception("Bạn không có quyền xóa đăng ký!");
-            return dal.Delete(regId);
+            var relatedSlots = dal.GetSlotsByReg(regId).Select(s => s.SlotID).ToList();
+
+            bool result = dal.Delete(regId);
+
+            if (result)
+            {
+                try
+                {
+                    foreach (int slotId in relatedSlots)
+                    {
+                        timeslotBll.RefreshSlotAttendance(slotId);
+                    }
+                }
+                catch { /* Log lỗi hoặc bỏ qua để tránh gây nhiễu người dùng */ }
+
+            }
+            return result;
         }
+
+        // Trong RegistrationBLL.cs
+        
     }
 }

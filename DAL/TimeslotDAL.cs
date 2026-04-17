@@ -276,6 +276,71 @@ namespace desktopapp_GYM.DAL
             return GetCurrentCount(slotId) >= maxMembers;
         }
 
+        // Hàm ép Database tự đếm và cập nhật lại cột CurrentCount trong bảng TIMESLOTS
+        public bool SyncCurrentCount(int slotId)
+        {
+            // Câu lệnh SQL này sử dụng Subquery để đếm số lượng bản ghi active 
+            // từ bảng REGISTRATION_SLOTS và cập nhật trực tiếp vào TIMESLOTS
+            string sql = @"
+        UPDATE TIMESLOTS 
+        SET CurrentCount = (
+            SELECT COUNT(DISTINCT rs.REGID) 
+            FROM REGISTRATION_SLOTS rs
+            JOIN REGISTRATIONS r ON rs.REGID = r.REGID
+            WHERE rs.SLOTID = @sid AND r.IS_ACTIVE = 1
+        )
+        WHERE SLOTID = @sid";
+
+            using (SqlConnection con = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@sid", slotId);
+                try
+                {
+                    con.Open();
+                    // Nếu ExecuteNonQuery > 0 nghĩa là đã cập nhật thành công
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+                catch (Exception ex)
+                {
+                    // Bạn có thể log lỗi ở đây nếu cần
+                    System.Windows.Forms.MessageBox.Show("Lỗi đồng bộ sĩ số: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        // Trong file TimeSlotDAL.cs
+
+        public bool SyncAllAttendance()
+        {
+            // Câu lệnh này sẽ:
+            // 1. Đếm số lượng đăng ký thực tế trong bảng trung gian (giả sử tên là RegistrationSlots hoặc RegistrationDetails)
+            // 2. Cập nhật con số đó vào cột CurrentCount của bảng Timeslots
+            // 3. Chỉ đếm các đăng ký mà hợp đồng vẫn còn hiệu lực (IsActive = 1)
+
+            string sql = @"
+        UPDATE Timeslots
+        SET CurrentCount = (
+            SELECT COUNT(*)
+            FROM REGISTRATION_SLOTS rs
+            JOIN REGISTRATIONS r ON rs.RegID = r.RegID
+            WHERE rs.SlotID = Timeslots.SlotID
+              AND r.IS_ACTIVE = 1
+        )";
+
+            try
+            {
+                // Sử dụng hàm thực thi SQL dùng chung trong dự án của bạn (ví dụ: DbHelper hoặc SQLCommand)
+                // Ở đây mình minh họa bằng cách gọi trực tiếp qua executeNonQuery của bạn
+                return ExecuteNonQuery(sql) >= 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi đồng bộ sĩ số tổng: " + ex.Message);
+            }
+        }
+
     }
 
 }

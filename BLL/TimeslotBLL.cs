@@ -88,5 +88,17 @@ namespace desktopapp_GYM.BLL
             return dal.GetCurrentCount(slotId);
         }
 
+        // Trong file TimeslotBLL.cs
+        public bool RefreshSlotAttendance(int slotID)
+        {
+            // Gọi trực tiếp xuống DAL để xử lý
+            return dal.SyncCurrentCount(slotID);
+        }
+
+        public void RefreshAllAttendance()
+        {
+            dal.SyncAllAttendance();
+        }
+
     }
 }

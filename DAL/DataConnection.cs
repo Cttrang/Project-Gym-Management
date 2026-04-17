@@ -65,6 +65,16 @@ namespace desktopapp_GYM.DAL
             return rows;
         }
 
+        public object ExecuteScalar(string sql, SqlParameter[] parameters)
+        {
+            using (SqlConnection con = GetConnection())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                if (parameters != null) cmd.Parameters.AddRange(parameters);
+                return cmd.ExecuteScalar();
+            }
+        }
 
     }
     

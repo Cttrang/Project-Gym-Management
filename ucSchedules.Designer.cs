@@ -30,7 +30,9 @@
         {
             this.lblTitle = new System.Windows.Forms.Label();
             this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblDebug = new System.Windows.Forms.Label();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.dgvSchedules = new System.Windows.Forms.DataGridView();
             this.pnlFilter = new System.Windows.Forms.Panel();
             this.btnResetFilter = new System.Windows.Forms.Button();
             this.lblTrainer = new System.Windows.Forms.Label();
@@ -71,13 +73,12 @@
             this.btnPostpone = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
-            this.dgvSchedules = new System.Windows.Forms.DataGridView();
             this.pnlHeader.SuspendLayout();
             this.pnlMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSchedules)).BeginInit();
             this.pnlFilter.SuspendLayout();
             this.pnlRight.SuspendLayout();
             this.grpDetail.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSchedules)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -96,12 +97,23 @@
             // pnlHeader
             // 
             this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(197)))), ((int)(((byte)(94)))));
+            this.pnlHeader.Controls.Add(this.lblDebug);
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(1000, 40);
             this.pnlHeader.TabIndex = 3;
+            // 
+            // lblDebug
+            // 
+            this.lblDebug.AutoSize = true;
+            this.lblDebug.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDebug.Location = new System.Drawing.Point(473, 11);
+            this.lblDebug.Name = "lblDebug";
+            this.lblDebug.Size = new System.Drawing.Size(54, 19);
+            this.lblDebug.TabIndex = 2;
+            this.lblDebug.Text = "Trainer:";
             // 
             // pnlMain
             // 
@@ -113,6 +125,26 @@
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Size = new System.Drawing.Size(1000, 560);
             this.pnlMain.TabIndex = 4;
+            // 
+            // dgvSchedules
+            // 
+            this.dgvSchedules.AllowUserToAddRows = false;
+            this.dgvSchedules.AllowUserToDeleteRows = false;
+            this.dgvSchedules.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvSchedules.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dgvSchedules.ColumnHeadersHeight = 30;
+            this.dgvSchedules.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSchedules.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dgvSchedules.Location = new System.Drawing.Point(0, 80);
+            this.dgvSchedules.MultiSelect = false;
+            this.dgvSchedules.Name = "dgvSchedules";
+            this.dgvSchedules.ReadOnly = true;
+            this.dgvSchedules.RowHeadersVisible = false;
+            this.dgvSchedules.RowHeadersWidth = 82;
+            this.dgvSchedules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSchedules.Size = new System.Drawing.Size(790, 480);
+            this.dgvSchedules.TabIndex = 5;
+            this.dgvSchedules.SelectionChanged += new System.EventHandler(this.dgvSchedules_SelectionChanged);
             // 
             // pnlFilter
             // 
@@ -170,6 +202,7 @@
             this.cboTrainer.Name = "cboTrainer";
             this.cboTrainer.Size = new System.Drawing.Size(150, 27);
             this.cboTrainer.TabIndex = 1;
+            this.cboTrainer.SelectedIndexChanged += new System.EventHandler(this.cboTrainer_SelectedIndexChanged);
             // 
             // lblSlot
             // 
@@ -189,6 +222,7 @@
             this.cboSlot.Name = "cboSlot";
             this.cboSlot.Size = new System.Drawing.Size(150, 27);
             this.cboSlot.TabIndex = 3;
+            this.cboSlot.SelectedIndexChanged += new System.EventHandler(this.cboSlot_SelectedIndexChanged);
             // 
             // lblStatus
             // 
@@ -216,6 +250,7 @@
             this.cboStatus.Name = "cboStatus";
             this.cboStatus.Size = new System.Drawing.Size(108, 27);
             this.cboStatus.TabIndex = 5;
+            this.cboStatus.SelectedIndexChanged += new System.EventHandler(this.cboStatus_SelectedIndexChanged);
             // 
             // lblFromDate
             // 
@@ -236,6 +271,7 @@
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(108, 26);
             this.dtpDate.TabIndex = 7;
+            this.dtpDate.ValueChanged += new System.EventHandler(this.dtpDate_ValueChanged);
             // 
             // lblMember
             // 
@@ -531,6 +567,7 @@
             this.btnAddMakeup.TabIndex = 4;
             this.btnAddMakeup.Text = "+ Tạo buổi bù";
             this.btnAddMakeup.UseVisualStyleBackColor = false;
+            this.btnAddMakeup.Click += new System.EventHandler(this.btnAddMakeup_Click);
             // 
             // btnAttended
             // 
@@ -575,6 +612,7 @@
             this.btnPostpone.TabIndex = 7;
             this.btnPostpone.Text = "Hoãn lịch";
             this.btnPostpone.UseVisualStyleBackColor = false;
+            this.btnPostpone.Click += new System.EventHandler(this.btnPostpone_Click);
             // 
             // btnExport
             // 
@@ -598,24 +636,6 @@
             this.btnBack.TabIndex = 9;
             this.btnBack.Text = "Quay lại";
             // 
-            // dgvSchedules
-            // 
-            this.dgvSchedules.AllowUserToAddRows = false;
-            this.dgvSchedules.AllowUserToDeleteRows = false;
-            this.dgvSchedules.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvSchedules.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.dgvSchedules.ColumnHeadersHeight = 30;
-            this.dgvSchedules.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSchedules.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.dgvSchedules.Location = new System.Drawing.Point(0, 80);
-            this.dgvSchedules.MultiSelect = false;
-            this.dgvSchedules.Name = "dgvSchedules";
-            this.dgvSchedules.ReadOnly = true;
-            this.dgvSchedules.RowHeadersVisible = false;
-            this.dgvSchedules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSchedules.Size = new System.Drawing.Size(790, 480);
-            this.dgvSchedules.TabIndex = 5;
-            // 
             // ucSchedules
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -627,14 +647,15 @@
             this.Size = new System.Drawing.Size(1000, 600);
             this.Load += new System.EventHandler(this.ucSchedules_Load);
             this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
             this.pnlMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSchedules)).EndInit();
             this.pnlFilter.ResumeLayout(false);
             this.pnlFilter.PerformLayout();
             this.pnlRight.ResumeLayout(false);
             this.pnlRight.PerformLayout();
             this.grpDetail.ResumeLayout(false);
             this.grpDetail.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSchedules)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -685,5 +706,6 @@
         private System.Windows.Forms.Label lblAttended;
         private System.Windows.Forms.Label lblTong;
         private System.Windows.Forms.DataGridView dgvSchedules;
+        private System.Windows.Forms.Label lblDebug;
     }
 }

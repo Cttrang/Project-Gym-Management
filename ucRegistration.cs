@@ -1,4 +1,5 @@
 ﻿using desktopapp_GYM.BLL;
+using desktopapp_GYM.DAL;
 using desktopapp_GYM.DTO;
 using desktopapp_GYM.GUI;
 using System;
@@ -17,7 +18,7 @@ namespace desktopapp_GYM
     {
         private readonly RegistrationBLL bll = new RegistrationBLL();
         private List<RegistrationDTO> fullList = new List<RegistrationDTO>();
-
+        private readonly TimeslotBLL timeslotBll = new TimeslotBLL();
         public ucRegistration()
         {
             InitializeComponent();
@@ -99,6 +100,16 @@ namespace desktopapp_GYM
 
         private void ucRegistration_Load(object sender, EventArgs e)
         {
+            try
+            {
+                // Đồng bộ trước khi Load dữ liệu để con số CurrentCount luôn chuẩn
+                timeslotBll.RefreshAllAttendance();
+            }
+            catch (Exception ex)
+            {
+                // Có thể log lỗi ở đây nếu muốn, hoặc tạm thời bỏ qua để User vẫn xem được danh sách
+                Console.WriteLine("Lỗi đồng bộ sĩ số: " + ex.Message);
+            }
             LoadData();
             ApplyRolePermissions();
         }

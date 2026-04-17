@@ -1,4 +1,5 @@
 ﻿using desktopapp_GYM.DAL;
+using desktopapp_GYM.DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,57 +15,61 @@ namespace desktopapp_GYM.BLL
         private RegistrationDAL _regDal = new RegistrationDAL(); // Để lấy thông tin EndDate, IsActive
 
         // 1. Lấy dữ liệu cho UI ucSchedules
-        public List<ScheduleViewDTO> GetSchedules(DateTime date, int? trainerId = null, string status = null, int? memberId = null)
+        public List<ScheduleViewDTO> GetSchedules(DateTime date, int? trainerId = null, string status = null, int? memberId = null, int? slotId = null)
         {
             // Trước khi lấy, có thể gọi tự động dọn dẹp các buổi quá hạn thành Absent
             _dal.AutoMarkAbsent();
-            return _dal.GetSchedules(date, trainerId, status, memberId);
+            return _dal.GetSchedules(date, trainerId, status, memberId, slotId);
         }
 
         // 2. HÀM QUAN TRỌNG: Đồng bộ lịch khi Đăng ký mới/Sửa/Xóa (Sync)
         public void SyncScheduleForRegistration(int regId)
         {
-            // 1. Lấy thông tin Registration
             var reg = _regDal.GetByID(regId);
 
-            // 2. Nếu không tìm thấy hoặc Inactive/Expired -> Xóa lịch Scheduled tương lai
             if (reg == null || !reg.IsActive || reg.EndDate < DateTime.Today)
             {
                 _dal.DeleteFutureScheduled(regId, DateTime.Today);
                 return;
             }
 
-            // 3. Xác định mốc thời gian gối đầu (Tháng này + Tháng sau)
-            DateTime startGen = (reg.RegDate > DateTime.Today) ? reg.RegDate : DateTime.Today;
-            DateTime endOfNextMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1)
-                                        .AddMonths(2).AddDays(-1);
+            // Xác định tháng hiện tại đã có lịch chưa
+            DateTime firstDayThisMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            DateTime lastDayThisMonth = firstDayThisMonth.AddMonths(1).AddDays(-1);
+            DateTime firstDayNextMonth = firstDayThisMonth.AddMonths(1);
+            DateTime lastDayNextMonth = firstDayThisMonth.AddMonths(2).AddDays(-1);
 
-            // 4. Xóa các bản ghi 'Scheduled' cũ từ hôm nay để nạp lại (tránh trùng hoặc đổi Slot)
-            _dal.DeleteFutureScheduled(regId, DateTime.Today);
+            bool thisMonthHasSchedule = _dal.HasScheduleInRange(regId, firstDayThisMonth, lastDayThisMonth);
 
-            // 5. Lấy danh sách các Thứ (DayOfWeek) mà khách đã chọn từ bảng Registration_Slots
-            // Giả sử bạn có hàm GetSlotsByReg ở RegistrationDAL
+            // FIX: Nếu tháng này chưa có lịch, thay vì lấy firstDayThisMonth (ngày 1), 
+            // ta lấy Max của (firstDayThisMonth và reg.StartDate) để không bị gen lùi về trước ngày đăng ký.
+            DateTime actualStartThisMonth = firstDayThisMonth < reg.RegDate ? reg.RegDate : firstDayThisMonth;
+
+            DateTime startGen = thisMonthHasSchedule ? firstDayNextMonth : actualStartThisMonth;
+            DateTime endGen = lastDayNextMonth;
+
+            if (startGen > reg.EndDate) return;
+            endGen = endGen < reg.EndDate ? endGen : reg.EndDate;
+
             var selectedSlots = _regDal.GetSlotsByReg(regId);
 
-            // 6. Vòng lặp tạo lịch
-            for (DateTime d = startGen; d <= endOfNextMonth && d <= reg.EndDate; d = d.AddDays(1))
+            for (DateTime d = startGen; d <= endGen; d = d.AddDays(1))
             {
-                string dayOfWeek = d.DayOfWeek.ToString(); // "Monday", "Tuesday"...
+                // Kiểm tra bổ sung để chắc chắn không gen lịch trước ngày StartDate của gói
+                if (d < reg.RegDate) continue;
 
-                // Tìm xem ngày hiện tại có trùng với Thứ khách đã đăng ký không
-                var match = selectedSlots.FirstOrDefault(s => s.DayOfWeek == dayOfWeek);
-
+                string vnDay = GetVietnameseDayOfWeek(d.DayOfWeek);
+                var match = selectedSlots.FirstOrDefault(s => s.DayOfWeek == vnDay);
                 if (match != null)
                 {
-                    ScheduleDTO item = new ScheduleDTO
+                    _dal.Insert(new ScheduleDTO
                     {
                         RegID = regId,
                         SlotID = match.SlotID,
                         TrainingDate = d,
                         Status = "Scheduled",
                         IsMakeup = false
-                    };
-                    _dal.Insert(item);
+                    });
                 }
             }
         }
@@ -90,7 +95,7 @@ namespace desktopapp_GYM.BLL
             {
                 // Nếu là "Attended" hoặc "Absent" -> Trừ 1 buổi ở SessionsLeft trong Registration
                 // (Vì theo logic của bạn, Absent vẫn mất buổi nhưng được bù sau)
-                if (status == "Completed" || status == "Absent")
+                if (status == "Attended" || status == "Absent")
                 {
                     _regDal.DecreaseSession(regId);
                 }
@@ -102,6 +107,60 @@ namespace desktopapp_GYM.BLL
 
         // Trong ScheduleBLL.cs
         public DataTable GetTrainerList() => new TrainerDAL().GetTrainersForCombobox(); // Giả sử bạn có TrainerDAL
-        public DataTable GetSlotList() => new DataConnection().ExecuteQuery("SELECT SLOTID, SLOTNAME FROM TIMESLOTS");
+        public DataTable GetSlotList() => _dal.GetSlotsForCombobox();
+        private string GetVietnameseDayOfWeek(DayOfWeek day)
+        {
+            switch (day)
+            {
+                case DayOfWeek.Monday: return "Thứ 2";
+                case DayOfWeek.Tuesday: return "Thứ 3";
+                case DayOfWeek.Wednesday: return "Thứ 4";
+                case DayOfWeek.Thursday: return "Thứ 5";
+                case DayOfWeek.Friday: return "Thứ 6";
+                case DayOfWeek.Saturday: return "Thứ 7";
+                case DayOfWeek.Sunday: return "Chủ Nhật";
+                default: return "";
+            }
+        }
+
+        public void ProcessExpiredSchedules()
+        {
+            _dal.AutoMarkAbsent();
+        }
+
+        public bool Insert(ScheduleDTO item)
+        {
+            // 1. Kiểm tra ràng buộc: Không cho phép đặt lịch bù vào quá khứ
+            if (item.TrainingDate.Date < DateTime.Today)
+            {
+                return false;
+            }
+
+            // 2. Kiểm tra xem ngày đó Member đã có lịch tập chưa (tránh trùng lịch cùng ngày)
+            // Bạn có thể dùng lại hàm HasScheduleInRange đã có ở DAL
+            if (_dal.HasScheduleInRange(item.RegID, item.TrainingDate, item.TrainingDate))
+            {
+                // Nếu đã có lịch rồi thì không cho chèn thêm (tùy nghiệp vụ phòng gym của bạn)
+                // return false; 
+            }
+
+            // 3. Thực hiện chèn vào Database
+            bool result = _dal.Insert(item);
+
+            // 4. LOGIC QUAN TRỌNG: 
+            // Nếu là tập bù (IsMakeup = true), chúng ta KHÔNG gọi _regDal.DecreaseSession(item.RegID).
+            // Vì buổi tập này được tạo ra để "bù" cho một buổi Absent đã bị trừ điểm trước đó.
+
+            return result;
+        }
+
+        // Thêm vào ScheduleBLL.cs
+        public List<TimeslotDTO> GetAvailableSlotsByPackage(int packageId)
+        {
+            // Gọi xuống DAL để lấy các ca tập có PackageID tương ứng
+            // Huy có thể cần viết hàm này trong DAL nếu chưa có
+            return _dal.GetSlotsByPackage(packageId);
+        }
+
     }
 }
