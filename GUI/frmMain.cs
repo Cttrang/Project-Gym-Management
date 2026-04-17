@@ -45,12 +45,34 @@ namespace desktopapp_GYM.GUI
             
         }
 
+        private void ApplyRolePermissions()
+        {
+            string role = Session.CurrentRole;
+
+            // Duyệt qua các control trong flowLayoutPanel1 để ẩn các mục nhạy cảm
+            foreach (Control ctrl in flowLayoutPanel1.Controls)
+            {
+                // Receptionist không được xem liên quan đến doanh thu
+                if (role == "Receptionist")
+                {
+                    if (ctrl is ucRevenueChart || ctrl is ucRevenueCard)
+                    {
+                        ctrl.Visible = false;
+                    }
+                }
+
+                // Nếu sau này bạn có Manager bị giới hạn gì đó, thêm ở đây
+                // else if (role == "Manager") { ... }
+            }
+        }
+
         public void ShowUc()
         {
             flowLayoutPanel1.Visible = true;
             flowLayoutPanel1.BringToFront();
             flowLayoutPanel1.Dock = DockStyle.Fill;
 
+            ApplyRolePermissions();
             // 2. Quét qua tất cả các UC con nằm trong flowLayoutPanel để bắt chúng cập nhật
             foreach (Control ctrl in flowLayoutPanel1.Controls)
             {
@@ -74,6 +96,10 @@ namespace desktopapp_GYM.GUI
                 else if (ctrl is ucRevenueCard ucRevenueCard1)
                 {
                     ucRevenueCard1.RefreshData();
+                }
+                else if (ctrl is ucTimeslotToday ucTimeslotToday1)
+                {
+                    ucTimeslotToday1.RefreshData();
                 }
             }
         }
@@ -166,6 +192,11 @@ namespace desktopapp_GYM.GUI
         private void btnRegis_Click(object sender, EventArgs e)
         {
             ShowDetail(new ucRegistration());
+        }
+
+        private void btnSchedules_Click(object sender, EventArgs e)
+        {
+            ShowDetail(new ucSchedules());
         }
     }
 

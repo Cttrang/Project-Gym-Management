@@ -100,5 +100,8 @@ namespace desktopapp_GYM.BLL
             dal.SyncAllAttendance();
         }
 
+        public DataTable GetTimeslotsToday()
+        { return dal.GetTimeslotsToday(); }
+
     }
 }

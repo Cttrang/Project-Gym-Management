@@ -1,4 +1,5 @@
-﻿using desktopapp_GYM.DTO;
+﻿using desktopapp_GYM.BLL;
+using desktopapp_GYM.DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,6 +12,7 @@ namespace desktopapp_GYM.DAL
 {
     public class TimeslotDAL : DataConnection
     {
+        private ScheduleBLL _bll = new ScheduleBLL();
         public List<TimeslotDTO> GetAll()
         {
             var list = new List<TimeslotDTO>();
@@ -339,6 +341,24 @@ namespace desktopapp_GYM.DAL
             {
                 throw new Exception("Lỗi khi đồng bộ sĩ số tổng: " + ex.Message);
             }
+        }
+
+        // Trong file TimeslotDAL.cs
+        public DataTable GetTimeslotsToday()
+        {
+            DayOfWeek dotw = DateTime.Now.DayOfWeek;
+            // Lấy tên thứ trong ngày hiện tại (ví dụ: Monday, Tuesday...
+            string today = _bll.GetVietnameseDayOfWeek(dotw);
+
+            string sql = @"SELECT SlotName, 
+                          StartTime, 
+                          (CAST(CurrentCount AS NVARCHAR) + '/' + CAST(MaxMembers AS NVARCHAR)) as Attendance
+                   FROM TIMESLOTS 
+                   WHERE DayOfWeek = @Today AND Status = 'Active'
+                   ORDER BY StartTime ASC";
+
+            SqlParameter[] parameters = { new SqlParameter("@Today", today) };
+            return ExecuteQuery(sql, parameters);
         }
 
     }

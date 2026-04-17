@@ -32,10 +32,11 @@
             this.pnlSidebarGuest = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.txtMember = new System.Windows.Forms.Button();
+            this.btnDashboard = new System.Windows.Forms.Button();
+            this.btnRegis = new System.Windows.Forms.Button();
+            this.btnTrainer = new System.Windows.Forms.Button();
+            this.btnPackage = new System.Windows.Forms.Button();
+            this.btnMember = new System.Windows.Forms.Button();
             this.btnEditAcc = new System.Windows.Forms.Button();
             this.btnManagerAcc = new System.Windows.Forms.Button();
             this.btnClassRegis = new System.Windows.Forms.Button();
@@ -54,7 +55,8 @@
             this.lblWelcome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnRegis = new System.Windows.Forms.Button();
+            this.ucTimeslotToday1 = new desktopapp_GYM.ucTimeslotToday();
+            this.btnSchedules = new System.Windows.Forms.Button();
             this.pnlSidebarGuest.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -70,7 +72,7 @@
             this.pnlSidebarGuest.Controls.Add(this.flowLayoutPanel2);
             this.pnlSidebarGuest.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlSidebarGuest.Location = new System.Drawing.Point(0, 0);
-            this.pnlSidebarGuest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlSidebarGuest.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSidebarGuest.Name = "pnlSidebarGuest";
             this.pnlSidebarGuest.Size = new System.Drawing.Size(157, 510);
             this.pnlSidebarGuest.TabIndex = 1;
@@ -79,20 +81,21 @@
             // 
             this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.Controls.Add(this.pictureBox1);
-            this.flowLayoutPanel2.Controls.Add(this.button4);
+            this.flowLayoutPanel2.Controls.Add(this.btnDashboard);
             this.flowLayoutPanel2.Controls.Add(this.btnRegis);
-            this.flowLayoutPanel2.Controls.Add(this.button2);
-            this.flowLayoutPanel2.Controls.Add(this.button1);
-            this.flowLayoutPanel2.Controls.Add(this.txtMember);
+            this.flowLayoutPanel2.Controls.Add(this.btnTrainer);
+            this.flowLayoutPanel2.Controls.Add(this.btnClassRegis);
+            this.flowLayoutPanel2.Controls.Add(this.btnSchedules);
+            this.flowLayoutPanel2.Controls.Add(this.btnPackage);
+            this.flowLayoutPanel2.Controls.Add(this.btnMember);
             this.flowLayoutPanel2.Controls.Add(this.btnEditAcc);
             this.flowLayoutPanel2.Controls.Add(this.btnManagerAcc);
-            this.flowLayoutPanel2.Controls.Add(this.btnClassRegis);
             this.flowLayoutPanel2.Controls.Add(this.button3);
             this.flowLayoutPanel2.Controls.Add(this.btnTest);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(157, 510);
             this.flowLayoutPanel2.TabIndex = 0;
@@ -104,67 +107,78 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(151, 103);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
-            // button4
+            // btnDashboard
             // 
-            this.button4.Location = new System.Drawing.Point(2, 109);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(151, 28);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Dashboard";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnDashboard.Location = new System.Drawing.Point(2, 109);
+            this.btnDashboard.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDashboard.Name = "btnDashboard";
+            this.btnDashboard.Size = new System.Drawing.Size(151, 28);
+            this.btnDashboard.TabIndex = 4;
+            this.btnDashboard.Text = "Dashboard";
+            this.btnDashboard.UseVisualStyleBackColor = true;
+            this.btnDashboard.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button2
+            // btnRegis
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnRegis.Location = new System.Drawing.Point(2, 141);
+            this.btnRegis.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRegis.Name = "btnRegis";
+            this.btnRegis.Size = new System.Drawing.Size(151, 28);
+            this.btnRegis.TabIndex = 10;
+            this.btnRegis.Text = "Đăng kí member";
+            this.btnRegis.UseVisualStyleBackColor = true;
+            this.btnRegis.Click += new System.EventHandler(this.btnRegis_Click);
+            // 
+            // btnTrainer
+            // 
+            this.btnTrainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(2, 173);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(151, 34);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Xem huấn luyện viên";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnTrainer.Location = new System.Drawing.Point(2, 173);
+            this.btnTrainer.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTrainer.Name = "btnTrainer";
+            this.btnTrainer.Size = new System.Drawing.Size(151, 34);
+            this.btnTrainer.TabIndex = 1;
+            this.btnTrainer.Text = "Xem huấn luyện viên";
+            this.btnTrainer.UseVisualStyleBackColor = true;
+            this.btnTrainer.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button1
+            // btnPackage
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnPackage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(2, 211);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(151, 28);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Xem Gói Tập";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnPackage.Location = new System.Drawing.Point(2, 275);
+            this.btnPackage.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPackage.Name = "btnPackage";
+            this.btnPackage.Size = new System.Drawing.Size(151, 28);
+            this.btnPackage.TabIndex = 0;
+            this.btnPackage.Text = "Xem Gói Tập";
+            this.btnPackage.UseVisualStyleBackColor = true;
+            this.btnPackage.Click += new System.EventHandler(this.button1_Click);
             // 
-            // txtMember
+            // btnMember
             // 
-            this.txtMember.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnMember.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMember.Location = new System.Drawing.Point(2, 243);
-            this.txtMember.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.txtMember.Name = "txtMember";
-            this.txtMember.Size = new System.Drawing.Size(151, 28);
-            this.txtMember.TabIndex = 5;
-            this.txtMember.Text = "Hội viên";
-            this.txtMember.UseVisualStyleBackColor = true;
-            this.txtMember.Click += new System.EventHandler(this.txtMember_Click);
+            this.btnMember.Location = new System.Drawing.Point(2, 307);
+            this.btnMember.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMember.Name = "btnMember";
+            this.btnMember.Size = new System.Drawing.Size(151, 28);
+            this.btnMember.TabIndex = 5;
+            this.btnMember.Text = "Hội viên";
+            this.btnMember.UseVisualStyleBackColor = true;
+            this.btnMember.Click += new System.EventHandler(this.txtMember_Click);
             // 
             // btnEditAcc
             // 
-            this.btnEditAcc.Location = new System.Drawing.Point(2, 275);
-            this.btnEditAcc.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEditAcc.Location = new System.Drawing.Point(2, 339);
+            this.btnEditAcc.Margin = new System.Windows.Forms.Padding(2);
             this.btnEditAcc.Name = "btnEditAcc";
             this.btnEditAcc.Size = new System.Drawing.Size(151, 28);
             this.btnEditAcc.TabIndex = 8;
@@ -174,8 +188,8 @@
             // 
             // btnManagerAcc
             // 
-            this.btnManagerAcc.Location = new System.Drawing.Point(2, 307);
-            this.btnManagerAcc.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnManagerAcc.Location = new System.Drawing.Point(2, 371);
+            this.btnManagerAcc.Margin = new System.Windows.Forms.Padding(2);
             this.btnManagerAcc.Name = "btnManagerAcc";
             this.btnManagerAcc.Size = new System.Drawing.Size(151, 28);
             this.btnManagerAcc.TabIndex = 9;
@@ -185,12 +199,12 @@
             // 
             // btnClassRegis
             // 
-            this.btnClassRegis.Location = new System.Drawing.Point(2, 339);
-            this.btnClassRegis.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnClassRegis.Location = new System.Drawing.Point(2, 211);
+            this.btnClassRegis.Margin = new System.Windows.Forms.Padding(2);
             this.btnClassRegis.Name = "btnClassRegis";
             this.btnClassRegis.Size = new System.Drawing.Size(151, 28);
             this.btnClassRegis.TabIndex = 7;
-            this.btnClassRegis.Text = "Đăng kí tg cho gói";
+            this.btnClassRegis.Text = "Quản lý lịch";
             this.btnClassRegis.UseVisualStyleBackColor = true;
             this.btnClassRegis.Click += new System.EventHandler(this.btnClassRegis_Click);
             // 
@@ -198,8 +212,8 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(2, 371);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button3.Location = new System.Drawing.Point(2, 403);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(151, 28);
             this.button3.TabIndex = 2;
@@ -208,8 +222,8 @@
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(2, 403);
-            this.btnTest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTest.Location = new System.Drawing.Point(2, 435);
+            this.btnTest.Margin = new System.Windows.Forms.Padding(2);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(151, 28);
             this.btnTest.TabIndex = 6;
@@ -221,7 +235,7 @@
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.Location = new System.Drawing.Point(518, 6);
-            this.button6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button6.Margin = new System.Windows.Forms.Padding(2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(82, 28);
             this.button6.TabIndex = 6;
@@ -236,7 +250,7 @@
             this.pnlContentGuest.Controls.Add(this.panel1);
             this.pnlContentGuest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContentGuest.Location = new System.Drawing.Point(157, 0);
-            this.pnlContentGuest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlContentGuest.Margin = new System.Windows.Forms.Padding(2);
             this.pnlContentGuest.Name = "pnlContentGuest";
             this.pnlContentGuest.Size = new System.Drawing.Size(607, 510);
             this.pnlContentGuest.TabIndex = 2;
@@ -246,7 +260,7 @@
             this.pnlContent.Controls.Add(this.flowLayoutPanel1);
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContent.Location = new System.Drawing.Point(0, 105);
-            this.pnlContent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlContent.Margin = new System.Windows.Forms.Padding(2);
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(607, 405);
             this.pnlContent.TabIndex = 4;
@@ -259,9 +273,10 @@
             this.flowLayoutPanel1.Controls.Add(this.ucMemberStats1);
             this.flowLayoutPanel1.Controls.Add(this.ucPackagePrice1);
             this.flowLayoutPanel1.Controls.Add(this.ucRevenueCard1);
+            this.flowLayoutPanel1.Controls.Add(this.ucTimeslotToday1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(607, 405);
             this.flowLayoutPanel1.TabIndex = 4;
@@ -280,7 +295,7 @@
             // 
             this.ucExpiredAlert1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.ucExpiredAlert1.BorderRadius = 30;
-            this.ucExpiredAlert1.Location = new System.Drawing.Point(643, 1);
+            this.ucExpiredAlert1.Location = new System.Drawing.Point(1, 408);
             this.ucExpiredAlert1.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.ucExpiredAlert1.Name = "ucExpiredAlert1";
             this.ucExpiredAlert1.Size = new System.Drawing.Size(440, 405);
@@ -290,8 +305,8 @@
             // 
             this.ucMemberStats1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ucMemberStats1.BorderRadius = 30;
-            this.ucMemberStats1.Location = new System.Drawing.Point(1086, 2);
-            this.ucMemberStats1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ucMemberStats1.Location = new System.Drawing.Point(444, 409);
+            this.ucMemberStats1.Margin = new System.Windows.Forms.Padding(2);
             this.ucMemberStats1.Name = "ucMemberStats1";
             this.ucMemberStats1.Size = new System.Drawing.Size(162, 126);
             this.ucMemberStats1.TabIndex = 0;
@@ -300,8 +315,8 @@
             // 
             this.ucPackagePrice1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.ucPackagePrice1.BorderRadius = 30;
-            this.ucPackagePrice1.Location = new System.Drawing.Point(2, 409);
-            this.ucPackagePrice1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ucPackagePrice1.Location = new System.Drawing.Point(2, 816);
+            this.ucPackagePrice1.Margin = new System.Windows.Forms.Padding(2);
             this.ucPackagePrice1.Name = "ucPackagePrice1";
             this.ucPackagePrice1.Size = new System.Drawing.Size(343, 152);
             this.ucPackagePrice1.TabIndex = 3;
@@ -310,8 +325,8 @@
             // 
             this.ucRevenueCard1.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.ucRevenueCard1.BorderRadius = 30;
-            this.ucRevenueCard1.Location = new System.Drawing.Point(349, 409);
-            this.ucRevenueCard1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ucRevenueCard1.Location = new System.Drawing.Point(349, 816);
+            this.ucRevenueCard1.Margin = new System.Windows.Forms.Padding(2);
             this.ucRevenueCard1.Name = "ucRevenueCard1";
             this.ucRevenueCard1.Size = new System.Drawing.Size(200, 156);
             this.ucRevenueCard1.TabIndex = 4;
@@ -324,7 +339,7 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(607, 105);
             this.panel1.TabIndex = 3;
@@ -363,16 +378,28 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
             // 
-            // btnRegis
+            // ucTimeslotToday1
             // 
-            this.btnRegis.Location = new System.Drawing.Point(2, 141);
-            this.btnRegis.Margin = new System.Windows.Forms.Padding(2);
-            this.btnRegis.Name = "btnRegis";
-            this.btnRegis.Size = new System.Drawing.Size(151, 28);
-            this.btnRegis.TabIndex = 10;
-            this.btnRegis.Text = "Đăng kí member";
-            this.btnRegis.UseVisualStyleBackColor = true;
-            this.btnRegis.Click += new System.EventHandler(this.btnRegis_Click);
+            this.ucTimeslotToday1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ucTimeslotToday1.BorderRadius = 30;
+            this.ucTimeslotToday1.Location = new System.Drawing.Point(2, 976);
+            this.ucTimeslotToday1.Margin = new System.Windows.Forms.Padding(2);
+            this.ucTimeslotToday1.Name = "ucTimeslotToday1";
+            this.ucTimeslotToday1.Size = new System.Drawing.Size(261, 165);
+            this.ucTimeslotToday1.TabIndex = 5;
+            // 
+            // btnSchedules
+            // 
+            this.btnSchedules.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSchedules.Location = new System.Drawing.Point(2, 243);
+            this.btnSchedules.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSchedules.Name = "btnSchedules";
+            this.btnSchedules.Size = new System.Drawing.Size(151, 28);
+            this.btnSchedules.TabIndex = 11;
+            this.btnSchedules.Text = "Quản lý điểm danh và bù";
+            this.btnSchedules.UseVisualStyleBackColor = true;
+            this.btnSchedules.Click += new System.EventHandler(this.btnSchedules_Click);
             // 
             // frmMain
             // 
@@ -381,7 +408,7 @@
             this.ClientSize = new System.Drawing.Size(764, 510);
             this.Controls.Add(this.pnlContentGuest);
             this.Controls.Add(this.pnlSidebarGuest);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmMain";
@@ -404,11 +431,11 @@
 
         private System.Windows.Forms.Panel pnlSidebarGuest;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnTrainer;
+        private System.Windows.Forms.Button btnPackage;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button txtMember;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnMember;
+        private System.Windows.Forms.Button btnDashboard;
         private System.Windows.Forms.Panel pnlContentGuest;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
@@ -428,5 +455,7 @@
         private System.Windows.Forms.Button btnManagerAcc;
         private ucRevenueCard ucRevenueCard1;
         private System.Windows.Forms.Button btnRegis;
+        private ucTimeslotToday ucTimeslotToday1;
+        private System.Windows.Forms.Button btnSchedules;
     }
 }

@@ -108,7 +108,7 @@ namespace desktopapp_GYM.BLL
         // Trong ScheduleBLL.cs
         public DataTable GetTrainerList() => new TrainerDAL().GetTrainersForCombobox(); // Giả sử bạn có TrainerDAL
         public DataTable GetSlotList() => _dal.GetSlotsForCombobox();
-        private string GetVietnameseDayOfWeek(DayOfWeek day)
+        public string GetVietnameseDayOfWeek(DayOfWeek day)
         {
             switch (day)
             {

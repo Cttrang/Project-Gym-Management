@@ -1,4 +1,5 @@
 ﻿using desktopapp_GYM.DAL;
+using desktopapp_GYM.GUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -104,6 +105,13 @@ namespace desktopapp_GYM
             {
                 MessageBox.Show("Có lỗi khi lấy dữ liệu để tạo bảng Toppackage.");
             }
+        }
+
+        private void btnViewDetail_Click(object sender, EventArgs e)
+        {
+            Form parent = this.FindForm();
+            if (parent is frmMain main) main.ShowDetail(new ucPackageDetails());
+            else if (parent is frmGuest guest) guest.ShowDetail(new ucPackageDetails());
         }
     }
 }

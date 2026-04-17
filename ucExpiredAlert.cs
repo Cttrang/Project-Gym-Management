@@ -1,4 +1,5 @@
 ﻿using desktopapp_GYM.DAL;
+using desktopapp_GYM.GUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -72,6 +73,12 @@ namespace desktopapp_GYM
             }
 
 
+        }
+
+        private void btnViewDetail_Click(object sender, EventArgs e)
+        {
+            Form parent = this.FindForm();
+            if (parent is frmMain main) main.ShowDetail(new ucMemberList());
         }
     }
 }

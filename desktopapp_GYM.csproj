@@ -237,6 +237,12 @@
     <Compile Include="ucRegistration.Designer.cs">
       <DependentUpon>ucRegistration.cs</DependentUpon>
     </Compile>
+    <Compile Include="ucTimeslotToday.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucTimeslotToday.Designer.cs">
+      <DependentUpon>ucTimeslotToday.cs</DependentUpon>
+    </Compile>
     <Compile Include="ucTrainerList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -329,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ucRegistration.resx">
       <DependentUpon>ucRegistration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucTimeslotToday.resx">
+      <DependentUpon>ucTimeslotToday.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucTrainerList.resx">
       <DependentUpon>ucTrainerList.cs</DependentUpon>

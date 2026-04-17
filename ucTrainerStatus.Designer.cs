@@ -38,7 +38,7 @@
             // 
             // btnPin
             // 
-            this.btnPin.Location = new System.Drawing.Point(637, 3);
+            this.btnPin.Location = new System.Drawing.Point(822, 3);
             // 
             // panel2
             // 
@@ -60,6 +60,7 @@
             // btnViewDetail
             // 
             this.btnViewDetail.Location = new System.Drawing.Point(235, 0);
+            this.btnViewDetail.Click += new System.EventHandler(this.btnViewDetail_Click);
             // 
             // dgvTopTrainers
             // 

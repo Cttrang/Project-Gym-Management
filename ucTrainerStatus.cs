@@ -1,4 +1,5 @@
 ﻿using desktopapp_GYM.DAL;
+using desktopapp_GYM.GUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -115,6 +116,13 @@ namespace desktopapp_GYM
         private void ucTrainerStatus_Load(object sender, EventArgs e)
         {
             LoadTopTrainers();
+        }
+
+        private void btnViewDetail_Click(object sender, EventArgs e)
+        {
+            Form parent = this.FindForm();
+            if (parent is frmMain main) main.ShowDetail(new ucTrainerList());
+            else if (parent is frmGuest guest) guest.ShowDetail(new ucTrainerList());
         }
     }
 }
