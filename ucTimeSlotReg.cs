@@ -23,6 +23,7 @@ namespace desktopapp_GYM
         private FlowLayoutPanel currentHighlightedCell = null;
         bool isAddMode = false;
         bool isDataChanged = false;
+        private bool _isTracking = false;
 
         public ucTimeSlotReg()
         {
@@ -93,11 +94,13 @@ namespace desktopapp_GYM
 
         private void MarkAsChanged(object sender, EventArgs e)
         {
+            if (!_isTracking) return;
             isDataChanged = true;
         }
 
         private void ToggleEvents(bool active)
         {
+            _isTracking = active;
             if (active)
             {
                 txtClassName.TextChanged += MarkAsChanged;
@@ -256,22 +259,7 @@ namespace desktopapp_GYM
         };
 
         // 1. Tạo các nhãn tiêu đề cho Thứ (tlpHeader)
-        private void SetupGridHeaders()
-        {
-            //tlpHeader.Controls.Clear();
-            for (int i = 0; i < dayLabels.Length; i++)
-            {
-                Label lbl = new Label
-                {
-                    Text = dayLabels[i],
-                    Dock = DockStyle.Fill,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                    BackColor = Color.LightGray
-                };
-                //tlpHeader.Controls.Add(lbl, i, 0);
-            }
-        }
+        
 
         // 2. Tạo các ô trống (FlowLayoutPanel) và cột Giờ cho tlpBody
         private void InitEmptySlots()
@@ -386,7 +374,7 @@ namespace desktopapp_GYM
                 SetInputStatus(false);
                 isAddMode = false;
                 ToggleEvents(false);
-                isDataChanged = false;
+                
 
                 // --- CẬP NHẬT SỐ LƯỢNG LÊN LABEL ---
                 lblCurrentCount.Text = slot.CurrentCount.ToString() + " /";
@@ -442,6 +430,7 @@ namespace desktopapp_GYM
                 }
 
                 SetInputStatus(false);
+                isDataChanged = false;
             }
             catch (Exception ex)
             {
