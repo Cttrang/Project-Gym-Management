@@ -19,7 +19,7 @@ namespace desktopapp_GYM
         private readonly PackageBLL pkgBll = new PackageBLL();
         private readonly TrainerBLL trainerBll = new TrainerBLL();
         private readonly TimeslotBLL slotBll = new TimeslotBLL();
-
+        private bool _isLoading = false;
         private readonly RegistrationDTO _dto;
         private readonly bool _isAdd;
         private int _resolvedMemberID = 0; // MemberID cuối cùng dùng để lưu
@@ -121,6 +121,10 @@ namespace desktopapp_GYM
 
         private void MarkAsChanged(object sender, EventArgs e)
         {
+            if (_isLoading) return;
+            // để debug lỗi thông báo dữ liệu chưa lưu dù chưa nhập
+            //var controlName = (sender as Control)?.Name ?? sender?.GetType().Name ?? "unknown";
+            //System.Diagnostics.Debug.WriteLine($"[MarkAsChanged] sender={controlName}, stack=\n{new System.Diagnostics.StackTrace()}");
             isDataChanged = true;
         }
 
@@ -235,6 +239,7 @@ namespace desktopapp_GYM
 
         private void frmRegistration_Load(object sender, EventArgs e)
         {
+            _isLoading = true;
             InitStaticComboBoxes();
 
             if (_isAdd)
@@ -265,6 +270,7 @@ namespace desktopapp_GYM
 
             ToggleEvents(true);
             isDataChanged = false;
+           
 
         }
 
@@ -289,14 +295,22 @@ namespace desktopapp_GYM
 
         private void cboOldMember_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboOldMember.SelectedValue is int mid && mid > 0)
+            if (_isLoading) return;
+            try
             {
-                var m = memberBll.GetById(mid);
-                if (m == null) return;
-                txtFullName.Text = m.FullName;
-                txtPhone.Text = m.Phone;
-                cboStatus.Text = m.Status;
-                _resolvedMemberID = mid;
+                if (cboOldMember.SelectedValue is int mid && mid > 0)
+                {
+                    var m = memberBll.GetById(mid);
+                    if (m == null) return;
+                    txtFullName.Text = m.FullName;
+                    txtPhone.Text = m.Phone;
+                    cboStatus.Text = m.Status;
+                    _resolvedMemberID = mid;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi lấy thông tin hội viên: " + ex.Message);
             }
         }
 
@@ -339,48 +353,63 @@ namespace desktopapp_GYM
         private void RefreshTimeSlots()
         {
             cboTime.DataSource = null;
+            if (cboTrainer.SelectedValue == null ||
+                    cboPackage.SelectedValue == null ||
+                    cboDayOfWeek.SelectedValue == null) return;
             cboTime.Items.Clear();
 
-            // Lấy TrainerID — xử lý cả DataRowView (khi source là DataTable)
-            int tid = 0;
-            if (cboTrainer.SelectedValue is int tInt)
-                tid = tInt;
-            else if (cboTrainer.SelectedValue != null &&
-                     int.TryParse(cboTrainer.SelectedValue.ToString(), out int tParsed))
-                tid = tParsed;
-
-            // Lấy PackageID — source là List<PackageDTO> nên SelectedValue là int
-            int pid = 0;
-            if (cboPackage.SelectedValue is int pInt)
-                pid = pInt;
-
-            string day = cboDayOfWeek.SelectedItem?.ToString();
-
-            if (tid <= 0 || pid <= 0 || string.IsNullOrEmpty(day)) return;
-
-            var slots = slotBll.GetByTrainerPackageDay(tid, pid, day);
-
-            if (slots == null || slots.Count == 0)
+            try
             {
-                MessageBox.Show("Không có khung giờ nào phù hợp!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                // Lấy TrainerID — xử lý cả DataRowView (khi source là DataTable)
+                int tid = 0;
+                if (cboTrainer.SelectedValue is int tInt)
+                    tid = tInt;
+                else if (cboTrainer.SelectedValue != null &&
+                         int.TryParse(cboTrainer.SelectedValue.ToString(), out int tParsed))
+                    tid = tParsed;
+
+                // Lấy PackageID — source là List<PackageDTO> nên SelectedValue là int
+                int pid = 0;
+                if (cboPackage.SelectedValue is int pInt)
+                    pid = pInt;
+
+                string day = cboDayOfWeek.SelectedItem?.ToString();
+
+                if (tid <= 0 || pid <= 0 || string.IsNullOrEmpty(day)) return;
+
+                var slots = slotBll.GetByTrainerPackageDay(tid, pid, day);
+
+                if (slots == null || slots.Count == 0)
+                {
+                    MessageBox.Show("Không có khung giờ nào phù hợp!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var availableSlots = slots.Where(s => s.CurrentCount < s.MaxMembers).ToList();
+
+                if (availableSlots.Count == 0)
+                {
+                    MessageBox.Show("Tất cả khung giờ trong ngày này đã đầy chỗ!", "Thông báo",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    cboTime.DataSource = null;
+                    return;
+                }
+
+                cboTime.DataSource = availableSlots;
+                cboTime.DisplayMember = "DisplayTime";
+                cboTime.ValueMember = "SlotID";
+                cboTime.SelectedIndex = -1;
             }
-
-            var availableSlots = slots.Where(s => s.CurrentCount < s.MaxMembers).ToList();
-
-            if (availableSlots.Count == 0)
+            catch (InvalidCastException castEx)
             {
-                MessageBox.Show("Tất cả khung giờ trong ngày này đã đầy chỗ!", "Thông báo",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                cboTime.DataSource = null;
-                return;
+                Console.WriteLine("Lỗi ép kiểu dữ liệu ComboBox: " + castEx.Message);
+                // Lỗi này thường do SelectedValue đang là DataRowView thay vì ID
             }
-
-            cboTime.DataSource = availableSlots;
-            cboTime.DisplayMember = "DisplayTime";
-            cboTime.ValueMember = "SlotID";
-            cboTime.SelectedIndex = -1;
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi hệ thống khi tải khung giờ: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void LoadTrainersByPackage(int packageId)
@@ -395,42 +424,47 @@ namespace desktopapp_GYM
 
         private void cboPackage_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_isLoading) return;
             if (!(cboPackage.SelectedValue is int pkgId) || pkgId <= 0) return;
 
-            var pkg = pkgBll.GetById(pkgId);
-            if (pkg == null) return;
-
-            // Tự fill thông tin gói
-            dtpEndDate.Value = dtpRegDate_New.Value.AddMonths(pkg.DurationMonths);
-            txtOriginalPrice.Text = pkg.Price.ToString("N0");
-            txtDiscount.Text = "0";
-            RecalcTotal();
-
-            if (pkg.PTSessionsPerWeek.HasValue && pkg.PTSessionsPerWeek > 0)
+            try
             {
-                int weeks = pkg.DurationMonths * 4;
-                int total = pkg.PTSessionsPerWeek.Value * weeks;
-                txtSessionsPerWeek.Text = pkg.PTSessionsPerWeek.Value.ToString();
-                txtSessionsTotal.Text = total.ToString();
+                var pkg = pkgBll.GetById(pkgId);
+                if (pkg == null) return;
+
+                // Tự fill thông tin gói
+                dtpEndDate.Value = dtpRegDate_New.Value.AddMonths(pkg.DurationMonths);
+                txtOriginalPrice.Text = pkg.Price.ToString("N0");
+                txtDiscount.Text = "0";
+                RecalcTotal();
+
+                if (pkg.PTSessionsPerWeek.HasValue && pkg.PTSessionsPerWeek > 0)
+                {
+                    int weeks = pkg.DurationMonths * 4;
+                    int total = pkg.PTSessionsPerWeek.Value * weeks;
+                    txtSessionsPerWeek.Text = pkg.PTSessionsPerWeek.Value.ToString();
+                    txtSessionsTotal.Text = total.ToString();
+                }
+                else
+                {
+                    txtSessionsPerWeek.Text = "0";
+                    txtSessionsTotal.Text = "0";
+                }
+
+                LoadTrainersByPackage(pkgId);
+
+                // Reset các bước sau
+                cboDayOfWeek.SelectedIndex = -1;
+                cboTime.DataSource = null;
+                cboTime.Items.Clear();
+
+                RefreshTimeSlots();
             }
-            else
+            catch (Exception ex)
             {
-                txtSessionsPerWeek.Text = "0";
-                txtSessionsTotal.Text = "0";
+                MessageBox.Show("Không thể tải danh sách ngày dạy của HLV: " + ex.Message);
             }
-
-            LoadTrainersByPackage(pkgId);
-
-            // Reset các bước sau
-            cboDayOfWeek.SelectedIndex = -1;
-            cboTime.DataSource = null;
-            cboTime.Items.Clear();
-
-            RefreshTimeSlots();
         }
-
-        private void cboTrainer_SelectedIndexChanged(object sender, EventArgs e) => RefreshTimeSlots();
-        private void cboDayOfWeek_SelectedIndexChanged(object sender, EventArgs e) => RefreshTimeSlots();
 
         private void RefreshSlotListBox()
         {
@@ -718,18 +752,26 @@ namespace desktopapp_GYM
 
         private void LoadDaysByTrainerPackage()
         {
-            int? tid = cboTrainer.SelectedValue is int t && t > 0 ? t : (int?)null;
-            int? pid = cboPackage.SelectedValue is int p && p > 0 ? p : (int?)null;
-            if (tid == null || pid == null) return;
+            try
+            {
+                int? tid = cboTrainer.SelectedValue is int t && t > 0 ? t : (int?)null;
+                int? pid = cboPackage.SelectedValue is int p && p > 0 ? p : (int?)null;
+                if (tid == null || pid == null) return;
 
-            // Lấy danh sách thứ có timeslot của trainer + package này
-            var days = slotBll.GetDaysByTrainerPackage(tid.Value, pid.Value);
-            cboDayOfWeek.DataSource = days; // List<string>
-            cboDayOfWeek.SelectedIndex = -1;
+                // Lấy danh sách thứ có timeslot của trainer + package này
+                var days = slotBll.GetDaysByTrainerPackage(tid.Value, pid.Value);
+                cboDayOfWeek.DataSource = days; // List<string>
+                cboDayOfWeek.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải lịch dạy của HLV: " + ex.Message, "Lỗi DB", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void cboTrainer_SelectedIndexChanged_1(object sender, EventArgs e)
         {
+            if (_isLoading) return;
             cboDayOfWeek.SelectedIndex = -1;
             cboTime.DataSource = null;
             cboTime.Items.Clear();
@@ -737,9 +779,9 @@ namespace desktopapp_GYM
         }
 
 
-
         private void cboDayOfWeek_SelectedIndexChanged_1(object sender, EventArgs e)
         {
+            if (_isLoading) return;
             cboTime.DataSource = null;
             cboTime.Items.Clear();
             RefreshTimeSlots();
@@ -771,22 +813,37 @@ namespace desktopapp_GYM
 
         private void UpdateEndDate()
         {
-            // 1. Kiểm tra xem đã chọn gói tập chưa
-            if (cboPackage.SelectedValue is int pkgId && pkgId > 0)
+            try
             {
-                var pkg = pkgBll.GetById(pkgId);
-                if (pkg != null)
+                // 1. Kiểm tra xem đã chọn gói tập chưa
+                if (cboPackage.SelectedValue is int pkgId && pkgId > 0)
                 {
-                    // EndDate = RegDate + số tháng thời hạn của gói
-                    dtpEndDate.Value = dtpRegDate_New.Value.Date.AddMonths(pkg.DurationMonths);
+                    var pkg = pkgBll.GetById(pkgId);
+                    if (pkg != null)
+                    {
+                        // EndDate = RegDate + số tháng thời hạn của gói
+                        dtpEndDate.Value = dtpRegDate_New.Value.Date.AddMonths(pkg.DurationMonths);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                // Ghi log nhẹ hoặc bỏ qua nếu không quan trọng, tránh hiện message box liên tục gây phiền user
+                Console.WriteLine("Lỗi cập nhật ngày kết thúc: " + ex.Message);
             }
         }
 
         private void dtpRegDate_New_ValueChanged(object sender, EventArgs e)
         {
+            if (_isLoading) return;
             UpdateEndDate();
             MarkAsChanged(sender, e);
+        }
+
+        private void frmRegistration_Shown(object sender, EventArgs e)
+        {
+            isDataChanged = false;
+            _isLoading = false;
         }
     }
 }

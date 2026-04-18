@@ -16,11 +16,23 @@ namespace desktopapp_GYM.BLL
         private readonly RegistrationDAL dal = new RegistrationDAL();
         private readonly MemberDal memberDal = new MemberDal();
         private readonly TimeslotBLL timeslotBll = new TimeslotBLL(); // Thêm dòng này
-        public List<RegistrationDTO> GetAll() => dal.GetAll();
+        public List<RegistrationDTO> GetAll()
+        {
+            try { return dal.GetAll(); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy danh sách đăng ký: " + ex.Message); }
+        }
 
-        public List<RegistrationDTO> GetByMember(int memberId) => dal.GetByMember(memberId);
+        public List<RegistrationDTO> GetByMember(int memberId)
+        {
+            try { return dal.GetByMember(memberId); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy thông tin đăng ký của hội viên: " + ex.Message); }
+        }
 
-        public List<RegistrationSlotDTO> GetSlotsByReg(int regId) => dal.GetSlotsByReg(regId);
+        public List<RegistrationSlotDTO> GetSlotsByReg(int regId)
+        {
+            try { return dal.GetSlotsByReg(regId); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy danh sách khung giờ: " + ex.Message); }
+        }
 
         public bool RegisterFullService(MemberDTO member, RegistrationDTO reg)
         {
@@ -62,91 +74,115 @@ namespace desktopapp_GYM.BLL
 
         public bool Save(RegistrationDTO reg, bool isAdd)
         {
-            // Validate cơ bản
-            if (reg.MemberID <= 0)
+            try
             {
-                MessageBox.Show("Vui lòng chọn hội viên!", "Thiếu thông tin",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (reg.PackageID <= 0)
-            {
-                MessageBox.Show("Vui lòng chọn gói tập!", "Thiếu thông tin",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (reg.EndDate <= DateTime.Today)
-            {
-                MessageBox.Show("Ngày kết thúc phải sau ngày hôm nay!", "Ngày không hợp lệ",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (reg.TotalAmount <= 0)
-            {
-                MessageBox.Show("Tổng tiền không hợp lệ!", "Thiếu thông tin",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            // Kiểm tra trùng slot
-            int excludeId = isAdd ? 0 : reg.RegID;
-            foreach (int slotId in reg.SelectedSlotIDs)
-            {
-                if (dal.IsSlotConflict(reg.MemberID, slotId, excludeId))
+                // Validate cơ bản
+                    if (reg.MemberID <= 0)
                 {
-                    MessageBox.Show($"Hội viên đã đăng ký khung giờ này ở hợp đồng khác!",
-                        "Trùng lịch", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Vui lòng chọn hội viên!", "Thiếu thông tin",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
-            }
-
-            bool result = dal.Save(reg, isAdd);
-
-            // 4. Nếu lưu thành công, tiến hành đồng bộ số lượng người ở bảng TimeSlot
-            if (result && reg.SelectedSlotIDs != null && reg.SelectedSlotIDs.Count > 0)
-            {
-                try
+                if (reg.PackageID <= 0)
                 {
-                    foreach (int slotId in reg.SelectedSlotIDs)
+                    MessageBox.Show("Vui lòng chọn gói tập!", "Thiếu thông tin",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                if (reg.EndDate <= DateTime.Today)
+                {
+                    MessageBox.Show("Ngày kết thúc phải sau ngày hôm nay!", "Ngày không hợp lệ",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                if (reg.TotalAmount <= 0)
+                {
+                    MessageBox.Show("Tổng tiền không hợp lệ!", "Thiếu thông tin",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                // Kiểm tra trùng slot
+                int excludeId = isAdd ? 0 : reg.RegID;
+                foreach (int slotId in reg.SelectedSlotIDs)
+                {
+                    if (dal.IsSlotConflict(reg.MemberID, slotId, excludeId))
                     {
-                        // Gọi hàm refresh từ TimeSlotBLL để tính toán lại số người đang tập
-                        timeslotBll.RefreshSlotAttendance(slotId);
+                        MessageBox.Show($"Hội viên đã đăng ký khung giờ này ở hợp đồng khác!",
+                            "Trùng lịch", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
                     }
                 }
-                catch (Exception ex)
-                {
-                    // Không nên chặn return true nếu chỉ lỗi refresh, nhưng nên thông báo lỗi
-                    MessageBox.Show("Lưu thành công nhưng lỗi cập nhật sĩ số: " + ex.Message);
-                }
-            }
 
-            return result;
+                bool result = dal.Save(reg, isAdd);
+
+                // 4. Nếu lưu thành công, tiến hành đồng bộ số lượng người ở bảng TimeSlot
+                if (result && reg.SelectedSlotIDs != null && reg.SelectedSlotIDs.Count > 0)
+                {
+                    try
+                    {
+                        foreach (int slotId in reg.SelectedSlotIDs)
+                        {
+                            // Gọi hàm refresh từ TimeSlotBLL để tính toán lại số người đang tập
+                            timeslotBll.RefreshSlotAttendance(slotId);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Không nên chặn return true nếu chỉ lỗi refresh, nhưng nên thông báo lỗi
+                        MessageBox.Show("Lưu thành công nhưng lỗi cập nhật sĩ số: " + ex.Message);
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi lưu dữ liệu đăng ký: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
         public bool Delete(int regId)
         {
-            if (Session.CurrentRole == "Receptionist")
-                throw new Exception("Bạn không có quyền xóa đăng ký!");
-            var relatedSlots = dal.GetSlotsByReg(regId).Select(s => s.SlotID).ToList();
-
-            bool result = dal.Delete(regId);
-
-            if (result)
+            try
             {
-                try
-                {
-                    foreach (int slotId in relatedSlots)
-                    {
-                        timeslotBll.RefreshSlotAttendance(slotId);
-                    }
-                }
-                catch { /* Log lỗi hoặc bỏ qua để tránh gây nhiễu người dùng */ }
+                if (Session.CurrentRole == "Receptionist")
+                throw new Exception("Bạn không có quyền xóa đăng ký!");
+                var relatedSlots = dal.GetSlotsByReg(regId).Select(s => s.SlotID).ToList();
 
+                bool result = dal.Delete(regId);
+
+                if (result)
+                {
+                    try
+                    {
+                        foreach (int slotId in relatedSlots)
+                        {
+                            timeslotBll.RefreshSlotAttendance(slotId);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Chỉ thông báo, không làm hỏng luồng chính của Save/Delete
+                        Console.WriteLine("Lỗi cập nhật sĩ số: " + ex.Message);
+                    }
+
+                }
+                return result;
             }
-            return result;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xóa đăng ký: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
-        // Trong RegistrationBLL.cs
-        
+        public bool DecreaseSession(int regId)
+        {
+            try { return dal.DecreaseSession(regId); }
+            catch (Exception ex) { throw new Exception("Lỗi khi trừ buổi tập: " + ex.Message); }
+        }
+
     }
 }
