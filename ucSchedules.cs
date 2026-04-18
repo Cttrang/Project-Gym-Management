@@ -134,36 +134,56 @@ namespace desktopapp_GYM
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (int.TryParse(txtSearch.Text, out int memberId))
+            try
             {
-                _currentSource = _scheduleBll.GetSchedules(dtpDate.Value, null, null, memberId);
-                dgvSchedules.DataSource = _currentSource;
+                if (int.TryParse(txtSearch.Text, out int memberId))
+                {
+                    _currentSource = _scheduleBll.GetSchedules(dtpDate.Value, null, null, memberId);
+                    dgvSchedules.DataSource = _currentSource;
+                }
+                else { MessageBox.Show("Vui lòng nhập Member ID là số!"); }
             }
-            else { MessageBox.Show("Vui lòng nhập Member ID là số!"); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnResetFilter_Click(object sender, EventArgs e)
         {
-            _suppressEvents = true;
+            try
+            {
+                _suppressEvents = true;
 
-            cboTrainer.SelectedIndex = 0;
-            cboStatus.SelectedIndex = 0;
-            cboSlot.SelectedIndex = 0;
-            dtpDate.Value = DateTime.Today;
-            txtSearch.Clear();
+                cboTrainer.SelectedIndex = 0;
+                cboStatus.SelectedIndex = 0;
+                cboSlot.SelectedIndex = 0;
+                dtpDate.Value = DateTime.Today;
+                txtSearch.Clear();
 
-            _suppressEvents = false;
-
-            LoadData();
+                _suppressEvents = false;
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi reset bộ lọc: " + ex.Message);
+            }
         }
 
         private void UpdateStatistics(int regId)
         {
-            // Có thể viết thêm 1 hàm trong BLL để lấy thống kê nhanh
-            var allSessions = _currentSource.ToList();
+            try
+            {
+                // Có thể viết thêm 1 hàm trong BLL để lấy thống kê nhanh
+                var allSessions = _currentSource.ToList();
             lblTong.Text = allSessions.Count.ToString();
             lblAttended.Text = allSessions.Count(x => x.Status == "Attended").ToString();
             lblAbsent.Text = allSessions.Count(x => x.Status == "Absent").ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
         }
 
         private void ClearDetail()
@@ -177,15 +197,19 @@ namespace desktopapp_GYM
 
         private void dgvSchedules_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvSchedules.CurrentRow?.DataBoundItem == null) return;
-            if (dgvSchedules.CurrentRow?.DataBoundItem is ScheduleViewDTO selected)
+            try
             {
-                UpdateDetailPanel(selected);
+                if (dgvSchedules.CurrentRow?.DataBoundItem == null) return;
+                if (dgvSchedules.CurrentRow?.DataBoundItem is ScheduleViewDTO selected)
+                {
+                    UpdateDetailPanel(selected);
+                }
+                else
+                {               
+                    ClearDetail();
+                }
             }
-            else
-            {               
-                ClearDetail();
-            }
+            catch { ClearDetail(); }
         }
 
         private void UpdateDetailPanel(ScheduleViewDTO selected)
@@ -203,27 +227,34 @@ namespace desktopapp_GYM
 
         private void UpdateScheduleStatus(string newStatus)
         {
-            if (dgvSchedules.CurrentRow?.DataBoundItem is ScheduleViewDTO selected)
+            try
             {
-                bool success = _scheduleBll.UpdateSessionStatus(selected.ScheduleID, newStatus, "Cập nhật từ GUI", selected.RegID);
-                if (success)
+                if (dgvSchedules.CurrentRow?.DataBoundItem is ScheduleViewDTO selected)
                 {
-                    MessageBox.Show($"Đã đánh dấu: {newStatus}");
-                    LoadData(); // Reload lại lưới
+                    bool success = _scheduleBll.UpdateSessionStatus(selected.ScheduleID, newStatus, "Cập nhật từ GUI", selected.RegID);
+                    if (success)
+                    {
+                        MessageBox.Show($"Đã đánh dấu: {newStatus}");
+                        LoadData(); // Reload lại lưới
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi cập nhật trạng thái: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnAttended_Click(object sender, EventArgs e)
         {
             UpdateScheduleStatus("Attended");
-            LoadData();
+            
         }
 
         private void btnAbsent_Click(object sender, EventArgs e)
         {
             UpdateScheduleStatus("Absent");
-            LoadData();
+            
         }
 
         private void btnClearSearch_Click(object sender, EventArgs e)
@@ -303,43 +334,49 @@ namespace desktopapp_GYM
 
         private void btnAddMakeup_Click(object sender, EventArgs e)
         {
-            if (dgvSchedules.CurrentRow == null)
+            try
             {
-                MessageBox.Show("Vui lòng chọn một buổi tập vắng để đăng ký bù!",
-                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            var selectedSchedule = dgvSchedules.CurrentRow.DataBoundItem as ScheduleViewDTO;
-
-            if (selectedSchedule == null) return;
-            //if (selectedSchedule.Status != "Absent" || selectedSchedule.Status != "Cancel")
-            string status = selectedSchedule.Status.Trim();
-            string[] allowedStatuses = { "Absent", "Cancel" }; // Danh sách các trạng thái được phép bù
-
-            // Kiểm tra xem status hiện tại có nằm trong danh sách cho phép không
-            if (!allowedStatuses.Any(s => s.Equals(status, StringComparison.OrdinalIgnoreCase)))
-            {
-                MessageBox.Show("Chỉ có thể đăng ký bù cho những buổi tập hội viên đã vắng (Absent) hoặc bị hủy (Cancel)!",
-                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            using (frmSchedules frm = new frmSchedules(selectedSchedule))
-            {
-                // Hiển thị form dưới dạng Dialog (buộc xử lý xong mới quay lại màn hình chính)
-                if (frm.ShowDialog() == DialogResult.OK)
+                if (dgvSchedules.CurrentRow == null)
                 {
-                    // Nếu lưu thành công (DialogResult.OK), nạp lại dữ liệu để cập nhật Grid
-                    LoadData();
-                    MessageBox.Show("Hệ thống đã cập nhật lịch tập bù mới.");
+                    MessageBox.Show("Vui lòng chọn một buổi tập vắng để đăng ký bù!",
+                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var selectedSchedule = dgvSchedules.CurrentRow.DataBoundItem as ScheduleViewDTO;
+
+                if (selectedSchedule == null) return;
+                //if (selectedSchedule.Status != "Absent" || selectedSchedule.Status != "Cancel")
+                string status = selectedSchedule.Status.Trim();
+                string[] allowedStatuses = { "Absent", "Cancel" }; // Danh sách các trạng thái được phép bù
+
+                // Kiểm tra xem status hiện tại có nằm trong danh sách cho phép không
+                if (!allowedStatuses.Any(s => s.Equals(status, StringComparison.OrdinalIgnoreCase)))
+                {
+                    MessageBox.Show("Chỉ có thể đăng ký bù cho những buổi tập hội viên đã vắng (Absent) hoặc bị hủy (Cancel)!",
+                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                using (frmSchedules frm = new frmSchedules(selectedSchedule))
+                {
+                    // Hiển thị form dưới dạng Dialog (buộc xử lý xong mới quay lại màn hình chính)
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        // Nếu lưu thành công (DialogResult.OK), nạp lại dữ liệu để cập nhật Grid
+                        LoadData();
+                        MessageBox.Show("Hệ thống đã cập nhật lịch tập bù mới.");
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi mở form đăng ký bù: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnPostpone_Click(object sender, EventArgs e)
         {
             UpdateScheduleStatus("Cancel");
-            LoadData();
+            
         }
     }
 }
