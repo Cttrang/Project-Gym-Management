@@ -12,12 +12,18 @@ namespace desktopapp_GYM.BLL
     public class TimeslotBLL
     {
         TimeslotDAL dal = new TimeslotDAL();
-        public List<TimeslotDTO> GetAll() => dal.GetAll();
+        public List<TimeslotDTO> GetAll()
+        {
+            try { return dal.GetAll(); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy danh sách khung giờ: " + ex.Message); }
+        }
 
         public bool Save(TimeslotDTO ts, bool isAdd)
         {
-            // 1. Validation cơ bản
-            if (string.IsNullOrWhiteSpace(ts.SlotName))
+            try
+            {
+                // 1. Validation cơ bản
+                if (string.IsNullOrWhiteSpace(ts.SlotName))
                 throw new Exception("Vui lòng nhập tên lớp học!");
             if (ts.TrainerID <= 0)
                 throw new Exception("Vui lòng chọn Huấn luyện viên!");
@@ -44,64 +50,94 @@ namespace desktopapp_GYM.BLL
             // Ví dụ: StartTime < EndTime
 
             return dal.Save(ts, isAdd);
+            }
+            catch (Exception ex)
+            {
+                // Ném lỗi về GUI xử lý MessageBox
+                throw new Exception("Lỗi save: "+ ex.Message);
+            }
         }
 
         public bool Delete(TimeslotDTO ts)
         {
-            if (ts == null) return false;
+            try
+            {
+                if (ts == null) return false;
 
-            int actualCount = dal.GetCurrentCount(ts.SlotID);
-            if (actualCount > 0)
-                throw new Exception($"Lớp này đang có {actualCount} học viên. Hãy hủy lịch của họ trước khi xóa khung giờ!");
+                int actualCount = dal.GetCurrentCount(ts.SlotID);
+                if (actualCount > 0)
+                    throw new Exception($"Lớp này đang có {actualCount} học viên. Hãy hủy lịch của họ trước khi xóa khung giờ!");
 
-            return dal.Delete(ts.SlotID);
+                return dal.Delete(ts.SlotID);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public DataTable GetTrainersByPackage(int packageId)
-            => dal.GetTrainersByPackage(packageId);
+        {
+            try { return dal.GetTrainersByPackage(packageId); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy danh sách HLV theo gói: " + ex.Message); }
+        }
         public List<int> GetSlotIdsByMember(int memberId)
         {
-            return dal.GetSlotIdsByMember(memberId);
+            try { return dal.GetSlotIdsByMember(memberId); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy danh sách Slot của hội viên: " + ex.Message); }
         }
 
         public List<TimeslotDTO> GetByTrainerPackageDay(int trainerId, int packageId, string dayOfWeek)
         {
-            if (trainerId <= 0 || packageId <= 0 || string.IsNullOrWhiteSpace(dayOfWeek))
-                return new List<TimeslotDTO>();
-            return dal.GetByTrainerPackageDay(trainerId, packageId, dayOfWeek);
+            try
+            {
+                if (trainerId <= 0 || packageId <= 0 || string.IsNullOrWhiteSpace(dayOfWeek))
+                    return new List<TimeslotDTO>();
+                return dal.GetByTrainerPackageDay(trainerId, packageId, dayOfWeek);
+            }
+            catch (Exception ex) { throw new Exception("Lỗi khi lọc danh sách khung giờ: " + ex.Message); }
         }
 
         public List<string> GetDaysByTrainerPackage(int trainerId, int packageId)
         {
-            if (trainerId <= 0 || packageId <= 0) return new List<string>();
-            return dal.GetDaysByTrainerPackage(trainerId, packageId);
+            try
+            {
+                if (trainerId <= 0 || packageId <= 0) return new List<string>();
+                return dal.GetDaysByTrainerPackage(trainerId, packageId);
+            }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy danh sách ngày tập: " + ex.Message); }
         }
 
         public bool CheckIsFull(int slotId, int maxMembers)
         {
-            // Gọi DAL để đếm số lượng thực tế tại thời điểm hiện tại
-            return dal.IsSlotFull(slotId, maxMembers);
+            try { return dal.IsSlotFull(slotId, maxMembers); }
+            catch (Exception ex) { throw new Exception("Lỗi khi kiểm tra sĩ số lớp: " + ex.Message); }
         }
 
         public int GetActualCurrentCount(int slotId)
         {
-            return dal.GetCurrentCount(slotId);
+            try { return dal.GetCurrentCount(slotId); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy sĩ số thực tế: " + ex.Message); }
         }
 
         // Trong file TimeslotBLL.cs
         public bool RefreshSlotAttendance(int slotID)
         {
-            // Gọi trực tiếp xuống DAL để xử lý
-            return dal.SyncCurrentCount(slotID);
+            try { return dal.SyncCurrentCount(slotID); }
+            catch (Exception ex) { throw new Exception("Lỗi đồng bộ sĩ số lớp: " + ex.Message); }
         }
 
         public void RefreshAllAttendance()
         {
-            dal.SyncAllAttendance();
+            try { dal.SyncAllAttendance(); }
+            catch (Exception ex) { throw new Exception("Lỗi đồng bộ toàn bộ sĩ số: " + ex.Message); }
         }
 
         public DataTable GetTimeslotsToday()
-        { return dal.GetTimeslotsToday(); }
+        {
+            try { return dal.GetTimeslotsToday(); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy lịch tập hôm nay: " + ex.Message); }
+        }
 
     }
 }

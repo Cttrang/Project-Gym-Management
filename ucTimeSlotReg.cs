@@ -27,46 +27,68 @@ namespace desktopapp_GYM
         public ucTimeSlotReg()
         {
             InitializeComponent();
-            cboDate.SelectedIndexChanged += OnDateTimeInputChanged;
-            dtpStart.ValueChanged += OnDateTimeInputChanged;
-            SetupTimeLimits();
-            LoadComboBoxData();
-            InitEmptySlots();
-            ApplyRolePermissions();
-            LoadDataToGrid();
+            try
+            {
+                cboDate.SelectedIndexChanged += OnDateTimeInputChanged;
+                dtpStart.ValueChanged += OnDateTimeInputChanged;
+                SetupTimeLimits();
+                LoadComboBoxData();
+                InitEmptySlots();
+                ApplyRolePermissions();
+                LoadDataToGrid();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khởi tạo màn hình: " + ex.Message, "Lỗi Hệ Thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ApplyRolePermissions()
         {
-            string role = Session.CurrentRole;
+            try
+            {
+                string role = Session.CurrentRole;
 
-            if (role == "Receptionist")
-            {
-                btnAdd.Enabled = btnEdit.Enabled = btnDelete.Enabled = false;
+                if (role == "Receptionist")
+                {
+                    btnAdd.Enabled = btnEdit.Enabled = btnDelete.Enabled = false;
+                }
+                else if (role == "Manager")
+                {
+                    btnAdd.Enabled = btnEdit.Enabled = true;
+                    btnDelete.Enabled = false;
+                }
+                else // Admin
+                {
+                    btnAdd.Enabled = btnEdit.Enabled = btnDelete.Enabled = true;
+                }
             }
-            else if (role == "Manager")
+            catch (Exception ex)
             {
-                btnAdd.Enabled = btnEdit.Enabled = true;
-                btnDelete.Enabled = false;
-            }
-            else // Admin
-            {
-                btnAdd.Enabled = btnEdit.Enabled = btnDelete.Enabled = true;
+                MessageBox.Show("Lỗi role: " + ex.Message);
             }
         }
 
         private void SetupTimeLimits()
         {
-            // Lấy ngày hiện tại từ dtp để tránh làm thay đổi ngày khi giới hạn giờ
-            DateTime today = dtpStart.Value.Date;
-
-            // Giới hạn dtpStart: sớm nhất là 06:00 và muộn nhất là 21:00
-            dtpStart.MinDate = today.AddHours(6);
-            dtpStart.MaxDate = today.AddHours(21);
-
-            // Tương tự cho dtpEnd (Kết thúc có thể là 22:00)
-            dtpEnd.MinDate = today.AddHours(7);
-            dtpEnd.MaxDate = today.AddHours(22);
+            try
+            {
+                // Lấy ngày hiện tại từ dtp để tránh làm thay đổi ngày khi giới hạn giờ
+                DateTime today = dtpStart.Value.Date;
+    
+                // Giới hạn dtpStart: sớm nhất là 06:00 và muộn nhất là 21:00
+                dtpStart.MinDate = today.AddHours(6);
+                dtpStart.MaxDate = today.AddHours(21);
+    
+                // Tương tự cho dtpEnd (Kết thúc có thể là 22:00)
+                dtpEnd.MinDate = today.AddHours(7);
+                dtpEnd.MaxDate = today.AddHours(22);
+            }
+            catch (Exception ex)
+            {
+                // Lỗi UI nhẹ không cần hiện Messagebox liên tục, chỉ log console
+                Console.WriteLine("Highlight error: " + ex.Message);
+            }
         }
 
         private void MarkAsChanged(object sender, EventArgs e)
@@ -163,6 +185,7 @@ namespace desktopapp_GYM
 
         private void cboTrainer_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             // Kiểm tra nếu có Trainer được chọn (Value là kiểu int)
             if (cboTrainer.SelectedValue != null && cboTrainer.SelectedValue is int trainerId)
             {
@@ -178,7 +201,10 @@ namespace desktopapp_GYM
                     // Nếu đang thêm mới, hãy để trống gói tập để người dùng tự chọn
                     if (isAddMode) cboPackage.SelectedIndex = -1;
                 }
-                catch { /* Bỏ qua lỗi khi khởi tạo */ }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi tải danh sách gói tập: " + ex.Message);
+                }
             }
         }
 
@@ -308,29 +334,36 @@ namespace desktopapp_GYM
         // 3. Event mẫu khi Double Click vào ô trống
         private void OnCellDoubleClick(object sender, EventArgs e)
         {
-            if (!TryLeaveCurrentEdit()) return;
-            FlowLayoutPanel flp = (FlowLayoutPanel)sender;
-            string[] info = flp.Tag.ToString().Split('|');
-
-            ClearInputFields();
-            isAddMode = true;      // Chuyển sang chế độ thêm
-            SetInputStatus(true);  // Mở khóa GroupBox
-
-            cboDate.SelectedItem = info[0];
-            if (DateTime.TryParse(info[1], out DateTime startTime))
+            try
             {
-                dtpStart.Value = DateTime.Today.Add(startTime.TimeOfDay);
-                dtpEnd.Value = DateTime.Today.Add(startTime.TimeOfDay).AddHours(1);
+                if (!TryLeaveCurrentEdit()) return;
+                FlowLayoutPanel flp = (FlowLayoutPanel)sender;
+                string[] info = flp.Tag.ToString().Split('|');
+
+                ClearInputFields();
+                isAddMode = true;      // Chuyển sang chế độ thêm
+                SetInputStatus(true);  // Mở khóa GroupBox
+
+                cboDate.SelectedItem = info[0];
+                if (DateTime.TryParse(info[1], out DateTime startTime))
+                {
+                    dtpStart.Value = DateTime.Today.Add(startTime.TimeOfDay);
+                    dtpEnd.Value = DateTime.Today.Add(startTime.TimeOfDay).AddHours(1);
+                }
+
+                if (currentHighlightedCell != null)
+                    currentHighlightedCell.BackColor = Color.Transparent;
+                currentHighlightedCell = flp;
+                flp.BackColor = Color.FromArgb(200, 230, 255);
+
+                ToggleEvents(true); // Bắt đầu track thay đổi
+                isDataChanged = false;
+                txtClassName.Focus();
             }
-
-            if (currentHighlightedCell != null)
-                currentHighlightedCell.BackColor = Color.Transparent;
-            currentHighlightedCell = flp;
-            flp.BackColor = Color.FromArgb(200, 230, 255);
-
-            ToggleEvents(true); // Bắt đầu track thay đổi
-            isDataChanged = false;
-            txtClassName.Focus();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi chọn ô: " + ex.Message);
+            }
         }
 
         // 4. Hàm để Form ngoài gọi vào khi cần đổ dữ liệu
@@ -347,66 +380,73 @@ namespace desktopapp_GYM
 
         private void DisplayDetail(TimeslotDTO slot)
         {
-            currentSelectedSlot = slot;
-            SetInputStatus(false);
-            isAddMode = false;
-            ToggleEvents(false);
-            isDataChanged = false;
-
-            // --- CẬP NHẬT SỐ LƯỢNG LÊN LABEL ---
-            lblCurrentCount.Text = slot.CurrentCount.ToString() + " /";
-
-            // Đổi màu để cảnh báo nhanh
-            if (slot.CurrentCount >= slot.MaxMembers)
+            try
             {
-                lblCurrentCount.ForeColor = Color.Red; // Đầy lớp thì hiện màu đỏ
+                currentSelectedSlot = slot;
+                SetInputStatus(false);
+                isAddMode = false;
+                ToggleEvents(false);
+                isDataChanged = false;
+
+                // --- CẬP NHẬT SỐ LƯỢNG LÊN LABEL ---
+                lblCurrentCount.Text = slot.CurrentCount.ToString() + " /";
+
+                // Đổi màu để cảnh báo nhanh
+                if (slot.CurrentCount >= slot.MaxMembers)
+                {
+                    lblCurrentCount.ForeColor = Color.Red; // Đầy lớp thì hiện màu đỏ
+                }
+                else if (slot.MaxMembers - slot.CurrentCount <= 3)
+                {
+                    lblCurrentCount.ForeColor = Color.Orange; // Sắp đầy (còn dưới 3 chỗ) thì màu cam
+                }
+                else
+                {
+                    lblCurrentCount.ForeColor = Color.DeepSkyBlue; // Còn nhiều chỗ thì màu xanh
+                }
+
+                txtClassName.Text = slot.SlotName;
+                txtMaxMember.Text = slot.MaxMembers.ToString();
+                cboDate.Text = slot.DayOfWeek;
+
+                // Gán TrainerID -> sẽ kích hoạt cboTrainer_SelectedIndexChanged
+                cboTrainer.SelectedValue = slot.TrainerID;
+
+                var filteredPackages = packageBll.GetPackagesByTrainer(slot.TrainerID);
+                cboPackage.DataSource = filteredPackages;
+                cboPackage.DisplayMember = "PackageName";
+                cboPackage.ValueMember = "PackageID";
+
+                // Gán PackageID (Lưu ý: phải gán sau khi Trainer đã load xong Package)
+                cboPackage.SelectedValue = slot.PackageID;
+
+                if (DateTime.TryParse(slot.StartTime, out DateTime start)) dtpStart.Value = start;
+                if (DateTime.TryParse(slot.EndTime, out DateTime end)) dtpEnd.Value = end;
+
+                cboStatus.Text = slot.Status;
+
+                bool hasRegistrations = slot.CurrentCount > 0;
+                cboStatus.Enabled = true;
+
+                if (hasRegistrations)
+                {
+                    // Khóa gói tập vì liên quan đến tiền bạc/hợp đồng đã ký của khách
+                    cboPackage.Enabled = false;
+
+                    // MaxMember: Không cho phép nhập số nhỏ hơn số người hiện có
+                    // (Sẽ kiểm tra kỹ hơn ở nút Save)
+                }
+                else
+                {
+                    cboPackage.Enabled = true;
+                }
+
+                SetInputStatus(false);
             }
-            else if (slot.MaxMembers - slot.CurrentCount <= 3)
+            catch (Exception ex)
             {
-                lblCurrentCount.ForeColor = Color.Orange; // Sắp đầy (còn dưới 3 chỗ) thì màu cam
+                MessageBox.Show("Lỗi hiển thị chi tiết: " + ex.Message);
             }
-            else
-            {
-                lblCurrentCount.ForeColor = Color.DeepSkyBlue; // Còn nhiều chỗ thì màu xanh
-            }
-
-            txtClassName.Text = slot.SlotName;
-            txtMaxMember.Text = slot.MaxMembers.ToString();
-            cboDate.Text = slot.DayOfWeek;
-
-            // Gán TrainerID -> sẽ kích hoạt cboTrainer_SelectedIndexChanged
-            cboTrainer.SelectedValue = slot.TrainerID;
-
-            var filteredPackages = packageBll.GetPackagesByTrainer(slot.TrainerID);
-            cboPackage.DataSource = filteredPackages;
-            cboPackage.DisplayMember = "PackageName";
-            cboPackage.ValueMember = "PackageID";
-
-            // Gán PackageID (Lưu ý: phải gán sau khi Trainer đã load xong Package)
-            cboPackage.SelectedValue = slot.PackageID;
-
-            if (DateTime.TryParse(slot.StartTime, out DateTime start)) dtpStart.Value = start;
-            if (DateTime.TryParse(slot.EndTime, out DateTime end)) dtpEnd.Value = end;
-
-            cboStatus.Text = slot.Status;
-
-            bool hasRegistrations = slot.CurrentCount > 0;
-            cboStatus.Enabled = true;
-
-            if (hasRegistrations)
-            {
-                // Khóa gói tập vì liên quan đến tiền bạc/hợp đồng đã ký của khách
-                cboPackage.Enabled = false;
-
-                // MaxMember: Không cho phép nhập số nhỏ hơn số người hiện có
-                // (Sẽ kiểm tra kỹ hơn ở nút Save)
-            }
-            else
-            {
-                cboPackage.Enabled = true;
-            }
-
-            SetInputStatus(false);
         }
 
         public void LoadDataToGrid()
@@ -637,7 +677,15 @@ namespace desktopapp_GYM
 
         private void dtpStart_ValueChanged(object sender, EventArgs e)
         {
-            dtpEnd.Value = dtpStart.Value.AddHours(1);
+            try
+            {
+                dtpEnd.Value = dtpStart.Value.AddHours(1);
+                MarkAsChanged(sender, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi thay đổi Ngày bắt đầu và kết thúc gói: " + ex.Message);
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -691,35 +739,42 @@ namespace desktopapp_GYM
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            try
             {
-                ResetGridHighlight();
-                return;
-            }
-
-            if (int.TryParse(txtSearch.Text, out int memberId))
-            {
-                List<int> registeredSlots = bll.GetSlotIdsByMember(memberId);
-
-                ResetGridHighlight(); // Xóa màu cũ
-
-                foreach (Control ctrl in tlpBody.Controls)
+                if (string.IsNullOrWhiteSpace(txtSearch.Text))
                 {
-                    if (ctrl is FlowLayoutPanel flp)
+                    ResetGridHighlight();
+                    return;
+                }
+
+                if (int.TryParse(txtSearch.Text, out int memberId))
+                {
+                    List<int> registeredSlots = bll.GetSlotIdsByMember(memberId);
+
+                    ResetGridHighlight(); // Xóa màu cũ
+
+                    foreach (Control ctrl in tlpBody.Controls)
                     {
-                        foreach (Control subCtrl in flp.Controls)
+                        if (ctrl is FlowLayoutPanel flp)
                         {
-                            if (subCtrl is ucTimeSlot uc)
+                            foreach (Control subCtrl in flp.Controls)
                             {
-                                // Nếu SlotID của cái uc này nằm trong danh sách đăng ký của khách
-                                if (registeredSlots.Contains(uc.CurrentSlotID))
+                                if (subCtrl is ucTimeSlot uc)
                                 {
-                                    uc.BackColor = Color.Gold; // Đổi màu để nhận diện
+                                    // Nếu SlotID của cái uc này nằm trong danh sách đăng ký của khách
+                                    if (registeredSlots.Contains(uc.CurrentSlotID))
+                                    {
+                                        uc.BackColor = Color.Gold; // Đổi màu để nhận diện
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Search error: " + ex.Message);
             }
         }
 
