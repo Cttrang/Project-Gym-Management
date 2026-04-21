@@ -2,11 +2,12 @@
 using desktopapp_GYM.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Transactions;
+using System.Windows.Forms;
 
 
 namespace desktopapp_GYM.BLL
@@ -182,6 +183,12 @@ namespace desktopapp_GYM.BLL
         {
             try { return dal.DecreaseSession(regId); }
             catch (Exception ex) { throw new Exception("Lỗi khi trừ buổi tập: " + ex.Message); }
+        }
+
+        public DataTable GetRevenueDetail()
+        {
+            try { return dal.GetRevenueDetail(); }
+            catch (Exception ex) { throw new Exception("Lỗi khi lấy dữ liệu doanh thu: " + ex.Message); }
         }
 
     }

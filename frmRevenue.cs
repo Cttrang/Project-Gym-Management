@@ -1,4 +1,5 @@
-﻿using System;
+﻿using desktopapp_GYM.BLL;
+using System;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -25,20 +26,8 @@ namespace desktopapp_GYM
         // 1. Khởi tạo dữ liệu giả lập (Bạn thay bằng code gọi Database thật sau nhé)
         private void LoadDataFromDatabase()
         {
-            dtRevenueData = new DataTable();
-            dtRevenueData.Columns.Add("Mã Giao Dịch", typeof(string));
-            dtRevenueData.Columns.Add("Ngày", typeof(DateTime));
-            dtRevenueData.Columns.Add("Tháng", typeof(int));
-            dtRevenueData.Columns.Add("Gói Tập", typeof(string));
-            dtRevenueData.Columns.Add("Huấn Luyện Viên", typeof(string));
-            dtRevenueData.Columns.Add("Doanh Thu", typeof(decimal));
-
-            // Dữ liệu mẫu
-            dtRevenueData.Rows.Add("TXN001", new DateTime(2023, 10, 5), 10, "Gym 1 Tháng", "Nguyễn Văn A", 500000);
-            dtRevenueData.Rows.Add("TXN002", new DateTime(2023, 10, 15), 10, "Yoga 3 Tháng", "Trần Thị B", 1200000);
-            dtRevenueData.Rows.Add("TXN003", new DateTime(2023, 11, 2), 11, "Gym 1 Tháng", "Nguyễn Văn A", 500000);
-            dtRevenueData.Rows.Add("TXN004", new DateTime(2023, 11, 20), 11, "PT Cá Nhân", "Lê Văn C", 5000000);
-            dtRevenueData.Rows.Add("TXN005", new DateTime(2023, 11, 25), 11, "Yoga 3 Tháng", "Trần Thị B", 1200000);
+            var bll = new RegistrationBLL();
+            dtRevenueData = bll.GetRevenueDetail();
         }
 
         // 2. Nạp dữ liệu vào các ComboBox

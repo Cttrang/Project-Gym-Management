@@ -37,7 +37,7 @@ namespace desktopapp_GYM.GUI
             {
                 btnManagerAcc.Visible = false;
             }
-            else if (role != "Manager")
+            if (role != "Manager" && role!="Admin")
             {
                  btnRevenue.Visible = false;
             }
