@@ -111,21 +111,7 @@ namespace desktopapp_GYM
                 Console.WriteLine("Lỗi đồng bộ sĩ số: " + ex.Message);
             }
             LoadData();
-            ApplyRolePermissions();
-        }
-
-        private void ApplyRolePermissions()
-        {
-            string role = Session.CurrentRole;
-
-            if (role == "Receptionist")
-            {
-                btnDelete.Enabled = false;
-            }
-            else // Admin & Mangager
-            {
-                btnAdd.Enabled = btnEdits.Enabled = btnDelete.Enabled = true;
-            }
+            
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
