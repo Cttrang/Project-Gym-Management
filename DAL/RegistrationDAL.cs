@@ -450,6 +450,31 @@ namespace desktopapp_GYM.DAL
             }
         }
 
+        public DataTable GetRevenueDetail()
+        {
+            string sql = @"
+        SELECT 
+            CAST(r.REGID AS VARCHAR)     AS [Mã Giao Dịch],
+            r.REGDATE                    AS [Ngày],
+            MONTH(r.REGDATE)             AS [Tháng],
+            p.PACKAGENAME                AS [Gói Tập],
+            ISNULL(t.FULLNAME, 'N/A')    AS [Huấn Luyện Viên],
+            r.TOTALAMOUNT                AS [Doanh Thu]
+        FROM REGISTRATIONS r
+        JOIN PACKAGES p  ON r.PACKAGEID  = p.PACKAGEID
+        LEFT JOIN TRAINERS t ON r.TRAINERID = t.TRAINERID
+        WHERE r.PAYMENTSTATUS = 'Paid'
+        ORDER BY r.REGDATE DESC";
+
+            DataTable dt = new DataTable();
+            using (SqlConnection con = GetConnection())
+            {
+                SqlDataAdapter da = new SqlDataAdapter(sql, con);
+                da.Fill(dt);
+            }
+            return dt;
+        }
+
 
     }
 }

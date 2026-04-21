@@ -270,7 +270,7 @@ namespace desktopapp_GYM.DAL
 
         public DataTable GetPackages()
         {
-            return dc.ExecuteQuery("SELECT PACKAGEID, PACKAGENAME, DURATIONMONTHS, PRICE FROM PACKAGES");
+            return dc.ExecuteQuery("SELECT PACKAGEID, PACKAGENAME, DURATIONMONTHS, PRICE, TYPE FROM PACKAGES");
         }
 
         public DataTable GetTrainers()

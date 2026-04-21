@@ -128,11 +128,30 @@ namespace desktopapp_GYM
                 string paymentStatus = selectedRow.Cells["PAYMENTSTATUS"].Value?.ToString();
 
                 if (selectedRow.Cells["PACKAGEID"].Value != DBNull.Value)
+                {
                     cboGoiTap.SelectedValue = selectedRow.Cells["PACKAGEID"].Value;
+
+                    // THÊM VÀO ĐÂY: Kiểm tra Type của gói tập vừa chọn
+                    if (cboGoiTap.SelectedItem is DataRowView row)
+                    {
+                        string packageType = row["TYPE"]?.ToString();
+                        if (packageType == "Class")
+                        {
+                            cboHLV.Enabled = false;
+                            cboHLV.SelectedIndex = -1;
+                        }
+                    }
+                }
 
 
                 if (selectedRow.Cells["TRAINERID"].Value != DBNull.Value)
                     cboHLV.SelectedValue = selectedRow.Cells["TRAINERID"].Value;
+                else
+                {
+                    cboHLV.SelectedIndex = -1;
+                    cboHLV.Enabled=false;
+                }    
+                    
 
                 if (selectedRow.Cells["REGDATE"].Value != DBNull.Value)
                     dtpNgayDangKy.Value = Convert.ToDateTime(selectedRow.Cells["REGDATE"].Value);
@@ -187,6 +206,17 @@ namespace desktopapp_GYM
             // Điền giá tiền
             txtTongTien.Text = Convert.ToDecimal(row["PRICE"]).ToString("N0");
 
+            string packageType = row["TYPE"]?.ToString();
+            if (packageType == "Class") // Hoặc điều kiện tương ứng của bạn
+            {
+                cboHLV.Enabled = false;
+                cboHLV.SelectedIndex = -1; // Reset về null
+            }
+            else
+            {
+                cboHLV.Enabled = true;
+            }
+
             isDataChanged = true;
         }
 
@@ -204,6 +234,7 @@ namespace desktopapp_GYM
             cboHLV.DataSource = bll.GetTrainers();
             cboHLV.DisplayMember = "FULLNAME";
             cboHLV.ValueMember = "TRAINERID";
+            cboHLV.SelectedIndex = -1;
 
             if (!isAddMode && selectedRow != null)
             {
