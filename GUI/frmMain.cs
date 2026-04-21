@@ -37,8 +37,10 @@ namespace desktopapp_GYM.GUI
             {
                 btnManagerAcc.Visible = false;
             }
-
-            //if (role == "Admin") btnEditAcc.Visible = false;
+            else if (role != "Manager")
+            {
+                 btnRevenue.Visible = false;
+            }
 
             UpdateUserDisplay();
             ShowUc();
@@ -124,16 +126,10 @@ namespace desktopapp_GYM.GUI
             uc.BringToFront();
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            
-        }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            
             ShowUc();
-            
         }
 
         
@@ -198,6 +194,13 @@ namespace desktopapp_GYM.GUI
         {
             ShowDetail(new ucSchedules());
         }
+
+        private void btnRevenue_Click(object sender, EventArgs e)
+        {
+            frmRevenue reve = new frmRevenue();
+            reve.ShowDialog();
+        }
+
     }
 
 }

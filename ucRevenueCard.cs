@@ -27,9 +27,13 @@ namespace desktopapp_GYM
 
         private void btnViewDetail_Click(object sender, EventArgs e)
         {
-            Form parent = this.FindForm();
-            if (parent is frmMain main) main.ShowDetail(new ucRegistration());
-            else if (parent is frmGuest guest) guest.ShowDetail(new ucRegistration());
+            frmRevenue reve = new frmRevenue();
+            reve.ShowDialog();
+        }
+        public void UpdateTotalRevenue(decimal totalAmount)
+        {
+            // Hiển thị số tiền được truyền vào với định dạng chuẩn
+            lblRevenue.Text = totalAmount.ToString("N0") + " VNĐ";
         }
     }
 }

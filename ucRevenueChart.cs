@@ -60,9 +60,39 @@ namespace desktopapp_GYM
 
         private void btnViewDetail_Click(object sender, EventArgs e)
         {
-            Form parent = this.FindForm();
-            if (parent is frmMain main) main.ShowDetail(new ucRegistration());
-            else if (parent is frmGuest guest) guest.ShowDetail(new ucRegistration());
+            frmRevenue reve = new frmRevenue();
+            reve.ShowDialog();
+        }
+        public void UpdateChartData(System.Data.DataTable dtFiltered)
+        {
+            chartRevenue.Series.Clear(); // Xóa dữ liệu cũ
+
+            if (dtFiltered != null && dtFiltered.Rows.Count > 0)
+            {
+                chartRevenue.ChartAreas[0].AxisX.Interval = 1;
+
+                // Tạo series mới giống hệt style của bạn
+                System.Windows.Forms.DataVisualization.Charting.Series series = new System.Windows.Forms.DataVisualization.Charting.Series("Doanh thu lọc");
+                series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
+                series.Color = System.Drawing.Color.FromArgb(255, 128, 0);
+                series["PointWidth"] = "0.5";
+                series.IsValueShownAsLabel = true;
+                series.LabelFormat = "N0";
+
+                // Đổ dữ liệu từ DataTable được lọc vào biểu đồ
+                foreach (System.Data.DataRow row in dtFiltered.Rows)
+                {
+                    // Lấy cột "Mã Giao Dịch" làm trục X, "Doanh Thu" làm trục Y (theo dữ liệu mẫu ở frmRevenue)
+                    // Nếu bạn muốn trục X hiện Tháng/Ngày thì đổi chữ "Mã Giao Dịch" thành "Tháng" hoặc "Ngày" nhé
+                    series.Points.AddXY(row["Mã Giao Dịch"].ToString(), row["Doanh Thu"]);
+                }
+
+                chartRevenue.Series.Add(series);
+
+                // Tinh chỉnh trục tọa độ
+                chartRevenue.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+                chartRevenue.ChartAreas[0].AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(230, 230, 230);
+            }
         }
     }
 }
