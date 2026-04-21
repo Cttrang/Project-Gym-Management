@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace desktopapp_GYM
 {
@@ -247,14 +248,35 @@ namespace desktopapp_GYM
 
         private void btnAttended_Click(object sender, EventArgs e)
         {
+            string role = Session.CurrentRole;
+            var today = DateTime.Today;
+            if (dtpDate.Value.Date != today )
+            {
+                if (dtpDate.Value.Date < today && role == "Receptionist")
+                {
+                    MessageBox.Show("Không thể điểm danh lệch ngày!!!!");
+                    return;
+                }    else if (dtpDate.Value.Date > today)
+                {
+                    MessageBox.Show("Không thể điểm danh trước!!!");
+                    return;
+                }    
+                
+            }    
             UpdateScheduleStatus("Attended");
             
         }
 
         private void btnAbsent_Click(object sender, EventArgs e)
         {
+            string role = Session.CurrentRole;
+            var today = DateTime.Today;
+            if (dtpDate.Value.Date < today && role == "Receptionist")
+            {
+                MessageBox.Show("Không thể điểm danh lệch ngày!!!!");
+                return;
+            }
             UpdateScheduleStatus("Absent");
-            
         }
 
         private void btnClearSearch_Click(object sender, EventArgs e)
@@ -375,8 +397,15 @@ namespace desktopapp_GYM
 
         private void btnPostpone_Click(object sender, EventArgs e)
         {
+            string role = Session.CurrentRole;
+            var today = DateTime.Today;
+            if (dtpDate.Value.Date < today && role != "Admin")
+            {
+                MessageBox.Show("Không thể thay đổi điểm danh ngày đã qua!!!!");
+                return;
+            }
             UpdateScheduleStatus("Cancel");
-            
         }
+
     }
 }
