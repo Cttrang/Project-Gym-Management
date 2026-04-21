@@ -233,7 +233,7 @@ namespace desktopapp_GYM
 
             // Payment
             cboPayment.Items.Clear();
-            cboPayment.Items.AddRange(new[] { "Paid", "Unpaid", "Partial" });
+            cboPayment.Items.AddRange(new[] { "Unpaid", "Partial" });
             cboPayment.SelectedIndex = 0;
         }
 

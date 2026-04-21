@@ -309,8 +309,7 @@ namespace desktopapp_GYM
                 // TRƯỜNG HỢP EDIT: Nạp lại dữ liệu cũ từ Grid
                 if (selectedRow != null)
                 {
-                    FillData(); // Hàm FillData của Huy đã có sẵn logic nạp lại + khóa Control nếu Paid
-                    //MessageBox.Show("Đã khôi phục dữ liệu ban đầu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    FillData(); 
                 }
             }
         }

@@ -223,5 +223,18 @@ namespace desktopapp_GYM
 
         private void dgvRegistration_SelectionChanged(object sender, EventArgs e) { }
 
+        private void btnPay_Click(object sender, EventArgs e)
+        {
+            if (dgvRegistrations.CurrentRow == null) return;
+            var selected = (RegistrationDTO)dgvRegistrations.CurrentRow.DataBoundItem;
+            if (selected.PaymentStatus == "Paid")
+            {
+                MessageBox.Show("Khách hàng này đã thanh toán.");
+                return; 
+            }
+            frmPayment pay = new frmPayment(selected);
+            pay.ShowDialog();
+            LoadData();
+        }
     }
 }

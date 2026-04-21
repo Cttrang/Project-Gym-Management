@@ -17,7 +17,9 @@ namespace desktopapp_GYM.DAL
             string sql = @"SELECT ISNULL(SUM(TOTALAMOUNT), 0) 
                            FROM REGISTRATIONS 
                            WHERE MONTH(REGDATE) = MONTH(GETDATE()) 
-                             AND YEAR(REGDATE)  = YEAR(GETDATE())";
+                             AND YEAR(REGDATE)  = YEAR(GETDATE())
+                             AND PAYMENTSTATUS  = 'Paid'";
+                            
             using (SqlConnection con = GetConnection())  // ← GetConnection() trực tiếp
             {
                 SqlCommand cmd = new SqlCommand(sql, con);
@@ -31,6 +33,7 @@ namespace desktopapp_GYM.DAL
                 SELECT FORMAT(REGDATE, 'MM/yyyy') AS MonthYear, 
                        SUM(TOTALAMOUNT) AS Total 
                 FROM REGISTRATIONS 
+                WHERE PAYMENTSTATUS = 'Paid'
                 GROUP BY FORMAT(REGDATE, 'MM/yyyy'), YEAR(REGDATE), MONTH(REGDATE)
                 ORDER BY YEAR(REGDATE) ASC, MONTH(REGDATE) ASC";
 

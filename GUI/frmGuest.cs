@@ -18,8 +18,6 @@ namespace desktopapp_GYM.GUI
         {
             InitializeComponent();
         }
-
-
         private void btnLoginGuest_Click(object sender, EventArgs e)
         {
             using (frmLogin loginForm = new frmLogin())
@@ -108,9 +106,5 @@ namespace desktopapp_GYM.GUI
             ShowDetail(new ucTrainerList());
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            //ShowDetail(new ucSchedules());
-        }
     }
 }
