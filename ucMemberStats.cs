@@ -21,9 +21,7 @@ namespace desktopapp_GYM
         }
         public override void RefreshData()
         {
-            // Nhấc máy gọi nhà máy DAL lấy số
             int count = dalMember.GetTotalMembers();
-            // Đổ con số vào Label trên giao diện của thẻ này
             lblMemberCount.Text = count.ToString("N0");
         }
 
@@ -31,6 +29,16 @@ namespace desktopapp_GYM
         {
             Form parent = this.FindForm();
             if (parent is frmMain main) main.ShowDetail(new ucMemberList());
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblMemberSubText_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

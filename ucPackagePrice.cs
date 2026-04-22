@@ -113,5 +113,9 @@ namespace desktopapp_GYM
             if (parent is frmMain main) main.ShowDetail(new ucPackageDetails());
             else if (parent is frmGuest guest) guest.ShowDetail(new ucPackageDetails());
         }
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

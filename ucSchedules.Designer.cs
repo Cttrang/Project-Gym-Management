@@ -89,7 +89,7 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(1000, 40);
             this.lblTitle.TabIndex = 1;
-            this.lblTitle.Text = "Quản lý lịch tập";
+            this.lblTitle.Text = "QUẢN LÝ ĐIỂM DANH VÀ LỊCH BÙ";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTitle.Click += new System.EventHandler(this.lblTitle_Click);
             // 
@@ -107,10 +107,11 @@
             // lblDebug
             // 
             this.lblDebug.AutoSize = true;
-            this.lblDebug.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDebug.Location = new System.Drawing.Point(473, 11);
+            this.lblDebug.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDebug.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblDebug.Location = new System.Drawing.Point(756, 4);
             this.lblDebug.Name = "lblDebug";
-            this.lblDebug.Size = new System.Drawing.Size(116, 36);
+            this.lblDebug.Size = new System.Drawing.Size(130, 36);
             this.lblDebug.TabIndex = 2;
             this.lblDebug.Text = "Trainer:";
             // 
