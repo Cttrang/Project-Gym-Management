@@ -43,19 +43,16 @@ namespace desktopapp_GYM.BLL
 
         public bool HasPermission(string loginRole, string targetRole, string action)
         {
-            // 1. Admin luôn có quyền với mọi đối tượng
             if (loginRole == "Admin") return true;
 
             int loginLevel = GetRoleLevel(loginRole);
             int targetLevel = GetRoleLevel(targetRole);
 
-            // 2. Logic: Không được tác động (Add/Edit/Delete) người có Role ngang hoặc cao hơn mình
             if (loginLevel <= targetLevel)
             {
                 return false;
             }
 
-            // 3. Các trường hợp còn lại (Cấp cao tác động cấp thấp) -> Hợp lệ
             return true;
         }
 
@@ -94,7 +91,6 @@ namespace desktopapp_GYM.BLL
             }
             catch (Exception ex)
             {
-                // Ném các lỗi logic khác ra UI
                 throw new Exception("Lỗi khi lưu dữ liệu: " + ex.Message);
             }
         }
@@ -125,7 +121,6 @@ namespace desktopapp_GYM.BLL
             }
             catch (Exception ex)
             {
-                // Đảm bảo mọi lỗi (quyền hạn, logic, database) đều được đưa về một đầu mối
                 throw new Exception("Không thể lưu: " + ex.Message);
             }
         }
@@ -156,7 +151,6 @@ namespace desktopapp_GYM.BLL
             }
             catch (Exception ex)
             {
-                // Thường là lỗi UNIQUE constraint trên PHONE
                 if (ex.Message.Contains("UNIQUE"))
                     throw new Exception("Số điện thoại này đã được đăng ký bởi hội viên khác!");
 

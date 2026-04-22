@@ -16,7 +16,6 @@ namespace desktopapp_GYM.DAL
         {
             List<PackageDTO> list = new List<PackageDTO>();
 
-            // Câu SQL lấy thông tin gói tập và đếm số người đăng ký
             string query = @"
             SELECT p.*, 
                    (SELECT COUNT(*) FROM REGISTRATIONS r WHERE r.PACKAGEID = p.PACKAGEID) as TotalMembers
@@ -39,7 +38,6 @@ namespace desktopapp_GYM.DAL
                             Type = reader["TYPE"].ToString(),
                             DurationMonths = Convert.ToInt32(reader["DURATIONMONTHS"]),
                             Price = Convert.ToDecimal(reader["PRICE"]),
-                            // Xử lý giá trị Null cho số buổi
                             PTSessionsPerWeek = reader["PT_SESSIONS_PER_WEEK"] == DBNull.Value ?
                                          (int?)null : Convert.ToInt32(reader["PT_SESSIONS_PER_WEEK"]),
                             Status = reader["STATUS"].ToString(),
@@ -50,7 +48,6 @@ namespace desktopapp_GYM.DAL
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu cần
                 throw ex;
             }
             return list;
@@ -74,7 +71,6 @@ namespace desktopapp_GYM.DAL
                 cmd.Parameters.AddWithValue("@type", pkg.Type);
                 cmd.Parameters.AddWithValue("@dur", pkg.DurationMonths);
                 cmd.Parameters.AddWithValue("@price", pkg.Price);
-                // Nếu là gói FREE thì lưu DBNull
                 cmd.Parameters.AddWithValue("@ptSessions", (object)pkg.PTSessionsPerWeek ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@status", pkg.Status ?? "Active");
 
@@ -95,10 +91,8 @@ namespace desktopapp_GYM.DAL
             }
         }
 
-        // Trong file PackageDAL.cs
         public DataTable GetTopPackages(int topCount)
         {
-            // Câu lệnh SQL: Đếm số người dùng, sắp xếp giảm dần và lấy Top
             string sql = $@"SELECT TOP {topCount} 
                         PACKAGENAME AS [Tên gói], 
                         COUNT(REGID) AS [Người dùng]
@@ -107,19 +101,18 @@ namespace desktopapp_GYM.DAL
                     GROUP BY PACKAGENAME
                     ORDER BY COUNT(REGID) DESC";
 
-            using (SqlConnection con = GetConnection()) // Dùng kết nối tĩnh của Huy
+            using (SqlConnection con = GetConnection())
             {
                 SqlDataAdapter da = new SqlDataAdapter(sql, con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                return dt; // Trả về DataTable chứa Tên gói và Số người
+                return dt;
             }
         }
 
         public List<PackageDTO> GetPackagesByTrainer(int trainerId)
         {
             List<PackageDTO> list = new List<PackageDTO>();
-            // Câu truy vấn lấy các gói tập mà HLV này được phép dạy
             string query = @"
         SELECT p.PACKAGEID, p.PACKAGENAME 
         FROM PACKAGES p
@@ -127,12 +120,9 @@ namespace desktopapp_GYM.DAL
         WHERE tp.TRAINERID = @TrainerID";
             try
             {
-                // Giả sử bạn dùng hàm GetConnection() đã viết sẵn từ các phần trước
                 using (SqlConnection conn = GetConnection())
                 {
                     SqlCommand cmd = new SqlCommand(query, conn);
-
-                    // Truyền tham số để tránh SQL Injection
                     cmd.Parameters.AddWithValue("@TrainerID", trainerId);
 
                     conn.Open();
@@ -142,7 +132,6 @@ namespace desktopapp_GYM.DAL
                         {
                             list.Add(new PackageDTO
                             {
-                                // Đảm bảo tên thuộc tính PackageID và PackageName khớp với DTO của bạn
                                 PackageID = Convert.ToInt32(reader["PACKAGEID"]),
                                 PackageName = reader["PACKAGENAME"].ToString()
                             });
@@ -152,12 +141,10 @@ namespace desktopapp_GYM.DAL
             }
             catch (Exception ex)
             {
-                // Ném lỗi ra ngoài để UI hoặc BLL có thể bắt được và hiển thị MessageBox
                 throw new Exception("Lỗi khi lấy danh sách gói tập của HLV: " + ex.Message);
             }
 
             return list;
-            // Thực hiện truy vấn và trả về List<PackageDTO> giống như hàm GetAll
         }
 
         public List<PackageDTO> GetByType(string type)

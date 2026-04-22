@@ -24,7 +24,7 @@ namespace desktopapp_GYM.DAL
             }
         }
 
-        //kiểm tra quá hạn ở database và chỉnh status member nếu member đã hết hạn
+        //kiểm tra quá hạn ở database và chỉnh status member
         public int UpdateExpiredStatus()
         {
             string sql = @"
@@ -55,28 +55,18 @@ namespace desktopapp_GYM.DAL
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
-                        // Thực thi câu lệnh UPDATE (trả về số dòng bị tác động)
                         return cmd.ExecuteNonQuery();
-
-                        // Huy có thể dùng Console.WriteLine hoặc Debug để kiểm tra nếu cần
-                        // Console.WriteLine($"Đã cập nhật {rowsAffected} hội viên hết hạn.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Ghi log lỗi nếu có (Huy có thể dùng MessageBox hoặc ném Exception ra BLL)
                     throw new Exception("Lỗi khi cập nhật trạng thái hết hạn: " + ex.Message);
-                }
-                finally
-                {
-                    con.Close();
                 }
             }
         }
 
         public DataTable GetExpiringMembers()
         {
-            //Ép kiểu số ngày thành chuỗi ngay trong SQL để C# không bị lỗi format
             string sql = @"SELECT TOP 5 
                     m.FullName, 
                     r.EndDate,
@@ -182,24 +172,19 @@ namespace desktopapp_GYM.DAL
         public bool DeleteRecord(int id, string targetRole)
         {
             string sql = "";
-            // Dựa vào 'type targetRole' (cột TYPE trên Grid) để quyết định bảng và cột ID cần xóa
             switch (targetRole)
             {
                 case "Admin":
                 case "Manager":
                 case "Receptionist":
-                    // Xóa trong bảng USERS
                     sql = "DELETE FROM USERS WHERE USERID = @ID";
                     break;
 
                 case "Member":
-                    // Xóa trong bảng MEMBERS. 
-                    // Nhờ ON DELETE CASCADE trong DB của bạn, REGISTRATIONS sẽ tự xóa theo.
                     sql = "DELETE FROM MEMBERS WHERE MEMBERID = @ID";
                     break;
 
                 default:
-                    // Giả định các trường hợp còn lại là Huấn luyện viên (Trainer)
                     sql = "DELETE FROM TRAINERS WHERE TRAINERID = @ID";
                     break;
             }
@@ -217,7 +202,6 @@ namespace desktopapp_GYM.DAL
             }
             catch (Exception ex)
             {
-                // Bạn có thể dùng MessageBox ở đây hoặc throw để BLL xử lý
                 throw new Exception("Lỗi khi xóa dữ liệu: " + ex.Message);
             }
         }
@@ -278,7 +262,6 @@ namespace desktopapp_GYM.DAL
             return dc.ExecuteQuery("SELECT TRAINERID, FULLNAME FROM TRAINERS");
         }
 
-        // Kiểm tra trạng thái thanh toán của Member
         public string GetMemberStatus(int id)
         {
             using (SqlConnection con = dc.GetConnection())
@@ -297,12 +280,10 @@ namespace desktopapp_GYM.DAL
             }
         }
 
-        // Kiểm tra số lượng học viên của Trainer
         public int GetTrainerStudentCount(int id)
         {
             using (SqlConnection con = dc.GetConnection())
             {
-                // Giả sử bảng REGISTRATIONS lưu mối quan hệ giữa học viên và HLV
                 string sql = "SELECT COUNT(*) FROM REGISTRATIONS WHERE TRAINERID = @ID";
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@ID", id);
@@ -360,7 +341,6 @@ namespace desktopapp_GYM.DAL
             }
         }
 
-        // Dùng cho ComboBox chọn member cũ
         public List<MemberDTO> GetAllMembers()
         {
             var list = new List<MemberDTO>();
