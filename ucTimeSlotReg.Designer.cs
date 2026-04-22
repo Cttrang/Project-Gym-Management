@@ -92,7 +92,7 @@
             this.tlpWrapper.Controls.Add(this.splitMain, 0, 1);
             this.tlpWrapper.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpWrapper.Location = new System.Drawing.Point(0, 0);
-            this.tlpWrapper.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tlpWrapper.Margin = new System.Windows.Forms.Padding(4);
             this.tlpWrapper.Name = "tlpWrapper";
             this.tlpWrapper.RowCount = 2;
             this.tlpWrapper.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
@@ -128,8 +128,9 @@
             // splitMain
             // 
             this.splitMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitMain.Location = new System.Drawing.Point(4, 98);
-            this.splitMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitMain.Margin = new System.Windows.Forms.Padding(4);
             this.splitMain.Name = "splitMain";
             // 
             // splitMain.Panel1
@@ -140,8 +141,9 @@
             // splitMain.Panel2
             // 
             this.splitMain.Panel2.Controls.Add(this.pnlRightAction);
+            this.splitMain.Panel2MinSize = 120;
             this.splitMain.Size = new System.Drawing.Size(1642, 992);
-            this.splitMain.SplitterDistance = 1110;
+            this.splitMain.SplitterDistance = 1140;
             this.splitMain.SplitterWidth = 6;
             this.splitMain.TabIndex = 1;
             // 
@@ -151,9 +153,9 @@
             this.pnlLeftSchedule.Controls.Add(this.tlpBody);
             this.pnlLeftSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlLeftSchedule.Location = new System.Drawing.Point(0, 62);
-            this.pnlLeftSchedule.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlLeftSchedule.Margin = new System.Windows.Forms.Padding(4);
             this.pnlLeftSchedule.Name = "pnlLeftSchedule";
-            this.pnlLeftSchedule.Size = new System.Drawing.Size(1110, 930);
+            this.pnlLeftSchedule.Size = new System.Drawing.Size(1140, 930);
             this.pnlLeftSchedule.TabIndex = 1;
             // 
             // tlpBody
@@ -170,7 +172,7 @@
             this.tlpBody.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28F));
             this.tlpBody.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpBody.Location = new System.Drawing.Point(0, 0);
-            this.tlpBody.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tlpBody.Margin = new System.Windows.Forms.Padding(4);
             this.tlpBody.Name = "tlpBody";
             this.tlpBody.Padding = new System.Windows.Forms.Padding(20, 19, 20, 19);
             this.tlpBody.RowCount = 17;
@@ -191,7 +193,7 @@
             this.tlpBody.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.88F));
             this.tlpBody.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.88F));
             this.tlpBody.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.88F));
-            this.tlpBody.Size = new System.Drawing.Size(1110, 930);
+            this.tlpBody.Size = new System.Drawing.Size(1140, 930);
             this.tlpBody.TabIndex = 0;
             // 
             // tlpGridHeader
@@ -214,12 +216,12 @@
             this.tlpGridHeader.Controls.Add(this.label16, 7, 0);
             this.tlpGridHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.tlpGridHeader.Location = new System.Drawing.Point(0, 0);
-            this.tlpGridHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tlpGridHeader.Margin = new System.Windows.Forms.Padding(4);
             this.tlpGridHeader.Name = "tlpGridHeader";
             this.tlpGridHeader.Padding = new System.Windows.Forms.Padding(20, 19, 20, 19);
             this.tlpGridHeader.RowCount = 1;
             this.tlpGridHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
-            this.tlpGridHeader.Size = new System.Drawing.Size(1110, 62);
+            this.tlpGridHeader.Size = new System.Drawing.Size(1140, 62);
             this.tlpGridHeader.TabIndex = 0;
             // 
             // label10
@@ -231,7 +233,7 @@
             this.label10.Location = new System.Drawing.Point(116, 19);
             this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(128, 62);
+            this.label10.Size = new System.Drawing.Size(132, 62);
             this.label10.TabIndex = 0;
             this.label10.Text = "Thứ 2";
             this.label10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -242,10 +244,10 @@
             this.label11.BackColor = System.Drawing.Color.LightGreen;
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label11.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(256, 19);
+            this.label11.Location = new System.Drawing.Point(260, 19);
             this.label11.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(128, 62);
+            this.label11.Size = new System.Drawing.Size(132, 62);
             this.label11.TabIndex = 1;
             this.label11.Text = "Thứ 3";
             this.label11.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -256,10 +258,10 @@
             this.label12.BackColor = System.Drawing.Color.LightGreen;
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label12.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(396, 19);
+            this.label12.Location = new System.Drawing.Point(404, 19);
             this.label12.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(128, 62);
+            this.label12.Size = new System.Drawing.Size(132, 62);
             this.label12.TabIndex = 2;
             this.label12.Text = "Thứ 4";
             this.label12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -270,10 +272,10 @@
             this.label13.BackColor = System.Drawing.Color.LightGreen;
             this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label13.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(536, 19);
+            this.label13.Location = new System.Drawing.Point(548, 19);
             this.label13.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(128, 62);
+            this.label13.Size = new System.Drawing.Size(132, 62);
             this.label13.TabIndex = 3;
             this.label13.Text = "Thứ 5";
             this.label13.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -284,10 +286,10 @@
             this.label14.BackColor = System.Drawing.Color.LightGreen;
             this.label14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label14.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(676, 19);
+            this.label14.Location = new System.Drawing.Point(692, 19);
             this.label14.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(128, 62);
+            this.label14.Size = new System.Drawing.Size(132, 62);
             this.label14.TabIndex = 4;
             this.label14.Text = "Thứ 6";
             this.label14.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -298,10 +300,10 @@
             this.label15.BackColor = System.Drawing.Color.LightGreen;
             this.label15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label15.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(816, 19);
+            this.label15.Location = new System.Drawing.Point(836, 19);
             this.label15.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(128, 62);
+            this.label15.Size = new System.Drawing.Size(132, 62);
             this.label15.TabIndex = 5;
             this.label15.Text = "Thứ 7";
             this.label15.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -312,10 +314,10 @@
             this.label16.BackColor = System.Drawing.Color.LightGreen;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label16.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(956, 19);
+            this.label16.Location = new System.Drawing.Point(980, 19);
             this.label16.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(128, 62);
+            this.label16.Size = new System.Drawing.Size(134, 62);
             this.label16.TabIndex = 6;
             this.label16.Text = "Chủ nhật";
             this.label16.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -330,10 +332,10 @@
             this.pnlRightAction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlRightAction.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pnlRightAction.Location = new System.Drawing.Point(0, 0);
-            this.pnlRightAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlRightAction.Margin = new System.Windows.Forms.Padding(4);
             this.pnlRightAction.Name = "pnlRightAction";
             this.pnlRightAction.Padding = new System.Windows.Forms.Padding(22, 23, 22, 23);
-            this.pnlRightAction.Size = new System.Drawing.Size(526, 992);
+            this.pnlRightAction.Size = new System.Drawing.Size(496, 992);
             this.pnlRightAction.TabIndex = 0;
             // 
             // grpInfo
@@ -361,10 +363,10 @@
             this.grpInfo.Enabled = false;
             this.grpInfo.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpInfo.Location = new System.Drawing.Point(22, 311);
-            this.grpInfo.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grpInfo.Margin = new System.Windows.Forms.Padding(6);
             this.grpInfo.Name = "grpInfo";
-            this.grpInfo.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.grpInfo.Size = new System.Drawing.Size(480, 656);
+            this.grpInfo.Padding = new System.Windows.Forms.Padding(6);
+            this.grpInfo.Size = new System.Drawing.Size(450, 656);
             this.grpInfo.TabIndex = 13;
             this.grpInfo.TabStop = false;
             this.grpInfo.Text = "Thông tin lịch";
@@ -384,7 +386,7 @@
             this.cboDate.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboDate.FormattingEnabled = true;
             this.cboDate.Location = new System.Drawing.Point(184, 238);
-            this.cboDate.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cboDate.Margin = new System.Windows.Forms.Padding(6);
             this.cboDate.Name = "cboDate";
             this.cboDate.Size = new System.Drawing.Size(238, 44);
             this.cboDate.TabIndex = 41;
@@ -393,7 +395,7 @@
             // 
             this.btnClear.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClear.Location = new System.Drawing.Point(264, 598);
-            this.btnClear.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(6);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(150, 44);
             this.btnClear.TabIndex = 39;
@@ -405,7 +407,7 @@
             // 
             this.btnSave.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.Location = new System.Drawing.Point(74, 598);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(6);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(150, 44);
             this.btnSave.TabIndex = 38;
@@ -418,7 +420,7 @@
             this.cboStatus.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboStatus.FormattingEnabled = true;
             this.cboStatus.Location = new System.Drawing.Point(196, 510);
-            this.cboStatus.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cboStatus.Margin = new System.Windows.Forms.Padding(6);
             this.cboStatus.Name = "cboStatus";
             this.cboStatus.Size = new System.Drawing.Size(238, 44);
             this.cboStatus.TabIndex = 37;
@@ -427,7 +429,7 @@
             // 
             this.txtMaxMember.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMaxMember.Location = new System.Drawing.Point(316, 437);
-            this.txtMaxMember.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtMaxMember.Margin = new System.Windows.Forms.Padding(6);
             this.txtMaxMember.Name = "txtMaxMember";
             this.txtMaxMember.Size = new System.Drawing.Size(118, 44);
             this.txtMaxMember.TabIndex = 36;
@@ -439,7 +441,7 @@
             this.dtpEnd.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpEnd.Location = new System.Drawing.Point(184, 369);
-            this.dtpEnd.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dtpEnd.Margin = new System.Windows.Forms.Padding(6);
             this.dtpEnd.Name = "dtpEnd";
             this.dtpEnd.ShowUpDown = true;
             this.dtpEnd.Size = new System.Drawing.Size(238, 44);
@@ -451,7 +453,7 @@
             this.dtpStart.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpStart.Location = new System.Drawing.Point(184, 302);
-            this.dtpStart.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dtpStart.Margin = new System.Windows.Forms.Padding(6);
             this.dtpStart.Name = "dtpStart";
             this.dtpStart.ShowUpDown = true;
             this.dtpStart.Size = new System.Drawing.Size(238, 44);
@@ -462,7 +464,7 @@
             // 
             this.txtClassName.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtClassName.Location = new System.Drawing.Point(184, 179);
-            this.txtClassName.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtClassName.Margin = new System.Windows.Forms.Padding(6);
             this.txtClassName.Name = "txtClassName";
             this.txtClassName.Size = new System.Drawing.Size(238, 44);
             this.txtClassName.TabIndex = 32;
@@ -472,7 +474,7 @@
             this.cboPackage.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboPackage.FormattingEnabled = true;
             this.cboPackage.Location = new System.Drawing.Point(184, 115);
-            this.cboPackage.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cboPackage.Margin = new System.Windows.Forms.Padding(6);
             this.cboPackage.Name = "cboPackage";
             this.cboPackage.Size = new System.Drawing.Size(238, 44);
             this.cboPackage.TabIndex = 31;
@@ -483,7 +485,7 @@
             this.cboTrainer.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboTrainer.FormattingEnabled = true;
             this.cboTrainer.Location = new System.Drawing.Point(184, 52);
-            this.cboTrainer.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cboTrainer.Margin = new System.Windows.Forms.Padding(6);
             this.cboTrainer.Name = "cboTrainer";
             this.cboTrainer.Size = new System.Drawing.Size(238, 44);
             this.cboTrainer.TabIndex = 30;
@@ -588,18 +590,18 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(22, 23);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.groupBox1.Size = new System.Drawing.Size(480, 288);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
+            this.groupBox1.Size = new System.Drawing.Size(450, 288);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Control";
             // 
             // btnCLearSearch
             // 
-            this.btnCLearSearch.Location = new System.Drawing.Point(316, 83);
-            this.btnCLearSearch.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnCLearSearch.Location = new System.Drawing.Point(288, 79);
+            this.btnCLearSearch.Margin = new System.Windows.Forms.Padding(6);
             this.btnCLearSearch.Name = "btnCLearSearch";
             this.btnCLearSearch.Size = new System.Drawing.Size(150, 44);
             this.btnCLearSearch.TabIndex = 41;
@@ -611,7 +613,7 @@
             // 
             this.btnDelete.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnDelete.Location = new System.Drawing.Point(44, 213);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(6);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(172, 52);
             this.btnDelete.TabIndex = 13;
@@ -624,7 +626,7 @@
             this.button6.BackColor = System.Drawing.Color.IndianRed;
             this.button6.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button6.Location = new System.Drawing.Point(264, 212);
-            this.button6.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button6.Margin = new System.Windows.Forms.Padding(6);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(162, 52);
             this.button6.TabIndex = 40;
@@ -635,8 +637,8 @@
             // txtSearch
             // 
             this.txtSearch.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(36, 79);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtSearch.Location = new System.Drawing.Point(12, 79);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(6);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(264, 44);
             this.txtSearch.TabIndex = 12;
@@ -645,7 +647,7 @@
             // btnEdit
             // 
             this.btnEdit.Location = new System.Drawing.Point(276, 148);
-            this.btnEdit.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(6);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(150, 44);
             this.btnEdit.TabIndex = 9;
@@ -656,7 +658,7 @@
             // btnAdd
             // 
             this.btnAdd.Location = new System.Drawing.Point(44, 148);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(6);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(150, 44);
             this.btnAdd.TabIndex = 10;
@@ -680,7 +682,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tlpWrapper);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ucTimeSlotReg";
             this.Size = new System.Drawing.Size(1650, 1094);
             this.tlpWrapper.ResumeLayout(false);
