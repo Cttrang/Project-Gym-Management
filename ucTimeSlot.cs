@@ -28,7 +28,6 @@ namespace desktopapp_GYM
             this.Data = dto;
             this.CurrentSlotID = dto.SlotID;
 
-            // Hiển thị tên lớp và HLV
             lblClassName.Text = dto.SlotName;
             lblTrainerName.Text = $"HLV: {dto.TrainerName}";
 
@@ -55,12 +54,11 @@ namespace desktopapp_GYM
             }
         }
 
-        // Vẽ bo góc để giao diện trông "mượt" như hình rạp phim Huy gửi
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             base.OnPaint(e);
-            int borderRadius = 10; // Độ bo góc
+            int borderRadius = 10;
             using (GraphicsPath path = new GraphicsPath())
             {
                 path.AddArc(0, 0, borderRadius, borderRadius, 180, 90);
@@ -73,11 +71,9 @@ namespace desktopapp_GYM
             }
         }
 
-        // Hiệu ứng khi di chuột vào (Hover)
         private void ucTimeSlot_MouseEnter(object sender, EventArgs e)
         {
             this.BorderStyle = BorderStyle.FixedSingle;
-            // Làm màu sáng lên một chút khi hover
             this.BackColor = ControlPaint.Light(this.BackColor);
         }
 
@@ -85,7 +81,6 @@ namespace desktopapp_GYM
         private void ucTimeSlot_MouseLeave(object sender, EventArgs e)
         {
             this.BorderStyle = BorderStyle.None;
-            // Trả về màu cũ khi chuột rời đi
             if (Data != null) UpdateData(Data);
         }
 

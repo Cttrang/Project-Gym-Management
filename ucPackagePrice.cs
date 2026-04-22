@@ -25,7 +25,6 @@ namespace desktopapp_GYM
             DataTable dt = dal.GetTopPackages(5);
             dgvTopPackages.DataSource = dt;
 
-            // Thiết lập cơ bản
             dgvTopPackages.Dock = DockStyle.Fill;
             dgvTopPackages.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTopPackages.BackgroundColor = Color.White;
@@ -37,7 +36,6 @@ namespace desktopapp_GYM
             dgvTopPackages.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTopPackages.ReadOnly = true;
 
-            // QUAN TRỌNG: Chèn cột Rank vào đầu nếu chưa có
             if (!dgvTopPackages.Columns.Contains("RankCol"))
             {
                 DataGridViewTextBoxColumn rankCol = new DataGridViewTextBoxColumn();
@@ -45,10 +43,9 @@ namespace desktopapp_GYM
                 dgvTopPackages.Columns.Insert(0, rankCol);
             }
 
-            // Chia tỷ lệ độ rộng (Tổng = 100)
-            dgvTopPackages.Columns[0].FillWeight = 15; // Cột Rank
-            dgvTopPackages.Columns[1].FillWeight = 60; // Tên gói (Giả sử SQL cột 0 cũ giờ thành 1)
-            dgvTopPackages.Columns[2].FillWeight = 25; // Số người (Giả sử SQL cột 1 cũ giờ thành 2)
+            dgvTopPackages.Columns[0].FillWeight = 15; 
+            dgvTopPackages.Columns[1].FillWeight = 60; 
+            dgvTopPackages.Columns[2].FillWeight = 25; 
         }
 
         private void ucTopPackageItem1_Load(object sender, EventArgs e)
@@ -68,16 +65,14 @@ namespace desktopapp_GYM
 
             try
             {
-                // --- CỘT 0: SỐ HẠNG (RankCol) ---
                 if (dgvTopPackages.Columns[e.ColumnIndex].Name == "RankCol")
                 {
                     e.Value = (e.RowIndex + 1).ToString();
                     e.CellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
                     e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                    if (e.RowIndex == 0) e.CellStyle.ForeColor = Color.OrangeRed; // Top 1 màu đỏ cam
+                    if (e.RowIndex == 0) e.CellStyle.ForeColor = Color.OrangeRed;
                 }
 
-                // --- CỘT 1: TÊN GÓI (Dữ liệu từ SQL) ---
                 else if (e.ColumnIndex == 1)
                 {
                     e.CellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
@@ -86,18 +81,16 @@ namespace desktopapp_GYM
                         e.CellStyle.ForeColor = Color.FromArgb(44, 62, 80);
                 }
 
-                // --- CỘT 2: SỐ NGƯỜI (Nổi bật nhất ở cuối) ---
                 else if (e.ColumnIndex == 2)
                 {
                     if (e.Value != null && e.Value != DBNull.Value)
                     {
-                        // Thêm chữ "Hội viên" vào sau con số
                         e.Value = e.Value.ToString() + " Hội viên";
-                        e.FormattingApplied = true; // Báo hiệu đã xử lý xong để tránh lỗi ép kiểu
+                        e.FormattingApplied = true;
                     }
 
                     e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                    e.CellStyle.ForeColor = Color.RoyalBlue; // Màu xanh nổi bật
+                    e.CellStyle.ForeColor = Color.RoyalBlue;
                     e.CellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
                 }
             }

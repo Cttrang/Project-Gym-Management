@@ -36,7 +36,6 @@ namespace desktopapp_GYM
         {
             if (dgvRegistrations.Columns.Count == 0) return;
 
-            // Ẩn cột không cần hiển thị trên grid
             var hideCols = new[]
             {
                 "MemberID", "PackageID", "TrainerID",
@@ -102,12 +101,10 @@ namespace desktopapp_GYM
         {
             try
             {
-                // Đồng bộ trước khi Load dữ liệu để con số CurrentCount luôn chuẩn
                 timeslotBll.RefreshAllAttendance();
             }
             catch (Exception ex)
             {
-                // Có thể log lỗi ở đây nếu muốn, hoặc tạm thời bỏ qua để User vẫn xem được danh sách
                 Console.WriteLine("Lỗi đồng bộ sĩ số: " + ex.Message);
             }
             LoadData();

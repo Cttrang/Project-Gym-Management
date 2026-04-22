@@ -25,22 +25,27 @@ namespace desktopapp_GYM
 
         private void LoadData()
         {
-            fullList = bll.GetData();
-            dgvPackages.DataSource = null;
-            dgvPackages.DataSource = fullList;
-            FormatGrid();
-            SetupAutoComplete();
+            try
+            {
+                fullList = bll.GetData();
+                dgvPackages.DataSource = null;
+                dgvPackages.DataSource = fullList;
+                FormatGrid();
+                SetupAutoComplete();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void SetupAutoComplete()
         {
-            // 1. Cấu hình chế độ gợi ý cho TextBox Search
             txtSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             txtSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
 
             AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
 
-            // 2. Lấy danh sách tên các gói tập từ fullList (đã load từ BLL)
             if (fullList != null && fullList.Count > 0)
             {
                 foreach (var pkg in fullList)
@@ -51,14 +56,11 @@ namespace desktopapp_GYM
                     }
                 }
             }
-
-            // 3. Gán bộ sưu tập tên vào TextBox
             txtSearch.AutoCompleteCustomSource = collection;
         }
 
         private void ApplyRolePermissions()
         {
-            // Lấy trực tiếp từ Session tĩnh của Huy
             string role = Session.CurrentRole;
 
             if (role == "Receptionist")
@@ -68,7 +70,7 @@ namespace desktopapp_GYM
             else if (role == "Manager")
             {
                 btnAdd.Enabled = btnEdits.Enabled = true;
-                btnDelete.Enabled = false; // Manager không được xóa
+                btnDelete.Enabled = false; 
             }
             else // Admin
             {
@@ -111,19 +113,31 @@ namespace desktopapp_GYM
         }
         private void btnAdd_Click(object sender, EventArgs e) 
         {
-            frmPackageChange frm = new frmPackageChange(new PackageDTO(), true);
-            if (frm.ShowDialog() == DialogResult.OK) LoadData();
-            
+            try
+            {
+                frmPackageChange frm = new frmPackageChange(new PackageDTO(), true);
+                if (frm.ShowDialog() == DialogResult.OK) LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể mở cửa sổ thêm gói tập: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
         private void btnEdits_Click(object sender, EventArgs e) 
         {
-            if (dgvPackages.CurrentRow != null)
+            try
             {
-                var selected = (PackageDTO)dgvPackages.CurrentRow.DataBoundItem;
-                frmPackageChange frm = new frmPackageChange(selected, false);
-                if (frm.ShowDialog() == DialogResult.OK) LoadData();
-                
+                if (dgvPackages.CurrentRow != null)
+                {
+                    var selected = (PackageDTO)dgvPackages.CurrentRow.DataBoundItem;
+                    frmPackageChange frm = new frmPackageChange(selected, false);
+                    if (frm.ShowDialog() == DialogResult.OK) LoadData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra khi chuẩn bị dữ liệu sửa: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void btnDelete_Click(object sender, EventArgs e) 
@@ -169,6 +183,7 @@ namespace desktopapp_GYM
         }
         private void txtSearch_TextChanged(object sender, EventArgs e) 
         {
+            if (fullList == null) return;
             string key = txtSearch.Text.ToLower().Trim();
             dgvPackages.DataSource = fullList.Where(p => p.PackageName.ToLower().Contains(key)).ToList();
         }
@@ -181,7 +196,6 @@ namespace desktopapp_GYM
             {
                 var pkg = (PackageDTO)dgvPackages.CurrentRow.DataBoundItem;
 
-                // Xử lý hiển thị số buổi PT nếu có
                 string ptInfo = pkg.PTSessionsPerWeek.HasValue ? $"{pkg.PTSessionsPerWeek} buổi/tuần" : "N/A";
 
                 string info = $"--- THÔNG TIN CHI TIẾT GÓI TẬP ---\n\n" +

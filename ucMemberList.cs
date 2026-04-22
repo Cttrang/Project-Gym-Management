@@ -34,23 +34,18 @@ namespace desktopapp_GYM
         {
             try
             {
-                // 1. Gọi BLL quét Database để cập nhật trạng thái Inactive
                 int count = bll.UpdateExpiredStatus();
 
-                // 2. Nếu có ít nhất 1 người bị quá hạn
                 if (count > 0)
                 {
-                    // Load lại dữ liệu mới để Grid hiển thị đúng chữ 'Inactive'
                     LoadData();
 
-                    // Thông báo cho nhân viên biết
                     MessageBox.Show($"Hệ thống đã tự động chuyển {count} hội viên sang 'Inactive' do hết hạn tập!",
                                     "Thông báo định kỳ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                // Tránh làm treo App nếu SQL có vấn đề, chỉ hiển thị lỗi nhẹ
                 Console.WriteLine("Lỗi quét hết hạn: " + ex.Message);
             }
         }
@@ -62,11 +57,9 @@ namespace desktopapp_GYM
 
             AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
 
-            // Lấy toàn bộ tên hội viên để đưa vào danh sách gợi ý
             DataTable dt = bll.GetAllEveryone();
             foreach (DataRow row in dt.Rows)
             {
-                // Lưu ý: SQL trả về FULLNAME (in hoa)
                 if (row["FULLNAME"] != DBNull.Value)
                     collection.Add(row["FULLNAME"].ToString());
             }
@@ -118,7 +111,6 @@ namespace desktopapp_GYM
                 dgvMembers.Columns["STATUS"].HeaderText = "Trạng thái";
                 dgvMembers.Columns["GHICHU"].HeaderText = "Ghi chú";
 
-                // Ẩn TRAINERID và PACKAGEID vì đã có GHICHU thể hiện
                 //dgvMembers.Columns["TRAINERID"].Visible = false;
                 //dgvMembers.Columns["PACKAGEID"].Visible = false;
 
@@ -141,12 +133,10 @@ namespace desktopapp_GYM
 
             if (string.IsNullOrEmpty(keyword))
             {
-                // Nếu trống thì nạp tất cả
                 dgvMembers.DataSource = bll.GetAllEveryone();
             }
             else
             {
-                // Nếu có chữ thì mới search
                 dgvMembers.DataSource = bll.SearchData(keyword);
             }
             FormatDataGridView();
@@ -154,11 +144,8 @@ namespace desktopapp_GYM
 
         private void dgvMembers_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // 1. Kiểm tra hàng dữ liệu hợp lệ
             if (e.RowIndex < 0 || e.RowIndex >= dgvMembers.Rows.Count) return;
 
-            // 2. Kiểm tra cột PAYMENTSTATUS (Tên cột phải khớp với SQL IN HOA bạn đã viết)
-            // Lấy dòng hiện tại để kiểm tra dữ liệu
             var row = dgvMembers.Rows[e.RowIndex];
             var typeValue = row.Cells["TYPE"].Value?.ToString().Trim();
             var statusValue = row.Cells["PAYMENTSTATUS"].Value?.ToString().Trim();
@@ -168,7 +155,7 @@ namespace desktopapp_GYM
             {
                 bool isExpired = false;
 
-                // 1. Kiểm tra hết hạn: So sánh ngày hiện tại với ENDDATE
+                // 1. Kiểm tra hết hạn
                 if (endDateValue != DBNull.Value && endDateValue != null)
                 {
                     DateTime endDate = Convert.ToDateTime(endDateValue);
@@ -178,16 +165,13 @@ namespace desktopapp_GYM
                     }
                 }
 
-                // 2. Kiểm tra chưa thanh toán
                 bool isUnpaid = (statusValue == "Unpaid" || statusValue == "Chưa thanh toán" || string.IsNullOrEmpty(statusValue));
 
-                // 3. Thực hiện tô màu: Nếu Hết hạn HOẶC Chưa thanh toán thì tô ĐỎ
                 if (isExpired || isUnpaid)
                 {
                     row.DefaultCellStyle.ForeColor = Color.Red;
                     row.DefaultCellStyle.Font = new Font(dgvMembers.Font, FontStyle.Bold);
 
-                    // (Tùy chọn) Nếu muốn biết lý do đỏ, Huy có thể gán vào ToolTip
                     row.Cells["ENDDATE"].ToolTipText = isExpired ? "Gói tập đã hết hạn!" : "";
                 }
                 else if (statusValue == "Paid" || statusValue == "Completed")
@@ -215,7 +199,6 @@ namespace desktopapp_GYM
             {
                 try
                 {
-                    // Gọi BLL thực hiện xóa (BLL sẽ gọi DAL.DeleteRecord)
                     if (bll.DeleteData(id, targetRole))
                     {
                         MessageBox.Show("Xóa thành công!");
@@ -260,16 +243,11 @@ namespace desktopapp_GYM
 
         private void dgvMembers_SelectionChanged(object sender, EventArgs e)
         {
-            // 1. Kiểm tra xem có dòng nào đang được chọn không
             if (dgvMembers.CurrentRow != null)
             {
-                // 2. Lấy Role của dòng đó (Huy thay "TYPE" bằng tên cột chứa Role trong Grid của Huy)
                 string selectedRole = dgvMembers.CurrentRow.Cells["TYPE"].Value?.ToString();
-
-                // 3. Danh sách các Role đặc biệt cần khóa nút
                 string[] specialRoles = { "Admin", "Manager", "Receptionist" };
 
-                // 4. Nếu Role nằm trong danh sách đặc biệt -> Khóa nút Edit/Delete
                 if (specialRoles.Contains(selectedRole))
                 {
                     btnAdd.Enabled = false;
@@ -279,16 +257,13 @@ namespace desktopapp_GYM
                 }
                 else
                 {
-                    // Nếu là Member hoặc Trainer -> Mở nút
                     btnAdd.Enabled = true;
                     btnEdits.Enabled = true;
                     btnDelete.Enabled = true;
-
                 }
             }
             else
             {
-                // Nếu không chọn dòng nào (Grid trống) -> Tắt nút luôn cho an toàn
                 btnEdits.Enabled = false;
                 btnDelete.Enabled = false;
             }

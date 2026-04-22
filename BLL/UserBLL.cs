@@ -13,41 +13,83 @@ namespace desktopapp_GYM.BLL
 
         public UserDTO Login(string u, string p)
         {
-            if (string.IsNullOrEmpty(u) || string.IsNullOrEmpty(p))
-                return null; // Không cho phép để trống
+            try
+            {
+                if (string.IsNullOrWhiteSpace(u) || string.IsNullOrWhiteSpace(p))
+                    throw new Exception("Tên đăng nhập và mật khẩu không được để trống!");
 
-            return dal.CheckLogin(u, p);
+                var user = dal.CheckLogin(u, p);
+
+                if (user == null)
+                    throw new Exception("Tên đăng nhập hoặc mật khẩu không chính xác!");
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public List<UserDTO> GetAll() => dal.GetAll();
+        public List<UserDTO> GetAll()
+        {
+            try { return dal.GetAll(); }
+            catch (Exception ex) { throw new Exception("Lỗi tải danh sách người dùng: " + ex.Message); }
+        }
 
         public bool Save(UserDTO user, bool isAdd)
         {
-            if (string.IsNullOrWhiteSpace(user.Username))
+            try
+            {
+                if (string.IsNullOrWhiteSpace(user.Username))
                 throw new Exception("Vui lòng nhập tên đăng nhập!");
-            if (string.IsNullOrWhiteSpace(user.Role))
-                throw new Exception("Vui lòng chọn vai trò!");
-            if (isAdd && string.IsNullOrWhiteSpace(user.Password))
-                throw new Exception("Vui lòng nhập mật khẩu!");
-            
-            return dal.Save(user, isAdd);
+                if (string.IsNullOrWhiteSpace(user.Role))
+                    throw new Exception("Vui lòng chọn vai trò!");
+                if (isAdd && string.IsNullOrWhiteSpace(user.Password))
+                    throw new Exception("Vui lòng nhập mật khẩu!");
+                
+                return dal.Save(user, isAdd);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool Delete(UserDTO user)
         {
-            return dal.Delete(user.UserID);
+            try
+            {
+                if (user.Username.ToLower() == "admin")
+                    throw new Exception("Không thể xóa tài khoản Admin hệ thống!");
+
+                return dal.Delete(user.UserID);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool ResetPassword(int userId, string newPassword)
         {
-            if (string.IsNullOrWhiteSpace(newPassword))
-                throw new Exception("Mật khẩu mới không được để trống!");
-            return dal.ResetPassword(userId, newPassword);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 4)
+                    throw new Exception("Mật khẩu mới phải có ít nhất 4 ký tự!");
+
+                return dal.ResetPassword(userId, newPassword);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool VerifyOldPassword(string username, string oldPassword)
         {
-            return dal.VerifyOldPassword(username, oldPassword);
+            try { return dal.VerifyOldPassword(username, oldPassword); }
+            catch { return false; }
         }
 
     }

@@ -24,18 +24,25 @@ namespace desktopapp_GYM
 
         private void LoadData()
         {
-            fullList = bll.GetAll();
-            dgvAccounts.DataSource = null;
-            dgvAccounts.DataSource = fullList;
-            FormatGrid();
-            SetupAutoComplete();
+            try
+            {
+                fullList = bll.GetAll();
+                dgvAccounts.DataSource = null;
+                dgvAccounts.DataSource = fullList;
+                FormatGrid();
+                SetupAutoComplete();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải danh sách tài khoản: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void FormatGrid()
         {
             if (dgvAccounts.Columns.Count == 0) return;
 
-            dgvAccounts.Columns["UserID"].Visible = false; // ẩn ID kỹ thuật
+            dgvAccounts.Columns["UserID"].Visible = false; // ẩn ID
             dgvAccounts.Columns["Password"].Visible = false; //ẩn password
 
             dgvAccounts.Columns["Username"].HeaderText = "Tên đăng nhập";
@@ -152,20 +159,27 @@ namespace desktopapp_GYM
         }
         private void txtSearch_TextChanged(object sender, EventArgs e) 
         {
+            if (fullList == null) return;
             string key = txtSearch.Text.ToLower().Trim();
-            dgvAccounts.DataSource = fullList.Where(u =>
-                u.Username.ToLower().Contains(key) ||
-                u.Role.ToLower().Contains(key)
-            ).ToList();
+            if (string.IsNullOrEmpty(key))
+            {
+                dgvAccounts.DataSource = fullList;
+            }
+            else
+            {
+                dgvAccounts.DataSource = fullList.Where(u =>
+                    (u.Username?.ToLower().Contains(key) ?? false) ||
+                    (u.Role?.ToLower().Contains(key) ?? false)
+                ).ToList();
+            }
             FormatGrid();
         }
         private void dgvAccounts_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e) 
         {
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0 || e.RowIndex >= dgvAccounts.Rows.Count) return;
             var user = (UserDTO)dgvAccounts.Rows[e.RowIndex].DataBoundItem;
             if (user == null) return;
 
-            // Tô màu theo Role
             switch (user.Role)
             {
                 case "Admin":
@@ -182,7 +196,6 @@ namespace desktopapp_GYM
                     break;
             }
 
-            // Highlight tài khoản đang đăng nhập
             if (user.Username == Session.CurrentUsername)
                 dgvAccounts.Rows[e.RowIndex].DefaultCellStyle.Font =
                     new System.Drawing.Font(dgvAccounts.Font, System.Drawing.FontStyle.Bold);

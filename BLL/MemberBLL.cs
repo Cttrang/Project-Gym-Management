@@ -72,34 +72,42 @@ namespace desktopapp_GYM.BLL
 
         public bool SaveData(MemberDTO dto, bool isAdd)
         {
-            if (dto.Role == "Member")
-                return dal.SaveMember(dto, isAdd);
-
-            else if (dto.Role == "Trainer")
+            try
             {
-                // Chuyển MemberDTO sang TrainerDTO rồi gọi TrainerDAL.Save
-                TrainerDTO trainerDto = new TrainerDTO
-                {
-                    TrainerID = dto.ID,
-                    FullName = dto.FullName,
-                    Phone = dto.Phone,
-                    Specialty = dto.GhiChu,  // GhiChu = Specialty của Trainer
-                    Status = dto.Status
-                };
-                return trainerDal.Save(trainerDto, isAdd);
-            }
+                if (dto.Role == "Member")
+                     return dal.SaveMember(dto, isAdd);
 
-            return false;
+                 else if (dto.Role == "Trainer")
+                 {
+                     TrainerDTO trainerDto = new TrainerDTO
+                     {
+                         TrainerID = dto.ID,
+                         FullName = dto.FullName,
+                         Phone = dto.Phone,
+                         Specialty = dto.GhiChu,  //GhiChu = Specialty của Trainer
+                         Status = dto.Status
+                     };
+                     return trainerDal.Save(trainerDto, isAdd);
+                 }
+
+                 return false;
+            }
+            catch (Exception ex)
+            {
+                // Ném các lỗi logic khác ra UI
+                throw new Exception("Lỗi khi lưu dữ liệu: " + ex.Message);
+            }
         }
 
         public DataTable GetPackages() => dal.GetPackages();
         public DataTable GetTrainers() => dal.GetTrainers();
         public bool DeleteData(int id, string targetRole)
         {
-            CheckStaffPermission(targetRole, "xóa");
+            try
+            {
+                CheckStaffPermission(targetRole, "xóa");
             if (targetRole == "Member")
             {
-                // Gọi DAL lấy trạng thái, BLL tự quyết định có cho xóa hay không
                 if (dal.GetMemberStatus(id) == "Paid")
                 {
                     throw new Exception("Hội viên đã thanh toán phí tập. Không thể xóa để đảm bảo tính minh bạch tài chính!");
@@ -107,16 +115,19 @@ namespace desktopapp_GYM.BLL
             }
             else if (targetRole != "Admin" && targetRole != "Manager")
             {
-                // Giả định là Trainer: Chặn xóa nếu đang có học viên
                 if (dal.GetTrainerStudentCount(id) > 0)
                 {
                     throw new Exception("Huấn luyện viên này đang có học viên theo học. Không thể xóa!");
                 }
             }
-
-            // 3. Nếu mọi thứ hợp lệ, gọi DAL để xóa
             
             return dal.DeleteRecord(id, targetRole);
+            }
+            catch (Exception ex)
+            {
+                // Đảm bảo mọi lỗi (quyền hạn, logic, database) đều được đưa về một đầu mối
+                throw new Exception("Không thể lưu: " + ex.Message);
+            }
         }
 
         public MemberDTO GetById(int memberId)
@@ -146,9 +157,10 @@ namespace desktopapp_GYM.BLL
             catch (Exception ex)
             {
                 // Thường là lỗi UNIQUE constraint trên PHONE
-                MessageBox.Show("Lỗi tạo hội viên: " + ex.Message,
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return -1;
+                if (ex.Message.Contains("UNIQUE"))
+                    throw new Exception("Số điện thoại này đã được đăng ký bởi hội viên khác!");
+
+                throw new Exception("Không thể tạo hội viên mới: " + ex.Message);
             }
         }
 

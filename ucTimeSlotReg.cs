@@ -87,7 +87,6 @@ namespace desktopapp_GYM
             }
             catch (Exception ex)
             {
-                // Lỗi UI nhẹ không cần hiện Messagebox liên tục, chỉ log console
                 Console.WriteLine("Highlight error: " + ex.Message);
             }
         }
@@ -138,18 +137,18 @@ namespace desktopapp_GYM
 
             if (result == DialogResult.Yes)
             {
-                button4_Click(null, null); // Gọi Save
-                return !isDataChanged;    // Nếu save lỗi thì isDataChanged vẫn true → ở lại
+                button4_Click(null, null); 
+                return !isDataChanged;    
             }
             else if (result == DialogResult.No)
             {
                 ToggleEvents(false);
                 isDataChanged = false;
-                return true;  // Cho phép rời, bỏ thay đổi
+                return true;
             }
             else // Cancel
             {
-                return false; // Ở lại
+                return false;
             }
         }
 
@@ -158,21 +157,19 @@ namespace desktopapp_GYM
             if (!isAddMode) return;
             if (cboDate.SelectedItem == null) return;
 
-            string day = cboDate.SelectedItem.ToString();           // "Thứ 2"
-            string time = dtpStart.Value.ToString("HH:00");         // "08:00"
+            string day = cboDate.SelectedItem.ToString();           
+            string time = dtpStart.Value.ToString("HH:00");         
             string targetTag = day + "|" + time;
 
-            // Bỏ highlight ô cũ
+
             if (currentHighlightedCell != null)
                 currentHighlightedCell.BackColor = Color.Transparent;
-
-            // Tìm và highlight ô mới
             foreach (Control ctrl in tlpBody.Controls)
             {
                 if (ctrl is FlowLayoutPanel flp && flp.Tag?.ToString() == targetTag)
                 {
                     currentHighlightedCell = flp;
-                    flp.BackColor = Color.FromArgb(200, 230, 255); // highlight xanh nhạt
+                    flp.BackColor = Color.FromArgb(200, 230, 255);
                     break;
                 }
             }
@@ -189,19 +186,16 @@ namespace desktopapp_GYM
         private void cboTrainer_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            // Kiểm tra nếu có Trainer được chọn (Value là kiểu int)
             if (cboTrainer.SelectedValue != null && cboTrainer.SelectedValue is int trainerId)
             {
                 try
                 {
-                    // Gọi hàm lấy Package theo TrainerId Huy vừa viết ở DAL/BLL
                     var filteredPackages = packageBll.GetPackagesByTrainer(trainerId);
 
                     cboPackage.DataSource = filteredPackages;
                     cboPackage.DisplayMember = "PackageName";
                     cboPackage.ValueMember = "PackageID";
 
-                    // Nếu đang thêm mới, hãy để trống gói tập để người dùng tự chọn
                     if (isAddMode) cboPackage.SelectedIndex = -1;
                 }
                 catch (Exception ex)
@@ -216,13 +210,11 @@ namespace desktopapp_GYM
             try
             {
                 cboDate.Items.Clear();
-                // Bắt đầu từ i = 1 để bỏ chữ "Giờ" trong mảng dayLabels
                 for (int i = 1; i < dayLabels.Length; i++)
                 {
                     cboDate.Items.Add(dayLabels[i]);
                 }
 
-                // Chỉ load danh sách HLV
                 var trainers = trainerBll.GetData();
                 cboTrainer.DataSource = trainers;
                 cboTrainer.DisplayMember = "FullName";
@@ -234,7 +226,7 @@ namespace desktopapp_GYM
                 cboStatus.Items.Add("Inactive");
                 cboStatus.SelectedIndex = 0;
 
-                cboPackage.DataSource = null; // Để trống Package lúc đầu
+                cboPackage.DataSource = null;
             }
             catch (Exception ex)
             {
@@ -244,12 +236,10 @@ namespace desktopapp_GYM
 
         private void SetInputStatus(bool isEditing)
         {
-            // Giả sử GroupBox chứa thông tin tên là grpInfo
             grpInfo.Enabled = isEditing;
             btnSave.Enabled = isEditing;
             btnClear.Enabled = isEditing;
 
-            // Khóa các nút điều hướng chính khi đang sửa
             btnAdd.Enabled = !isEditing;
             btnEdit.Enabled = !isEditing;
         }
@@ -258,10 +248,6 @@ namespace desktopapp_GYM
             "Giờ", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"
         };
 
-        // 1. Tạo các nhãn tiêu đề cho Thứ (tlpHeader)
-        
-
-        // 2. Tạo các ô trống (FlowLayoutPanel) và cột Giờ cho tlpBody
         private void InitEmptySlots()
         {
             tlpBody.Controls.Clear();
@@ -272,7 +258,6 @@ namespace desktopapp_GYM
             tlpBody.RowStyles.Clear();
             for (int i = 0; i < timeLabels.Count; i++)
             {
-                // Chuyển sang SizeType.AutoSize
                 tlpBody.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
             for (int row = 0; row < timeLabels.Count; row++)
@@ -310,16 +295,15 @@ namespace desktopapp_GYM
             currentSelectedSlot = null;
             txtClassName.Clear();
             txtMaxMember.Clear();
-            cboDate.SelectedIndex=-1; // Xóa trắng txtDate
-            // Reset số hiển thị
+            cboDate.SelectedIndex=-1;
             lblCurrentCount.Text = "0 /";
             lblCurrentCount.ForeColor = Color.Gray;
-            // ... reset các combo box ...
+
             cboPackage.DataSource = null;
             cboTrainer.SelectedIndex = -1;
         }
 
-        // 3. Event mẫu khi Double Click vào ô trống
+
         private void OnCellDoubleClick(object sender, EventArgs e)
         {
             try
@@ -329,8 +313,8 @@ namespace desktopapp_GYM
                 string[] info = flp.Tag.ToString().Split('|');
 
                 ClearInputFields();
-                isAddMode = true;      // Chuyển sang chế độ thêm
-                SetInputStatus(true);  // Mở khóa GroupBox
+                isAddMode = true;      
+                SetInputStatus(true);  
 
                 cboDate.SelectedItem = info[0];
                 if (DateTime.TryParse(info[1], out DateTime startTime))
@@ -344,7 +328,7 @@ namespace desktopapp_GYM
                 currentHighlightedCell = flp;
                 flp.BackColor = Color.FromArgb(200, 230, 255);
 
-                ToggleEvents(true); // Bắt đầu track thay đổi
+                ToggleEvents(true);
                 isDataChanged = false;
                 txtClassName.Focus();
             }
@@ -354,7 +338,6 @@ namespace desktopapp_GYM
             }
         }
 
-        // 4. Hàm để Form ngoài gọi vào khi cần đổ dữ liệu
         public void ClearAllSlots()
         {
             foreach (Control ctrl in tlpBody.Controls)
@@ -374,12 +357,9 @@ namespace desktopapp_GYM
                 SetInputStatus(false);
                 isAddMode = false;
                 ToggleEvents(false);
-                
 
-                // --- CẬP NHẬT SỐ LƯỢNG LÊN LABEL ---
                 lblCurrentCount.Text = slot.CurrentCount.ToString() + " /";
 
-                // Đổi màu để cảnh báo nhanh
                 if (slot.CurrentCount >= slot.MaxMembers)
                 {
                     lblCurrentCount.ForeColor = Color.Red; // Đầy lớp thì hiện màu đỏ
@@ -397,7 +377,6 @@ namespace desktopapp_GYM
                 txtMaxMember.Text = slot.MaxMembers.ToString();
                 cboDate.Text = slot.DayOfWeek;
 
-                // Gán TrainerID -> sẽ kích hoạt cboTrainer_SelectedIndexChanged
                 cboTrainer.SelectedValue = slot.TrainerID;
 
                 var filteredPackages = packageBll.GetPackagesByTrainer(slot.TrainerID);
@@ -405,7 +384,6 @@ namespace desktopapp_GYM
                 cboPackage.DisplayMember = "PackageName";
                 cboPackage.ValueMember = "PackageID";
 
-                // Gán PackageID (Lưu ý: phải gán sau khi Trainer đã load xong Package)
                 cboPackage.SelectedValue = slot.PackageID;
 
                 if (DateTime.TryParse(slot.StartTime, out DateTime start)) dtpStart.Value = start;
@@ -418,11 +396,7 @@ namespace desktopapp_GYM
 
                 if (hasRegistrations)
                 {
-                    // Khóa gói tập vì liên quan đến tiền bạc/hợp đồng đã ký của khách
                     cboPackage.Enabled = false;
-
-                    // MaxMember: Không cho phép nhập số nhỏ hơn số người hiện có
-                    // (Sẽ kiểm tra kỹ hơn ở nút Save)
                 }
                 else
                 {
@@ -445,7 +419,6 @@ namespace desktopapp_GYM
 
             foreach (var slot in list)
             {
-                // Đảm bảo StartTime chỉ lấy 5 ký tự đầu (ví dụ: 08:00)
                 string startTimeFormatted = "";
                 if (DateTime.TryParse(slot.StartTime, out DateTime dt))
                 {
@@ -453,10 +426,9 @@ namespace desktopapp_GYM
                 }
                 else
                 {
-                    continue; // Nếu giờ lỗi thì bỏ qua slot này
+                    continue;
                 }
 
-                // 2. Chuẩn hóa Thứ (Xóa khoảng trắng thừa)
                 string dayFromDb = slot.DayOfWeek?.Trim();
                 string targetTag = dayFromDb + "|" + startTimeFormatted;
 
@@ -485,7 +457,6 @@ namespace desktopapp_GYM
                     }
                 }
 
-                // Debug nhẹ: Nếu chạy hết các ô mà không tìm thấy chỗ đổ
                 if (!foundCell)
                 {
                     Console.WriteLine($"Không tìm thấy ô cho: {targetTag}");
@@ -520,7 +491,6 @@ namespace desktopapp_GYM
                     MessageBox.Show("Giờ kết thúc phải lớn hơn giờ bắt đầu!");
                     return;
                 }
-                // 1. Lấy dữ liệu từ UI
                 TimeslotDTO ts = isAddMode ? new TimeslotDTO() : currentSelectedSlot;
 
                 ts.SlotName = txtClassName.Text;
@@ -534,14 +504,12 @@ namespace desktopapp_GYM
 
                 if (!isAddMode && currentSelectedSlot.CurrentCount > 0)
                 {
-                    // 1. Chặn đổi gói tập
                     if (ts.PackageID != currentSelectedSlot.PackageID)
                     {
                         MessageBox.Show("Lớp đã có hội viên đăng ký, không được phép thay đổi Gói tập!", "Cảnh báo");
                         return;
                     }
 
-                    // 2. Chặn giảm MaxMember quá đà
                     if (ts.MaxMembers < currentSelectedSlot.CurrentCount)
                     {
                         MessageBox.Show($"Không thể giảm số lượng tối đa xuống {ts.MaxMembers} vì hiện đã có {currentSelectedSlot.CurrentCount} người đăng ký!");
@@ -549,15 +517,15 @@ namespace desktopapp_GYM
                     }
                 }
 
-                // 2. Lưu xuống Database
+
                 if (bll.Save(ts, isAddMode))
                 {
-                    ToggleEvents(false);   // ← Thêm dòng này
+                    ToggleEvents(false);   
                     isDataChanged = false;
                     MessageBox.Show(isAddMode ? "Thêm lớp mới thành công!" : "Cập nhật thành công!");
 
-                    SetInputStatus(false); // Khóa lại sau khi lưu xong
-                    LoadDataToGrid();      // Vẽ lại toàn bộ lưới để hiện ucTimeSlot mới
+                    SetInputStatus(false); 
+                    LoadDataToGrid();      
                 }
             }
             catch (Exception ex)
@@ -576,7 +544,7 @@ namespace desktopapp_GYM
             }
             isAddMode = false;
             SetInputStatus(true);
-            ToggleEvents(true);    // Bắt đầu track từ đây
+            ToggleEvents(true);    
             isDataChanged = false;
         }
 
@@ -602,7 +570,6 @@ namespace desktopapp_GYM
             ClearInputFields();
             SetInputStatus(false);
 
-            // Bỏ highlight ô
             if (currentHighlightedCell != null)
             {
                 currentHighlightedCell.BackColor = Color.Transparent;
@@ -630,27 +597,23 @@ namespace desktopapp_GYM
                     MessageBoxIcon.Warning
                 );
 
-                if (result == DialogResult.No) return; // Ở lại
+                if (result == DialogResult.No) return;
 
-                // User chọn Yes → cleanup trước khi thoát
                 ToggleEvents(false);
                 isDataChanged = false;
 
                 if (isAddMode)
                 {
-                    // Xóa sạch những gì đã nhập
                     ClearInputFields();
                 }
                 else
                 {
-                    // Edit mode → trả về dữ liệu cũ
                     if (currentSelectedSlot != null)
                         DisplayDetail(currentSelectedSlot);
                 }
 
                 SetInputStatus(false);
 
-                // Bỏ highlight ô nếu có
                 if (currentHighlightedCell != null)
                 {
                     currentHighlightedCell.BackColor = Color.Transparent;
@@ -658,7 +621,6 @@ namespace desktopapp_GYM
                 }
             }
 
-            // Thoát về frmMain
             Form parent = this.FindForm();
             if (parent is frmMain main) main.ShowUc();
             else if (parent is frmGuest guest) guest.ShowUc();
@@ -685,7 +647,6 @@ namespace desktopapp_GYM
                 return;
             }
 
-            // 2. Xác nhận xóa
             var confirmResult = MessageBox.Show(
                 $"Bạn có chắc chắn muốn xóa lớp '{currentSelectedSlot.SlotName}' không?",
                 "Xác nhận xóa",
@@ -697,17 +658,14 @@ namespace desktopapp_GYM
             {
                 try
                 {
-                    // 3. Gọi BLL để xóa trong Database (Giả sử thuộc tính ID là SlotID)
                     if (bll.Delete(currentSelectedSlot))
                     {
                         MessageBox.Show("Xóa lớp học thành công!");
 
-                        // 4. Dọn dẹp giao diện
-                        ClearInputFields();      // Xóa trắng các ô nhập liệu
-                        SetInputStatus(false);   // Khóa các ô nhập lại
-                        LoadDataToGrid();        // Vẽ lại lưới (Lúc này lớp vừa xóa sẽ biến mất)
+                        ClearInputFields();      
+                        SetInputStatus(false);   
+                        LoadDataToGrid();        
 
-                        // Bỏ highlight nếu có
                         if (currentHighlightedCell != null)
                         {
                             currentHighlightedCell.BackColor = Color.Transparent;
@@ -740,7 +698,7 @@ namespace desktopapp_GYM
                 {
                     List<int> registeredSlots = bll.GetSlotIdsByMember(memberId);
 
-                    ResetGridHighlight(); // Xóa màu cũ
+                    ResetGridHighlight(); 
 
                     foreach (Control ctrl in tlpBody.Controls)
                     {
@@ -750,10 +708,9 @@ namespace desktopapp_GYM
                             {
                                 if (subCtrl is ucTimeSlot uc)
                                 {
-                                    // Nếu SlotID của cái uc này nằm trong danh sách đăng ký của khách
                                     if (registeredSlots.Contains(uc.CurrentSlotID))
                                     {
-                                        uc.BackColor = Color.Gold; // Đổi màu để nhận diện
+                                        uc.BackColor = Color.Gold; 
                                     }
                                 }
                             }
@@ -775,7 +732,6 @@ namespace desktopapp_GYM
                 {
                     foreach (Control subCtrl in flp.Controls)
                     {
-                        //if (subCtrl is ucTimeSlot uc) uc.BackColor = Color.White;
                         if (subCtrl is ucTimeSlot uc && uc.Data != null)
                             uc.UpdateData(uc.Data);
                     }

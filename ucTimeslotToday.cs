@@ -26,7 +26,7 @@ namespace desktopapp_GYM
             DataTable dt = _bll.GetTimeslotsToday();
             dgvTimeslotToday.DataSource = dt;
 
-            // Thiết lập giao diện giống ucPackagePrice
+
             dgvTimeslotToday.Dock = DockStyle.Fill;
             dgvTimeslotToday.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTimeslotToday.BackgroundColor = Color.White;
@@ -34,15 +34,15 @@ namespace desktopapp_GYM
             dgvTimeslotToday.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvTimeslotToday.ColumnHeadersVisible = false;
             dgvTimeslotToday.RowHeadersVisible = false;
-            dgvTimeslotToday.RowTemplate.Height = 45; // Thấp hơn một chút vì thường nhiều lớp hơn gói tập
+            dgvTimeslotToday.RowTemplate.Height = 45;
             dgvTimeslotToday.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTimeslotToday.ReadOnly = true;
 
             if (dt != null && dt.Columns.Count >= 3)
             {
-                dgvTimeslotToday.Columns[0].FillWeight = 45; // Tên lớp
-                dgvTimeslotToday.Columns[1].FillWeight = 30; // Giờ bắt đầu
-                dgvTimeslotToday.Columns[2].FillWeight = 25; // Sĩ số (x/y)
+                dgvTimeslotToday.Columns[0].FillWeight = 45; 
+                dgvTimeslotToday.Columns[1].FillWeight = 30; 
+                dgvTimeslotToday.Columns[2].FillWeight = 25; 
             }
         }
 
@@ -55,7 +55,6 @@ namespace desktopapp_GYM
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            // Định dạng chung cho Font
             e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
             e.CellStyle.ForeColor = Color.FromArgb(64, 64, 64);
 
@@ -78,16 +77,15 @@ namespace desktopapp_GYM
                     string[] parts = attendance.Split('/');
                     if (parts.Length == 2 && parts[0] == parts[1])
                     {
-                        e.CellStyle.ForeColor = Color.Red; // Lớp đã đầy thì hiện màu đỏ
+                        e.CellStyle.ForeColor = Color.Red;
                     }
                     else
                     {
-                        e.CellStyle.ForeColor = Color.SeaGreen; // Còn chỗ hiện màu xanh
+                        e.CellStyle.ForeColor = Color.SeaGreen;
                     }
                 }
             }
 
-            // Cột Tên lớp (Cột 0)
             if (e.ColumnIndex == 0)
             {
                 e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);

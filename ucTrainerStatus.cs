@@ -25,21 +25,18 @@ namespace desktopapp_GYM
             DataTable dt = dal.GetTopTrainers(5);
             dgvTopTrainers.DataSource = dt;
 
-            // --- Cấu hình hiển thị "Phẳng" ---
-            dgvTopTrainers.CellBorderStyle = DataGridViewCellBorderStyle.None; // Ẩn đường kẻ
+            dgvTopTrainers.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvTopTrainers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTopTrainers.ColumnHeadersVisible = false;
             dgvTopTrainers.RowHeadersVisible = false;
             dgvTopTrainers.ReadOnly = true;
             dgvTopTrainers.BackgroundColor = Color.White;
             dgvTopTrainers.BorderStyle = BorderStyle.None;
-            dgvTopTrainers.AllowUserToResizeRows = false; // Chặn người dùng kéo dãn dòng
-
-            // --- Tỷ lệ và Khoảng cách ---
+            dgvTopTrainers.AllowUserToResizeRows = false;
             dgvTopTrainers.RowTemplate.Height = 55;
             dgvTopTrainers.DefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
 
-            // Chèn cột Rank
+
             if (!dgvTopTrainers.Columns.Contains("Rank"))
             {
                 DataGridViewTextBoxColumn rankCol = new DataGridViewTextBoxColumn();
@@ -53,7 +50,7 @@ namespace desktopapp_GYM
                 dgvTopTrainers.Rows[i].Cells["Rank"].Value = (i + 1).ToString();
             }
 
-            // Chia lại tỷ lệ 4 cột để không bị chật
+
             if (dgvTopTrainers.Columns.Count >= 4)
             {
                 dgvTopTrainers.Columns["Rank"].FillWeight = 10;
@@ -85,7 +82,6 @@ namespace desktopapp_GYM
                     e.Value = (e.RowIndex + 1).ToString();
                     e.CellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
                     e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                    // Top 1 cho màu xanh đậm hơn
                     if (e.RowIndex == 0) e.CellStyle.ForeColor = Color.BlueViolet;
                 }
 
@@ -104,9 +100,8 @@ namespace desktopapp_GYM
                     e.Value = val + " Học viên";
                     e.FormattingApplied = true;
 
-                    // Cấu hình Nổi bật đúng ý Huy
                     e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                    e.CellStyle.ForeColor = Color.MediumSeaGreen; // Màu xanh lá năng động
+                    e.CellStyle.ForeColor = Color.MediumSeaGreen; 
                     e.CellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
                 }
             }

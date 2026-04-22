@@ -22,7 +22,7 @@ namespace desktopapp_GYM
         public override void RefreshData()
         {
             decimal money = dalReg.GetMonthlyRevenue();
-            lblRevenue.Text = money.ToString("C0"); // Tự thêm ký hiệu tiền tệ
+            lblRevenue.Text = money.ToString("C0");
         }
 
         private void btnViewDetail_Click(object sender, EventArgs e)
@@ -32,7 +32,6 @@ namespace desktopapp_GYM
         }
         public void UpdateTotalRevenue(decimal totalAmount)
         {
-            // Hiển thị số tiền được truyền vào với định dạng chuẩn
             lblRevenue.Text = totalAmount.ToString("N0") + " VNĐ";
         }
     }

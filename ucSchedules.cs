@@ -369,9 +369,8 @@ namespace desktopapp_GYM
                 if (selectedSchedule == null) return;
                 //if (selectedSchedule.Status != "Absent" || selectedSchedule.Status != "Cancel")
                 string status = selectedSchedule.Status.Trim();
-                string[] allowedStatuses = { "Absent", "Cancel" }; // Danh sách các trạng thái được phép bù
+                string[] allowedStatuses = { "Absent", "Cancel" };
 
-                // Kiểm tra xem status hiện tại có nằm trong danh sách cho phép không
                 if (!allowedStatuses.Any(s => s.Equals(status, StringComparison.OrdinalIgnoreCase)))
                 {
                     MessageBox.Show("Chỉ có thể đăng ký bù cho những buổi tập hội viên đã vắng (Absent) hoặc bị hủy (Cancel)!",
@@ -380,10 +379,8 @@ namespace desktopapp_GYM
                 }
                 using (frmSchedules frm = new frmSchedules(selectedSchedule))
                 {
-                    // Hiển thị form dưới dạng Dialog (buộc xử lý xong mới quay lại màn hình chính)
                     if (frm.ShowDialog() == DialogResult.OK)
                     {
-                        // Nếu lưu thành công (DialogResult.OK), nạp lại dữ liệu để cập nhật Grid
                         LoadData();
                         MessageBox.Show("Hệ thống đã cập nhật lịch tập bù mới.");
                     }

@@ -22,38 +22,31 @@ namespace desktopapp_GYM.BLL
         {
             try
             {
-                // 1. Validation cơ bản
                 if (string.IsNullOrWhiteSpace(ts.SlotName))
                 throw new Exception("Vui lòng nhập tên lớp học!");
-            if (ts.TrainerID <= 0)
-                throw new Exception("Vui lòng chọn Huấn luyện viên!");
-            if (ts.PackageID <= 0)
-                throw new Exception("Vui lòng chọn Gói tập!");
+                if (ts.TrainerID <= 0)
+                    throw new Exception("Vui lòng chọn Huấn luyện viên!");
+                if (ts.PackageID <= 0)
+                    throw new Exception("Vui lòng chọn Gói tập!");
 
-            // 2. Kiểm tra sức chứa
-            if (ts.MaxMembers <= 0)
-                throw new Exception("Sức chứa phải lớn hơn 0!");
+                if (ts.MaxMembers <= 0)
+                    throw new Exception("Sức chứa phải lớn hơn 0!");
 
-            if (!isAdd) // Trường hợp Update
-            {
-                // BLL tự đi lấy con số thực tế từ DB để đảm bảo không bị "qua mặt"
-                int actualCount = dal.GetCurrentCount(ts.SlotID);
-
-                if (ts.MaxMembers < actualCount)
+                if (!isAdd) 
                 {
-                    throw new Exception($"Không thể giảm sức chứa xuống {ts.MaxMembers} " +
-                                        $"vì hiện đang có {actualCount} học viên đang đăng ký!");
+                    int actualCount = dal.GetCurrentCount(ts.SlotID);
+
+                    if (ts.MaxMembers < actualCount)
+                    {
+                        throw new Exception($"Không thể giảm sức chứa xuống {ts.MaxMembers} " +
+                                            $"vì hiện đang có {actualCount} học viên đang đăng ký!");
+                    }
                 }
-            }
 
-            // 3. Kiểm tra logic thời gian (Nếu cần)
-            // Ví dụ: StartTime < EndTime
-
-            return dal.Save(ts, isAdd);
+                return dal.Save(ts, isAdd);
             }
             catch (Exception ex)
             {
-                // Ném lỗi về GUI xử lý MessageBox
                 throw new Exception("Lỗi save: "+ ex.Message);
             }
         }
@@ -120,7 +113,6 @@ namespace desktopapp_GYM.BLL
             catch (Exception ex) { throw new Exception("Lỗi khi lấy sĩ số thực tế: " + ex.Message); }
         }
 
-        // Trong file TimeslotBLL.cs
         public bool RefreshSlotAttendance(int slotID)
         {
             try { return dal.SyncCurrentCount(slotID); }

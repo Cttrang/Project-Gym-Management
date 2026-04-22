@@ -55,7 +55,7 @@ namespace desktopapp_GYM
 
         private void FillData()
         {
-            ToggleEvents(false); // Dùng ToggleEvents cho giống bên Trainer
+            ToggleEvents(false);
             txtUsername.Text = _selected.Username;
             cboRole.Text = _selected.Role;
             ToggleEvents(true);
@@ -64,14 +64,12 @@ namespace desktopapp_GYM
 
         private void frmAccountEdits_Load(object sender, EventArgs e)
         {
-            // 1. Khởi tạo Role
             cboRole.Items.Clear();
             if (Session.CurrentRole == "Admin")
                 cboRole.Items.AddRange(new string[] { "Admin", "Manager", "Receptionist" });
             else if (Session.CurrentRole == "Manager")
                 cboRole.Items.AddRange(new string[] { "Receptionist" });
 
-            // 2. Thiết lập hiển thị theo kịch bản "ẩn để bảo vệ" của Huy
             if (isAddMode)
             {
                 grpPassword.Visible = true;
@@ -108,9 +106,9 @@ namespace desktopapp_GYM
             {
                 lblNotice.Text = "Chế độ Admin: Reset mật khẩu trực tiếp";
                 lblNotice.ForeColor = Color.Blue;
-                txtPassword.Enabled = false; // Không cần nhập mật khẩu cũ
-                txtPassword.Text = "********"; // Hiển thị giả lập
-                txtNewPass.Enabled = true;   // Mở luôn ô mật khẩu mới
+                txtPassword.Enabled = false; 
+                txtPassword.Text = "********"; 
+                txtNewPass.Enabled = true;   
                 txtNewPass.Focus();
             }
             else
@@ -161,6 +159,12 @@ namespace desktopapp_GYM
                     return;
                 }
 
+                if (!isAddMode && _selected.Username.ToLower() == "admin" && txtUsername.Text.ToLower() != "admin")
+                {
+                    MessageBox.Show("Không được phép đổi tên đăng nhập của tài khoản Admin hệ thống!");
+                    return;
+                }
+
                 UserDTO dto = isAddMode ? new UserDTO() : _selected;
                 dto.Username = txtUsername.Text.Trim();
                 dto.Role = cboRole.Text;
@@ -168,7 +172,14 @@ namespace desktopapp_GYM
                 if (isAddMode)
                     dto.Password = txtPassword.Text;
                 else if (txtNewPass.Visible && txtNewPass.Enabled)
+                {
+                    if (string.IsNullOrWhiteSpace(txtNewPass.Text))
+                    {
+                        MessageBox.Show("Mật khẩu mới không được để trống!");
+                        return;
+                    }
                     dto.Password = txtNewPass.Text;
+                }
 
                 if (bll.Save(dto, isAddMode))
                 {
