@@ -24,10 +24,17 @@ namespace desktopapp_GYM
 
         private void LoadData()
         {
-            DataTable dt = bll.GetAllEveryone();
-            dgvMembers.DataSource = dt;
-            dgvMembers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            FormatDataGridView();
+            try
+            {
+                DataTable dt = bll.GetAllEveryone();
+                dgvMembers.DataSource = dt;
+                dgvMembers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                FormatDataGridView();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải danh sách: " + ex.Message, "Lỗi Hệ Thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void RefreshDataIfExpirationsFound()
@@ -39,7 +46,6 @@ namespace desktopapp_GYM
                 if (count > 0)
                 {
                     LoadData();
-
                     MessageBox.Show($"Hệ thống đã tự động chuyển {count} hội viên sang 'Inactive' do hết hạn tập!",
                                     "Thông báo định kỳ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -52,19 +58,24 @@ namespace desktopapp_GYM
 
         private void SetupAutoComplete()
         {
-            txtSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            txtSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
-            AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
-
-            DataTable dt = bll.GetAllEveryone();
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                if (row["FULLNAME"] != DBNull.Value)
-                    collection.Add(row["FULLNAME"].ToString());
-            }
+                txtSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                txtSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
 
-            txtSearch.AutoCompleteCustomSource = collection;
+                DataTable dt = bll.GetAllEveryone();
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row["FULLNAME"] != DBNull.Value)
+                        collection.Add(row["FULLNAME"].ToString());
+                }
+                txtSearch.AutoCompleteCustomSource = collection;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi AutoComplete: " + ex.Message);
+            }
         }
 
 
@@ -74,7 +85,6 @@ namespace desktopapp_GYM
             LoadData();
             RefreshDataIfExpirationsFound();
             SetupAutoComplete();
-
         }
 
         private void btnOut_Click(object sender, EventArgs e)
@@ -154,12 +164,10 @@ namespace desktopapp_GYM
             if (typeValue == "Member")
             {
                 bool isExpired = false;
-
-                // 1. Kiểm tra hết hạn
                 if (endDateValue != DBNull.Value && endDateValue != null)
                 {
                     DateTime endDate = Convert.ToDateTime(endDateValue);
-                    if (endDate.Date < DateTime.Now.Date) // Nếu ngày hết hạn nhỏ hơn ngày hôm nay
+                    if (endDate.Date < DateTime.Now.Date)
                     {
                         isExpired = true;
                     }
@@ -184,6 +192,7 @@ namespace desktopapp_GYM
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (dgvMembers.CurrentRow == null) return;
 
             DataGridViewRow row = dgvMembers.CurrentRow;
             int id = Convert.ToInt32(row.Cells["ID"].Value);
@@ -271,51 +280,58 @@ namespace desktopapp_GYM
 
         private void btnXuat_Click(object sender, EventArgs e)
         {
-            if (dgvMembers.CurrentRow == null)
+            try
             {
-                MessageBox.Show("Vui lòng chọn một người dùng trong danh sách!",
-                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if (dgvMembers.CurrentRow == null)
+                {
+                    MessageBox.Show("Vui lòng chọn một người dùng trong danh sách!",
+                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var row = (DataRowView)dgvMembers.CurrentRow.DataBoundItem;
+                string type = row["TYPE"].ToString();
+
+                string info;
+
+                if (type == "Member")
+                {
+                    info = $"--- THÔNG TIN HỘI VIÊN ---\n\n" +
+                           $"Mã số:         {row["ID"]}\n" +
+                           $"Họ tên:        {row["FULLNAME"]}\n" +
+                           $"SĐT:           {row["PHONE"]}\n" +
+                           $"Trạng thái:    {row["STATUS"]}\n" +
+                           $"Ngày tham gia: {(row["JOINDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["JOINDATE"]).ToString("dd/MM/yyyy"))}\n" +
+                           $"Gói đăng ký:   {(row["PACKAGEID"] == DBNull.Value ? "—" : row["PACKAGEID"].ToString())}\n" +
+                           $"Ngày đăng ký:  {(row["REGDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["REGDATE"]).ToString("dd/MM/yyyy"))}\n" +
+                           $"Ngày hết hạn:  {(row["ENDDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["ENDDATE"]).ToString("dd/MM/yyyy"))}\n" +
+                           $"HLV phụ trách: {row["GHICHU"]}\n" +
+                           $"Tổng tiền:     {Convert.ToDecimal(row["TOTALAMOUNT"]).ToString("N0")} VNĐ\n" +
+                           $"Thanh toán:    {row["PAYMENTSTATUS"]}";
+                }
+                else if (type == "Trainer")
+                {
+                    info = $"--- THÔNG TIN HUẤN LUYỆN VIÊN ---\n\n" +
+                           $"Mã số:      {row["ID"]}\n" +
+                           $"Họ tên:     {row["FULLNAME"]}\n" +
+                           $"SĐT:        {row["PHONE"]}\n" +
+                           $"Trạng thái: {row["STATUS"]}\n" +
+                           $"Chuyên môn: {row["GHICHU"]}";
+                }
+                else
+                {
+                    info = $"--- THÔNG TIN TÀI KHOẢN ---\n\n" +
+                           $"Mã số:   {row["ID"]}\n" +
+                           $"Tên đăng nhập: {row["FULLNAME"]}\n" +
+                           $"Vai trò: {row["TYPE"]}";
+                }
+
+                MessageBox.Show(info, "Chi tiết", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            var row = (DataRowView)dgvMembers.CurrentRow.DataBoundItem;
-            string type = row["TYPE"].ToString();
-
-            string info;
-
-            if (type == "Member")
+            catch (Exception ex)
             {
-                info = $"--- THÔNG TIN HỘI VIÊN ---\n\n" +
-                       $"Mã số:         {row["ID"]}\n" +
-                       $"Họ tên:        {row["FULLNAME"]}\n" +
-                       $"SĐT:           {row["PHONE"]}\n" +
-                       $"Trạng thái:    {row["STATUS"]}\n" +
-                       $"Ngày tham gia: {(row["JOINDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["JOINDATE"]).ToString("dd/MM/yyyy"))}\n" +
-                       $"Gói đăng ký:   {(row["PACKAGEID"] == DBNull.Value ? "—" : row["PACKAGEID"].ToString())}\n" +
-                       $"Ngày đăng ký:  {(row["REGDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["REGDATE"]).ToString("dd/MM/yyyy"))}\n" +
-                       $"Ngày hết hạn:  {(row["ENDDATE"] == DBNull.Value ? "—" : Convert.ToDateTime(row["ENDDATE"]).ToString("dd/MM/yyyy"))}\n" +
-                       $"HLV phụ trách: {row["GHICHU"]}\n" +
-                       $"Tổng tiền:     {Convert.ToDecimal(row["TOTALAMOUNT"]).ToString("N0")} VNĐ\n" +
-                       $"Thanh toán:    {row["PAYMENTSTATUS"]}";
+                MessageBox.Show("Lỗi khi hiển thị chi tiết: " + ex.Message, "Lỗi định dạng", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (type == "Trainer")
-            {
-                info = $"--- THÔNG TIN HUẤN LUYỆN VIÊN ---\n\n" +
-                       $"Mã số:      {row["ID"]}\n" +
-                       $"Họ tên:     {row["FULLNAME"]}\n" +
-                       $"SĐT:        {row["PHONE"]}\n" +
-                       $"Trạng thái: {row["STATUS"]}\n" +
-                       $"Chuyên môn: {row["GHICHU"]}";
-            }
-            else
-            {
-                info = $"--- THÔNG TIN TÀI KHOẢN ---\n\n" +
-                       $"Mã số:   {row["ID"]}\n" +
-                       $"Tên đăng nhập: {row["FULLNAME"]}\n" +
-                       $"Vai trò: {row["TYPE"]}";
-            }
-
-            MessageBox.Show(info, "Chi tiết", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void label1_Click(object sender, EventArgs e)
         {
