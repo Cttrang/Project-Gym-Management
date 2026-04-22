@@ -25,7 +25,7 @@ namespace desktopapp_GYM
         {
             DataTable dt = dalReg.GetRevenueData();
             chartRevenue.Series.Clear();
-            chartRevenue.ChartAreas[0].AxisX.Interval = 1; // Hiện đủ các tháng
+            chartRevenue.ChartAreas[0].AxisX.Interval = 1;
 
             Series series = new Series("Doanh thu");
             series.ChartType = SeriesChartType.Column;
@@ -46,15 +46,12 @@ namespace desktopapp_GYM
             }
             chartRevenue.Series.Add(series);
 
-            // Tinh chỉnh trục tọa độ
             chartRevenue.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
             chartRevenue.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.FromArgb(230, 230, 230);
         }
         public override void StartEffects()
         {
-            base.StartEffects(); // Chạy logic hiện nút Pin của cha
-
-            // Logic riêng cho biểu đồ (nếu có)
+            base.StartEffects();
             this.PerformLayout();
         }
 
@@ -71,7 +68,6 @@ namespace desktopapp_GYM
             {
                 chartRevenue.ChartAreas[0].AxisX.Interval = 1;
 
-                // Tạo series mới giống hệt style của bạn
                 System.Windows.Forms.DataVisualization.Charting.Series series = new System.Windows.Forms.DataVisualization.Charting.Series("Doanh thu lọc");
                 series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
                 series.Color = System.Drawing.Color.FromArgb(255, 128, 0);
@@ -79,7 +75,6 @@ namespace desktopapp_GYM
                 series.IsValueShownAsLabel = true;
                 series.LabelFormat = "N0";
 
-                // Đổ dữ liệu từ DataTable được lọc vào biểu đồ
                 foreach (System.Data.DataRow row in dtFiltered.Rows)
                 {
                     // Lấy cột "Mã Giao Dịch" làm trục X, "Doanh Thu" làm trục Y (theo dữ liệu mẫu ở frmRevenue)
@@ -89,7 +84,6 @@ namespace desktopapp_GYM
 
                 chartRevenue.Series.Add(series);
 
-                // Tinh chỉnh trục tọa độ
                 chartRevenue.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
                 chartRevenue.ChartAreas[0].AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(230, 230, 230);
             }

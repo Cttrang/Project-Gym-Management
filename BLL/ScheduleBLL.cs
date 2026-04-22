@@ -12,9 +12,7 @@ namespace desktopapp_GYM.BLL
     public class ScheduleBLL
     {
         private ScheduleDAL _dal = new ScheduleDAL();
-        private RegistrationDAL _regDal = new RegistrationDAL(); // Để lấy thông tin EndDate, IsActive
-
-        // 1. Lấy dữ liệu cho UI ucSchedules
+        private RegistrationDAL _regDal = new RegistrationDAL();
         public List<ScheduleViewDTO> GetSchedules(DateTime date, int? trainerId = null, string status = null, int? memberId = null, int? slotId = null)
         {
             try
@@ -25,12 +23,10 @@ namespace desktopapp_GYM.BLL
             }
             catch (Exception ex)
             {
-                // Bạn có thể log lỗi ở đây (ví dụ: LogFile.Write(ex.Message))
                 throw new Exception("Lỗi khi lấy danh sách lịch tập: " + ex.Message);
             }
         }
 
-        // 2. HÀM QUAN TRỌNG: Đồng bộ lịch khi Đăng ký mới/Sửa/Xóa (Sync)
         public void SyncScheduleForRegistration(int regId)
         {
             try
@@ -43,7 +39,6 @@ namespace desktopapp_GYM.BLL
                     return;
                 }
 
-                // Xác định tháng hiện tại đã có lịch chưa
                 DateTime firstDayThisMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
                 DateTime lastDayThisMonth = firstDayThisMonth.AddMonths(1).AddDays(-1);
                 DateTime firstDayNextMonth = firstDayThisMonth.AddMonths(1);
@@ -65,7 +60,6 @@ namespace desktopapp_GYM.BLL
 
                 for (DateTime d = startGen; d <= endGen; d = d.AddDays(1))
                 {
-                    // Kiểm tra bổ sung để chắc chắn không gen lịch trước ngày StartDate của gói
                     if (d < reg.RegDate) continue;
 
                     string vnDay = GetVietnameseDayOfWeek(d.DayOfWeek);
@@ -89,10 +83,8 @@ namespace desktopapp_GYM.BLL
             }
         }
 
-        // 3. Hàm chạy định kỳ đầu tháng (Maintenance)
         public void RunMonthlyMaintenance()
         {
-            // Lấy tất cả các Registration đang hoạt động
             try
             {
                 var activeRegs = _regDal.GetAllActive();
@@ -107,23 +99,18 @@ namespace desktopapp_GYM.BLL
             }
         }
 
-        // 4. Xử lý điểm danh (Attended / Absent / Cancelled)
         public bool UpdateSessionStatus(int scheduleId, string status, string notes, int regId)
         {
             try
             {
-                // Thực hiện update trạng thái buổi tập
                 bool updateResult = _dal.UpdateStatus(scheduleId, status, notes);
 
                 if (updateResult)
                 {
-                    // Nếu là "Attended" hoặc "Absent" -> Trừ 1 buổi ở SessionsLeft trong Registration
-                    // (Vì theo logic của bạn, Absent vẫn mất buổi nhưng được bù sau)
                     if (status == "Attended" || status == "Absent")
                     {
                         _regDal.DecreaseSession(regId);
                     }
-                    // Nếu là "Cancelled" -> Không trừ buổi
                 }
 
                 return updateResult;
@@ -134,7 +121,6 @@ namespace desktopapp_GYM.BLL
             }
         }
 
-        // Trong ScheduleBLL.cs
         public DataTable GetTrainerList()
         {
             try
@@ -143,7 +129,6 @@ namespace desktopapp_GYM.BLL
             }
             catch (Exception ex)
             {
-                // Bắn lỗi ra để tầng GUI có thể bắt được và hiện MessageBox
                 throw new Exception("Lỗi khi tải danh sách huấn luyện viên: " + ex.Message);
             }
         }
@@ -183,24 +168,18 @@ namespace desktopapp_GYM.BLL
         {
             try
             {
-                // 1. Kiểm tra ràng buộc: Không cho phép đặt lịch bù vào quá khứ
                 if (item.TrainingDate.Date < DateTime.Today)
                 {
                     return false;
                 }
 
-                // 2. Kiểm tra xem ngày đó Member đã có lịch tập chưa (tránh trùng lịch cùng ngày)
-                // Bạn có thể dùng lại hàm HasScheduleInRange đã có ở DAL
                 if (_dal.HasScheduleInRange(item.RegID, item.TrainingDate, item.TrainingDate))
                 {
-                    // Nếu đã có lịch rồi thì không cho chèn thêm (tùy nghiệp vụ phòng gym của bạn)
                     // return false; 
                 }
 
-                // 3. Thực hiện chèn vào Database
                 bool result = _dal.Insert(item);
-
-                // 4. LOGIC QUAN TRỌNG: 
+ 
                 // Nếu là tập bù (IsMakeup = true), chúng ta KHÔNG gọi _regDal.DecreaseSession(item.RegID).
                 // Vì buổi tập này được tạo ra để "bù" cho một buổi Absent đã bị trừ điểm trước đó.
 
@@ -212,7 +191,6 @@ namespace desktopapp_GYM.BLL
             }
         }
 
-        // Thêm vào ScheduleBLL.cs
         public List<TimeslotDTO> GetAvailableSlotsByPackage(int packageId)
         {
             try { return _dal.GetSlotsByPackage(packageId); }

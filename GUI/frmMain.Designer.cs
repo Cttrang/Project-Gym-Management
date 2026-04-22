@@ -41,21 +41,21 @@
             this.btnMember = new System.Windows.Forms.Button();
             this.btnEditAcc = new System.Windows.Forms.Button();
             this.btnManagerAcc = new System.Windows.Forms.Button();
+            this.btnRevenue = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.pnlContentGuest = new System.Windows.Forms.Panel();
             this.pnlContent = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblWelcome = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btnRevenue = new System.Windows.Forms.Button();
             this.ucRevenueChart1 = new desktopapp_GYM.ucRevenueChart();
             this.ucExpiredAlert1 = new desktopapp_GYM.ucExpiredAlert();
             this.ucMemberStats1 = new desktopapp_GYM.ucMemberStats();
             this.ucPackagePrice1 = new desktopapp_GYM.ucPackagePrice();
             this.ucRevenueCard1 = new desktopapp_GYM.ucRevenueCard();
             this.ucTimeslotToday1 = new desktopapp_GYM.ucTimeslotToday();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblWelcome = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnlSidebarGuest.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -219,6 +219,17 @@
             this.btnManagerAcc.UseVisualStyleBackColor = true;
             this.btnManagerAcc.Click += new System.EventHandler(this.btnManagerAcc_Click);
             // 
+            // btnRevenue
+            // 
+            this.btnRevenue.Location = new System.Drawing.Point(4, 779);
+            this.btnRevenue.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRevenue.Name = "btnRevenue";
+            this.btnRevenue.Size = new System.Drawing.Size(302, 54);
+            this.btnRevenue.TabIndex = 13;
+            this.btnRevenue.Text = "Giám sát doanh thu";
+            this.btnRevenue.UseVisualStyleBackColor = true;
+            this.btnRevenue.Click += new System.EventHandler(this.btnRevenue_Click);
+            // 
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -269,6 +280,66 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1214, 779);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
+            // ucRevenueChart1
+            // 
+            this.ucRevenueChart1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ucRevenueChart1.BorderRadius = 30;
+            this.ucRevenueChart1.Location = new System.Drawing.Point(2, 2);
+            this.ucRevenueChart1.Margin = new System.Windows.Forms.Padding(2);
+            this.ucRevenueChart1.Name = "ucRevenueChart1";
+            this.ucRevenueChart1.Size = new System.Drawing.Size(1280, 779);
+            this.ucRevenueChart1.TabIndex = 1;
+            // 
+            // ucExpiredAlert1
+            // 
+            this.ucExpiredAlert1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ucExpiredAlert1.BorderRadius = 30;
+            this.ucExpiredAlert1.Location = new System.Drawing.Point(2, 785);
+            this.ucExpiredAlert1.Margin = new System.Windows.Forms.Padding(2);
+            this.ucExpiredAlert1.Name = "ucExpiredAlert1";
+            this.ucExpiredAlert1.Size = new System.Drawing.Size(880, 779);
+            this.ucExpiredAlert1.TabIndex = 2;
+            // 
+            // ucMemberStats1
+            // 
+            this.ucMemberStats1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.ucMemberStats1.BorderRadius = 30;
+            this.ucMemberStats1.Location = new System.Drawing.Point(888, 787);
+            this.ucMemberStats1.Margin = new System.Windows.Forms.Padding(4);
+            this.ucMemberStats1.Name = "ucMemberStats1";
+            this.ucMemberStats1.Size = new System.Drawing.Size(381, 256);
+            this.ucMemberStats1.TabIndex = 0;
+            // 
+            // ucPackagePrice1
+            // 
+            this.ucPackagePrice1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ucPackagePrice1.BorderRadius = 30;
+            this.ucPackagePrice1.Location = new System.Drawing.Point(4, 1570);
+            this.ucPackagePrice1.Margin = new System.Windows.Forms.Padding(4);
+            this.ucPackagePrice1.Name = "ucPackagePrice1";
+            this.ucPackagePrice1.Size = new System.Drawing.Size(686, 292);
+            this.ucPackagePrice1.TabIndex = 3;
+            // 
+            // ucRevenueCard1
+            // 
+            this.ucRevenueCard1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.ucRevenueCard1.BorderRadius = 30;
+            this.ucRevenueCard1.Location = new System.Drawing.Point(698, 1570);
+            this.ucRevenueCard1.Margin = new System.Windows.Forms.Padding(4);
+            this.ucRevenueCard1.Name = "ucRevenueCard1";
+            this.ucRevenueCard1.Size = new System.Drawing.Size(400, 300);
+            this.ucRevenueCard1.TabIndex = 4;
+            // 
+            // ucTimeslotToday1
+            // 
+            this.ucTimeslotToday1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ucTimeslotToday1.BorderRadius = 30;
+            this.ucTimeslotToday1.Location = new System.Drawing.Point(4, 1878);
+            this.ucTimeslotToday1.Margin = new System.Windows.Forms.Padding(4);
+            this.ucTimeslotToday1.Name = "ucTimeslotToday1";
+            this.ucTimeslotToday1.Size = new System.Drawing.Size(522, 317);
+            this.ucTimeslotToday1.TabIndex = 5;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.button6);
@@ -315,77 +386,6 @@
             this.label2.Size = new System.Drawing.Size(209, 42);
             this.label2.TabIndex = 1;
             this.label2.Text = "Chào mừng: ";
-            // 
-            // btnRevenue
-            // 
-            this.btnRevenue.Location = new System.Drawing.Point(4, 779);
-            this.btnRevenue.Margin = new System.Windows.Forms.Padding(4);
-            this.btnRevenue.Name = "btnRevenue";
-            this.btnRevenue.Size = new System.Drawing.Size(302, 54);
-            this.btnRevenue.TabIndex = 13;
-            this.btnRevenue.Text = "Giám sát doanh thu";
-            this.btnRevenue.UseVisualStyleBackColor = true;
-            this.btnRevenue.Click += new System.EventHandler(this.btnRevenue_Click);
-            // 
-            // ucRevenueChart1
-            // 
-            this.ucRevenueChart1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ucRevenueChart1.BorderRadius = 30;
-            this.ucRevenueChart1.Location = new System.Drawing.Point(2, 2);
-            this.ucRevenueChart1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ucRevenueChart1.Name = "ucRevenueChart1";
-            this.ucRevenueChart1.Size = new System.Drawing.Size(1280, 779);
-            this.ucRevenueChart1.TabIndex = 1;
-            // 
-            // ucExpiredAlert1
-            // 
-            this.ucExpiredAlert1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ucExpiredAlert1.BorderRadius = 30;
-            this.ucExpiredAlert1.Location = new System.Drawing.Point(2, 785);
-            this.ucExpiredAlert1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ucExpiredAlert1.Name = "ucExpiredAlert1";
-            this.ucExpiredAlert1.Size = new System.Drawing.Size(880, 779);
-            this.ucExpiredAlert1.TabIndex = 2;
-            // 
-            // ucMemberStats1
-            // 
-            this.ucMemberStats1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ucMemberStats1.BorderRadius = 30;
-            this.ucMemberStats1.Location = new System.Drawing.Point(888, 787);
-            this.ucMemberStats1.Margin = new System.Windows.Forms.Padding(4);
-            this.ucMemberStats1.Name = "ucMemberStats1";
-            this.ucMemberStats1.Size = new System.Drawing.Size(324, 242);
-            this.ucMemberStats1.TabIndex = 0;
-            // 
-            // ucPackagePrice1
-            // 
-            this.ucPackagePrice1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ucPackagePrice1.BorderRadius = 30;
-            this.ucPackagePrice1.Location = new System.Drawing.Point(4, 1570);
-            this.ucPackagePrice1.Margin = new System.Windows.Forms.Padding(4);
-            this.ucPackagePrice1.Name = "ucPackagePrice1";
-            this.ucPackagePrice1.Size = new System.Drawing.Size(686, 292);
-            this.ucPackagePrice1.TabIndex = 3;
-            // 
-            // ucRevenueCard1
-            // 
-            this.ucRevenueCard1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.ucRevenueCard1.BorderRadius = 30;
-            this.ucRevenueCard1.Location = new System.Drawing.Point(698, 1570);
-            this.ucRevenueCard1.Margin = new System.Windows.Forms.Padding(4);
-            this.ucRevenueCard1.Name = "ucRevenueCard1";
-            this.ucRevenueCard1.Size = new System.Drawing.Size(400, 300);
-            this.ucRevenueCard1.TabIndex = 4;
-            // 
-            // ucTimeslotToday1
-            // 
-            this.ucTimeslotToday1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ucTimeslotToday1.BorderRadius = 30;
-            this.ucTimeslotToday1.Location = new System.Drawing.Point(4, 1878);
-            this.ucTimeslotToday1.Margin = new System.Windows.Forms.Padding(4);
-            this.ucTimeslotToday1.Name = "ucTimeslotToday1";
-            this.ucTimeslotToday1.Size = new System.Drawing.Size(522, 317);
-            this.ucTimeslotToday1.TabIndex = 5;
             // 
             // frmMain
             // 

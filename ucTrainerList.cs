@@ -35,7 +35,6 @@ namespace desktopapp_GYM
                     if (!string.IsNullOrEmpty(tr.FullName))
                         collection.Add(tr.FullName);
 
-                    // Gợi ý thêm cả chuyên môn cho tiện tìm kiếm
                     if (!string.IsNullOrEmpty(tr.Specialty) && !collection.Contains(tr.Specialty))
                         collection.Add(tr.Specialty);
                 }
@@ -61,11 +60,18 @@ namespace desktopapp_GYM
 
         private void LoadData()
         {
-            fullList = bll.GetData();
-            dgvTrainers.DataSource = null;
-            dgvTrainers.DataSource = fullList;
-            FormatGrid();
-            SetupAutoComplete();
+            try
+            {
+                fullList = bll.GetData();
+                dgvTrainers.DataSource = null;
+                dgvTrainers.DataSource = fullList;
+                FormatGrid();
+                SetupAutoComplete();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ApplyRolePermissions()
@@ -98,16 +104,30 @@ namespace desktopapp_GYM
         }
         private void btnAdd_Click(object sender, EventArgs e) 
         {
-            frmTrainerEdits frm = new frmTrainerEdits(new TrainerDTO(), true);
-            if (frm.ShowDialog() == DialogResult.OK) LoadData();
+            try
+            {
+                frmTrainerEdits frm = new frmTrainerEdits(new TrainerDTO(), true);
+                if (frm.ShowDialog() == DialogResult.OK) LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi mở form: " + ex.Message);
+            }
         }
         private void btnEdits_Click(object sender, EventArgs e) 
         {
-            if (dgvTrainers.CurrentRow != null)
+            try
             {
-                var selected = (TrainerDTO)dgvTrainers.CurrentRow.DataBoundItem;
-                frmTrainerEdits frm = new frmTrainerEdits(selected, false);
-                if (frm.ShowDialog() == DialogResult.OK) LoadData();
+                if (dgvTrainers.CurrentRow != null)
+                {
+                    var selected = (TrainerDTO)dgvTrainers.CurrentRow.DataBoundItem;
+                    frmTrainerEdits frm = new frmTrainerEdits(selected, false);
+                    if (frm.ShowDialog() == DialogResult.OK) LoadData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra: " + ex.Message);
             }
         }
         private void btnDelete_Click(object sender, EventArgs e) 
@@ -167,6 +187,7 @@ namespace desktopapp_GYM
         }
         private void txtSearch_TextChanged(object sender, EventArgs e) 
         {
+            if (fullList == null) return;
             string key = txtSearch.Text.ToLower().Trim();
             // Tìm theo tên hoặc chuyên môn
             dgvTrainers.DataSource = fullList.Where(t =>

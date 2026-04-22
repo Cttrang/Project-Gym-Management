@@ -42,7 +42,6 @@ namespace desktopapp_GYM.BLL
             {
                 try
                 {
-                    // 1. Lưu Member mới và lấy ID trả về
                     int newMemberId = memberDal.InsertAndGetID(member);
                     if (newMemberId <= 0)
                     {
@@ -50,16 +49,12 @@ namespace desktopapp_GYM.BLL
                         return false;
                     }    
                         
-                    // 2. Gán ID vừa tạo cho Registration
                     reg.MemberID = newMemberId;
 
-                    // 3. Gọi hàm Save có sẵn (hàm này sẽ tự dùng logic của nó)
-                    // Vì nằm trong TransactionScope, nó sẽ tự động tham gia vào giao dịch chung
                     bool saveReg = Save(reg, true);
 
                     if (saveReg)
                     {
-                        // 4. CHỐT HẠ: Xác nhận mọi thứ thành công
                         scope.Complete();
                         return true;
                     }
@@ -67,7 +62,6 @@ namespace desktopapp_GYM.BLL
                 }
                 catch (Exception ex)
                 {
-                    // Nếu lỗi, không gọi scope.Complete(), mọi thứ sẽ tự Rollback
                     throw new Exception("Lỗi đăng ký trọn gói: " + ex.Message);
                 }
             }
@@ -77,8 +71,7 @@ namespace desktopapp_GYM.BLL
         {
             try
             {
-                // Validate cơ bản
-                    if (reg.MemberID <= 0)
+                if (reg.MemberID <= 0)
                 {
                     MessageBox.Show("Vui lòng chọn hội viên!", "Thiếu thông tin",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -103,7 +96,6 @@ namespace desktopapp_GYM.BLL
                     return false;
                 }
 
-                // Kiểm tra trùng slot
                 int excludeId = isAdd ? 0 : reg.RegID;
                 foreach (int slotId in reg.SelectedSlotIDs)
                 {
@@ -117,20 +109,17 @@ namespace desktopapp_GYM.BLL
 
                 bool result = dal.Save(reg, isAdd);
 
-                // 4. Nếu lưu thành công, tiến hành đồng bộ số lượng người ở bảng TimeSlot
                 if (result && reg.SelectedSlotIDs != null && reg.SelectedSlotIDs.Count > 0)
                 {
                     try
                     {
                         foreach (int slotId in reg.SelectedSlotIDs)
                         {
-                            // Gọi hàm refresh từ TimeSlotBLL để tính toán lại số người đang tập
                             timeslotBll.RefreshSlotAttendance(slotId);
                         }
                     }
                     catch (Exception ex)
                     {
-                        // Không nên chặn return true nếu chỉ lỗi refresh, nhưng nên thông báo lỗi
                         MessageBox.Show("Lưu thành công nhưng lỗi cập nhật sĩ số: " + ex.Message);
                     }
                 }
@@ -165,7 +154,6 @@ namespace desktopapp_GYM.BLL
                     }
                     catch (Exception ex)
                     {
-                        // Chỉ thông báo, không làm hỏng luồng chính của Save/Delete
                         Console.WriteLine("Lỗi cập nhật sĩ số: " + ex.Message);
                     }
 
