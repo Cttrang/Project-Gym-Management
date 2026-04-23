@@ -12,18 +12,15 @@ namespace desktopapp_GYM
         private readonly RegistrationDTO _dto;
         private bool _isLoading = false;
 
-        // Thông tin cấu hình VietQR (Thay đổi theo tài khoản của chủ Gym)
         private readonly string BANK_ID = "MB"; // Ví dụ: MB, VCB, TCB...
         private readonly string ACCOUNT_NO = "0123456789";
         private readonly string ACCOUNT_NAME = "GYM MANAGEMENT";
 
-        // Constructor mặc định
         public frmPayment()
         {
             InitializeComponent();
         }
 
-        // Constructor nhận DTO từ form Registration hoặc form Danh sách chuyển sang
         public frmPayment(RegistrationDTO dto)
         {
             InitializeComponent();
@@ -49,27 +46,22 @@ namespace desktopapp_GYM
         private void InitComboBox()
         {
             cboPaymentStatus.Items.Clear();
-            // Dùng tiếng Việt cho đồng bộ với giao diện
             cboPaymentStatus.Items.AddRange(new[] { "Unpaid", "Partial", "paid" });
         }
 
         private void FillRegistrationDetails()
         {
-            // Hiển thị tất cả thông tin quan trọng dưới dạng ReadOnly
             txtMemberName.Text = _dto.MemberName;
             txtMemberPhone.Text = _dto.MemberPhone;
             txtPackageType.Text = _dto.PackageType;
 
-            // Xử lý hiển thị ngày tháng
             txtRegDate.Text = _dto.RegDate.ToString("dd/MM/yyyy");
             txtEndDate.Text = _dto.EndDate.ToString("dd/MM/yyyy");
 
-            // Xử lý tiền tệ
             txtOriginalPrice.Text = _dto.OriginalPrice.ToString("N0") + " VNĐ";
             txtDiscount.Text = _dto.DiscountAmount.ToString("N0") + " VNĐ";
             txtTotalAmount.Text = _dto.TotalAmount.ToString("N0") + " VNĐ";
 
-            // Map trạng thái hiện tại vào ComboBox
             if (!string.IsNullOrEmpty(_dto.PaymentStatus))
             {
                 if (_dto.PaymentStatus == "Paid" || _dto.PaymentStatus == "Đã thanh toán")
@@ -77,11 +69,11 @@ namespace desktopapp_GYM
                 else if (_dto.PaymentStatus == "Partial" || _dto.PaymentStatus == "Thanh toán một phần")
                     cboPaymentStatus.SelectedIndex = 2;
                 else
-                    cboPaymentStatus.SelectedIndex = 1; // Chưa thanh toán
+                    cboPaymentStatus.SelectedIndex = 1; 
             }
             else
             {
-                cboPaymentStatus.SelectedIndex = 1; // Default "Chưa thanh toán"
+                cboPaymentStatus.SelectedIndex = 1; 
             }
         }
 
@@ -89,7 +81,6 @@ namespace desktopapp_GYM
         {
             try
             {
-                // Nếu TotalAmount <= 0 thì không cần hiện mã QR
                 if (_dto.TotalAmount <= 0)
                 {
                     picQRCode.Image = null;
@@ -97,17 +88,12 @@ namespace desktopapp_GYM
                     return;
                 }
 
-                // Cú pháp nội dung CK: "Thanh toan HD [RegID] [TenHoiVien]"
                 string addInfo = $"Thanh toan HD {_dto.RegID} {_dto.MemberName}";
-
-                // Dùng Uri.EscapeDataString để xử lý an toàn các ký tự có dấu, khoảng trắng trên URL
                 string encodedAddInfo = Uri.EscapeDataString(addInfo);
                 string encodedAccountName = Uri.EscapeDataString(ACCOUNT_NAME);
 
-                // URL gọi API tạo mã QR của VietQR 
                 string qrUrl = $"https://img.vietqr.io/image/{BANK_ID}-{ACCOUNT_NO}-compact2.png?amount={_dto.TotalAmount}&addInfo={encodedAddInfo}&accountName={encodedAccountName}";
 
-                // Load ảnh bất đồng bộ để form không bị đơ
                 picQRCode.LoadAsync(qrUrl);
                 lblQRStatus.Text = "Quét mã để thanh toán";
             }
@@ -128,10 +114,8 @@ namespace desktopapp_GYM
                     return;
                 }
 
-                // Cập nhật trạng thái vào DTO
                 _dto.PaymentStatus = cboPaymentStatus.Text;
 
-                // Gọi hàm Save của BLL
                 bool result = regBll.Save(_dto, false);
 
                 if (result)

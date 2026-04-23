@@ -39,7 +39,6 @@ namespace desktopapp_GYM
 
         private void LoadDataToLabels()
         {
-            // Đổ dữ liệu từ buổi tập gốc vào các Label (phía bên trái form)
             lblMemberID.Text = _originalSchedule.MemberID_Display;
             lblMemberName.Text = _originalSchedule.MemberName;
             lblSlot.Text = _originalSchedule.SlotName;
@@ -60,7 +59,7 @@ namespace desktopapp_GYM
                 cboNewSlot.SelectedIndexChanged -= cboNewSlot_SelectedIndexChanged;
 
                 cboNewSlot.DataSource = allSlotsOfPackage;
-                cboNewSlot.DisplayMember = "SlotName"; // Hoặc SlotName tùy BLL của Huy
+                cboNewSlot.DisplayMember = "SlotName";
                 cboNewSlot.ValueMember = "SlotID";
 
                 cboNewSlot.SelectedIndexChanged += cboNewSlot_SelectedIndexChanged;
@@ -68,7 +67,6 @@ namespace desktopapp_GYM
                 if (allSlotsOfPackage.Count > 0)
                 {
                     cboNewSlot.SelectedIndex = 0;
-                    // Gọi thủ công lần đầu để cập nhật label Trainer/Time ngay lập tức
                     UpdateSlotLabels((TimeslotDTO)cboNewSlot.SelectedItem);
                 }
             }
@@ -86,18 +84,16 @@ namespace desktopapp_GYM
             LoadDataToLabels();
             LoadSlotsForMember();
 
-            // Thiết lập mặc định cho buổi bù
             dtpNewDate.Value = DateTime.Today;
             dtpNewDate.MinDate = DateTime.Today.AddDays(1);
             chkMakeUp.Checked = true;
-            chkMakeUp.Enabled = false; // Luôn là tập bù trong form này
+            chkMakeUp.Enabled = false; 
 
             _isDataChanged = false;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // 1. Kiểm tra tính hợp lệ
             if (cboNewSlot.SelectedValue == null)
             {
                 MessageBox.Show("Vui lòng chọn ca tập bù!");
@@ -113,21 +109,20 @@ namespace desktopapp_GYM
                 }
             }
 
-            // 2. Tạo DTO mới cho buổi tập bù
             ScheduleDTO makeupDto = new ScheduleDTO
             {
                 RegID = _originalSchedule.RegID,
                 SlotID = (int)cboNewSlot.SelectedValue,
                 TrainingDate = dtpNewDate.Value,
-                Status = "Scheduled", // Buổi bù mới tạo ở trạng thái chờ tập
+                Status = "Scheduled", 
                 Notes = "Tập bù cho ngày " + lblDate.Text,
                 IsMakeup = true,
                 OriginalDate = _originalSchedule.TrainingDate,
                 Reason = txtReasons.Text.Trim(),
-                MakeupForScheduleID = _originalSchedule.ScheduleID // Lưu vết bù cho buổi nào
+                MakeupForScheduleID = _originalSchedule.ScheduleID 
             };
 
-            // 3. Gọi BLL để lưu
+
             if (_scheduleBll.Insert(makeupDto))
             {
                 MessageBox.Show("Đăng ký lịch bù thành công!", "Thông báo");
@@ -173,8 +168,6 @@ namespace desktopapp_GYM
             lblNewTrainer.Text = selectedSlot.TrainerName;
             lblTime.Text = selectedSlot.StartTime;
             lblStatusMember.Text = $"{selectedSlot.CurrentCount}/{selectedSlot.MaxMembers}";
-
-            // Cảnh báo màu đỏ nếu lớp đầy
             lblStatusMember.ForeColor = (selectedSlot.CurrentCount >= selectedSlot.MaxMembers)
                                         ? Color.Red : Color.Black;
         }

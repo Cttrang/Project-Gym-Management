@@ -77,7 +77,6 @@ namespace desktopapp_GYM.BLL
             }
             catch (Exception ex)
             {
-                // Ném lỗi ra cho GUI xử lý
                 throw new Exception("Có lỗi khi lưu trainer cùng với gói" + ex.Message);
             }
         }
