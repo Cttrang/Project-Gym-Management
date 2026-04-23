@@ -56,8 +56,8 @@ namespace desktopapp_GYM.DAL
                         PackageName = r["PackageName"].ToString(),
                         SlotName = r["SLOTNAME"].ToString(),
                         DayOfWeek = r["DAYOFWEEK"].ToString(),
-                        StartTime = r["StartTime"].ToString(),  // ← alias, không phải STARTTIME
-                        EndTime = r["EndTime"].ToString(),    // ← alias, không phải ENDTIME
+                        StartTime = r["StartTime"].ToString(),  
+                        EndTime = r["EndTime"].ToString(),    
                         MaxMembers = Convert.ToInt32(r["MAXMEMBERS"]),
                         CurrentCount = Convert.ToInt32(r["CurrentCount"]),
                         Status = r["STATUS"].ToString()
@@ -169,7 +169,6 @@ namespace desktopapp_GYM.DAL
             }
         }
 
-        // Lấy danh sách HLV cho dropdown — lọc theo gói đã chọn
         public DataTable GetTrainersByPackage(int packageId)
         {
             string sql = @"
@@ -196,12 +195,12 @@ namespace desktopapp_GYM.DAL
                    JOIN REGISTRATIONS r ON rs.REGID = r.REGID
                    WHERE r.MEMBERID = @MemberID";
 
-            using (SqlConnection con = GetConnection()) // Sử dụng GetConnection() giống hàm trên
+            using (SqlConnection con = GetConnection()) 
             {
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@MemberID", memberId);
 
-                con.Open(); // Mở kết nối trước khi thực thi
+                con.Open();
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -274,11 +273,9 @@ namespace desktopapp_GYM.DAL
 
         public bool IsSlotFull(int slotId, int maxMembers)
         {
-            // Gọi hàm đếm ở trên và so sánh với Max
             return GetCurrentCount(slotId) >= maxMembers;
         }
 
-        // Hàm ép Database tự đếm và cập nhật lại cột CurrentCount trong bảng TIMESLOTS
         public bool SyncCurrentCount(int slotId)
         {
             // Câu lệnh SQL này sử dụng Subquery để đếm số lượng bản ghi active 
@@ -300,19 +297,15 @@ namespace desktopapp_GYM.DAL
                 try
                 {
                     con.Open();
-                    // Nếu ExecuteNonQuery > 0 nghĩa là đã cập nhật thành công
                     return cmd.ExecuteNonQuery() > 0;
                 }
                 catch (Exception ex)
                 {
-                    // Bạn có thể log lỗi ở đây nếu cần
                     System.Windows.Forms.MessageBox.Show("Lỗi đồng bộ sĩ số: " + ex.Message);
                     return false;
                 }
             }
         }
-
-        // Trong file TimeSlotDAL.cs
 
         public bool SyncAllAttendance()
         {
@@ -333,8 +326,6 @@ namespace desktopapp_GYM.DAL
 
             try
             {
-                // Sử dụng hàm thực thi SQL dùng chung trong dự án của bạn (ví dụ: DbHelper hoặc SQLCommand)
-                // Ở đây mình minh họa bằng cách gọi trực tiếp qua executeNonQuery của bạn
                 return ExecuteNonQuery(sql) >= 0;
             }
             catch (Exception ex)
@@ -343,11 +334,9 @@ namespace desktopapp_GYM.DAL
             }
         }
 
-        // Trong file TimeslotDAL.cs
         public DataTable GetTimeslotsToday()
         {
             DayOfWeek dotw = DateTime.Now.DayOfWeek;
-            // Lấy tên thứ trong ngày hiện tại (ví dụ: Monday, Tuesday...
             string today = _bll.GetVietnameseDayOfWeek(dotw);
 
             string sql = @"SELECT SlotName, 
