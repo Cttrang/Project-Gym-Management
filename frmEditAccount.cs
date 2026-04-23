@@ -89,6 +89,10 @@ namespace desktopapp_GYM
                     cboRole.Enabled = false;
                     //txtUsername.ReadOnly = true;
                 }
+                if (Session.CurrentUsername != null && _selected != null && Session.CurrentUsername == _selected.Username)
+                {
+                    cboRole.Enabled = false;
+                }
 
                 if (_selected != null) FillData();
             }
