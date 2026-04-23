@@ -17,7 +17,6 @@ namespace desktopapp_GYM.BLL
         {
             try
             {
-                // Trước khi lấy, có thể gọi tự động dọn dẹp các buổi quá hạn thành Absent
                 _dal.AutoMarkAbsent();
                 return _dal.GetSchedules(date, trainerId, status, memberId, slotId);
             }
@@ -180,8 +179,6 @@ namespace desktopapp_GYM.BLL
 
                 bool result = _dal.Insert(item);
  
-                // Nếu là tập bù (IsMakeup = true), chúng ta KHÔNG gọi _regDal.DecreaseSession(item.RegID).
-                // Vì buổi tập này được tạo ra để "bù" cho một buổi Absent đã bị trừ điểm trước đó.
 
                 return result;
             }

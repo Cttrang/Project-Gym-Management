@@ -16,7 +16,7 @@ namespace desktopapp_GYM.BLL
     {
         private readonly RegistrationDAL dal = new RegistrationDAL();
         private readonly MemberDal memberDal = new MemberDal();
-        private readonly TimeslotBLL timeslotBll = new TimeslotBLL(); // Thêm dòng này
+        private readonly TimeslotBLL timeslotBll = new TimeslotBLL(); 
         public List<RegistrationDTO> GetAll()
         {
             try { return dal.GetAll(); }
@@ -37,7 +37,6 @@ namespace desktopapp_GYM.BLL
 
         public bool RegisterFullService(MemberDTO member, RegistrationDTO reg)
         {
-            // TransactionScope đảm bảo tất cả các lệnh bên trong đều thành công hoặc tất cả đều hủy
             using (TransactionScope scope = new TransactionScope())
             {
                 try

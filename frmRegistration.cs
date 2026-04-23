@@ -22,10 +22,9 @@ namespace desktopapp_GYM
         private bool _isLoading = false;
         private readonly RegistrationDTO _dto;
         private readonly bool _isAdd;
-        private int _resolvedMemberID = 0; // MemberID cuối cùng dùng để lưu
+        private int _resolvedMemberID = 0;
         bool isDataChanged = false;
 
-        // Lưu các slot đã Add vào listbox
         private List<TimeslotDTO> _selectedSlots = new List<TimeslotDTO>();
         
         public frmRegistration()
@@ -46,41 +45,31 @@ namespace desktopapp_GYM
         {
             bool isPaid = paymentStatus == "Paid";
 
-            // Paid → khóa hầu hết, chỉ cho sửa Notes + PaymentStatus + IsActive
-            // Unpaid/Partial → mở toàn bộ như Add
-
-            // Phần Member — luôn khóa khi edit
             grpOption.Enabled = false;
             grpPersonal.Enabled = false;
 
-            // Phần loại gói
             grpType.Enabled = !isPaid;
-
-            // Phần thông tin gói
             grpPackage.Enabled = !isPaid;
 
-            // Phần slot
             grpSlot.Visible = !isPaid && (_dto.PackageType != "FREE");
             btnAdd.Enabled = !isPaid;
             btnDelete.Enabled = !isPaid;
             btnClear.Enabled = !isPaid;
 
-            // Phần luôn cho sửa dù Paid hay không
-            cboPayment.Enabled = true;
+            cboPayment.Enabled = !isPaid;
             chkIsActive.Enabled = true;
             txtNotes.Enabled = true;
-            txtDiscount.Enabled = !isPaid; // Giảm giá chỉ cho sửa khi chưa paid
+            txtDiscount.Enabled = !isPaid;
         }
 
         private void FillForm()
         {
             txtFullName.Text = _dto.MemberName;
-            txtPhone.Text = _dto.MemberPhone; ;   // Không có trong DTO, chỉ hiển thị tên
+            txtPhone.Text = _dto.MemberPhone; ;
             dtpRegDate_New.Value = _dto.RegDate;
             //dtpStartDate_New.Value = DateTime.Today;
             dtpEndDate.Value = _dto.EndDate;
 
-            // Tick đúng loại gói
             switch (_dto.PackageType)
             {
                 case "FREE": rdoFree.Checked = true; break;
@@ -103,7 +92,6 @@ namespace desktopapp_GYM
             chkIsActive.Checked = _dto.IsActive;
             txtNotes.Text = _dto.Notes;
 
-            // Load slots đã đăng ký vào listbox
             var registeredSlots = regBll.GetSlotsByReg(_dto.RegID);
             _selectedSlots = registeredSlots.Select(s => new TimeslotDTO
             {
@@ -189,7 +177,7 @@ namespace desktopapp_GYM
 
         private void SetSlotSectionVisible(bool visible)
         {
-            grpSlot.Visible = visible; // GroupBox "Chọn thời khóa biểu"
+            grpSlot.Visible = visible;
         }
 
         private void SetPTFeeVisible(bool visible)
@@ -244,25 +232,22 @@ namespace desktopapp_GYM
 
             if (_isAdd)
             {
-                // Mặc định chế độ thêm mới
                 dtpStartDate_New.Value = DateTime.Today;
-                dtpStartDate_New.Enabled = false; // REGDATE = hôm nay, không cho sửa
+                dtpStartDate_New.Enabled = false;
                 dtpRegDate_New.Value = DateTime.Today;
                 dtpRegDate_New.Enabled = true;
                 dtpEndDate.Value = dtpRegDate_New.Value.AddMonths(1);
                 chkIsActive.Checked = true;
                 cboPayment.SelectedIndex = 0;
 
-                // Ẩn combobox member cũ, disable input member mới
                 cboOldMember.Visible = false;
                 SetMemberInputEnabled(false);
-                SetPackageSection(null); // Ẩn phần slot ban đầu
-                grpPackage.Enabled = false; // Chờ user chọn loại gói trước
+                SetPackageSection(null); 
+                grpPackage.Enabled = false; 
                 grpSlot.Visible = false;
             }
             else
             {
-                // Edit mode — disable chọn member
                 grpOption.Enabled = false;
                 grpPersonal.Enabled = false;
                 FillForm();
@@ -343,7 +328,7 @@ namespace desktopapp_GYM
 
         private void LoadPackagesByType(string type)
         {
-            var packages = pkgBll.GetByType(type); // Cần thêm hàm này vào BLL
+            var packages = pkgBll.GetByType(type);
             cboPackage.DataSource = packages;
             cboPackage.DisplayMember = "PackageName";
             cboPackage.ValueMember = "PackageID";
@@ -360,7 +345,6 @@ namespace desktopapp_GYM
 
             try
             {
-                // Lấy TrainerID — xử lý cả DataRowView (khi source là DataTable)
                 int tid = 0;
                 if (cboTrainer.SelectedValue is int tInt)
                     tid = tInt;
@@ -368,7 +352,6 @@ namespace desktopapp_GYM
                          int.TryParse(cboTrainer.SelectedValue.ToString(), out int tParsed))
                     tid = tParsed;
 
-                // Lấy PackageID — source là List<PackageDTO> nên SelectedValue là int
                 int pid = 0;
                 if (cboPackage.SelectedValue is int pInt)
                     pid = pInt;
@@ -404,7 +387,6 @@ namespace desktopapp_GYM
             catch (InvalidCastException castEx)
             {
                 Console.WriteLine("Lỗi ép kiểu dữ liệu ComboBox: " + castEx.Message);
-                // Lỗi này thường do SelectedValue đang là DataRowView thay vì ID
             }
             catch (Exception ex)
             {
@@ -414,7 +396,6 @@ namespace desktopapp_GYM
 
         private void LoadTrainersByPackage(int packageId)
         {
-            // Dùng TimeslotDAL.GetTrainersByPackage đã có sẵn
             var dt = slotBll.GetTrainersByPackage(packageId);
             cboTrainer.DataSource = dt;
             cboTrainer.DisplayMember = "FULLNAME";
@@ -432,7 +413,6 @@ namespace desktopapp_GYM
                 var pkg = pkgBll.GetById(pkgId);
                 if (pkg == null) return;
 
-                // Tự fill thông tin gói
                 dtpEndDate.Value = dtpRegDate_New.Value.AddMonths(pkg.DurationMonths);
                 txtOriginalPrice.Text = pkg.Price.ToString("N0");
                 txtDiscount.Text = "0";
@@ -453,7 +433,6 @@ namespace desktopapp_GYM
 
                 LoadTrainersByPackage(pkgId);
 
-                // Reset các bước sau
                 cboDayOfWeek.SelectedIndex = -1;
                 cboTime.DataSource = null;
                 cboTime.Items.Clear();
@@ -482,7 +461,6 @@ namespace desktopapp_GYM
                 return;
             }
 
-            // Kiểm tra trùng
             if (_selectedSlots.Any(s => s.SlotID == slotId))
             {
                 MessageBox.Show("Khung giờ này đã được thêm!", "Thông báo",
@@ -496,7 +474,7 @@ namespace desktopapp_GYM
             {
                 MessageBox.Show($"Lớp {slot.SlotName} đã vừa đủ {slot.MaxMembers} người. Vui lòng chọn giờ khác!",
                                 "Lớp đầy", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                RefreshTimeSlots(); // Load lại combo để cập nhật danh sách mới nhất
+                RefreshTimeSlots(); 
                 return;
             }
 
@@ -513,16 +491,10 @@ namespace desktopapp_GYM
                 return;
             }
 
-            // Lưu index trước khi xóa
             int indexToRemove = lstSlots.SelectedIndex;
-
-            // Xóa khỏi list data
             _selectedSlots.RemoveAt(indexToRemove);
-
-            // Vẽ lại listbox
             RefreshSlotListBox();
 
-            // Giữ selection hợp lý sau khi xóa
             if (lstSlots.Items.Count > 0)
                 lstSlots.SelectedIndex = Math.Min(indexToRemove, lstSlots.Items.Count - 1);
         }
@@ -542,13 +514,11 @@ namespace desktopapp_GYM
         {
             try
             {
-                // 1. Xử lý Member
                 if (_isAdd)
                 {
                     
                     if (rdoNewMember.Checked)
                     {
-                        // Validate
                         if (string.IsNullOrWhiteSpace(txtFullName.Text) ||
                             string.IsNullOrWhiteSpace(txtPhone.Text))
                         {
@@ -577,7 +547,7 @@ namespace desktopapp_GYM
                     }
                 }
 
-                // 2. Validate gói
+                // Validate gói
                 if (!(cboPackage.SelectedValue is int pkgId) || pkgId <= 0)
                 {
                     MessageBox.Show("Vui lòng chọn gói tập!",
@@ -585,7 +555,7 @@ namespace desktopapp_GYM
                     return;
                 }
 
-                // 2.5. Validate số buổi vs số slot đã chọn
+                // Validate số buổi vs số slot đã chọn
                 int sessionsPerWeek = int.TryParse(txtSessionsPerWeek.Text, out int spw) ? spw : 0;
                 if (sessionsPerWeek > 0)
                 {
@@ -622,7 +592,6 @@ namespace desktopapp_GYM
                     }
                 }
 
-                // 3. Build DTO
                 var reg = _isAdd ? new RegistrationDTO() : _dto;
 
                 reg.MemberID = _resolvedMemberID;
@@ -639,20 +608,18 @@ namespace desktopapp_GYM
                     txtTotalAmount.Text.Replace(",", ""), out decimal total) ? total : 0;
 
                 reg.SessionsTotal = int.TryParse(txtSessionsTotal.Text, out int st) ? st : 0;
-                reg.SessionsLeft = reg.SessionsTotal; // Lúc mới đăng ký = còn đủ buổi
+                reg.SessionsLeft = reg.SessionsTotal;
                 reg.PaymentStatus = cboPayment.Text;
                 reg.IsActive = chkIsActive.Checked;
                 reg.Notes = txtNotes.Text.Trim();
 
                 reg.SelectedSlotIDs = _selectedSlots.Select(s => s.SlotID).ToList();
 
-                // 4. Lưu
-
+                // Lưu
                 bool result = false;
 
                 if (_isAdd && rdoNewMember.Checked)
                 {
-                    // TẠO ĐỐI TƯỢNG MEMBER MỚI (Nhưng chưa gọi hàm Add ở MemberBLL)
                     var newMember = new MemberDTO
                     {
                         FullName = txtFullName.Text.Trim(),
@@ -661,12 +628,10 @@ namespace desktopapp_GYM
                         Status = cboStatus.Text
                     };
 
-                    // GỌI HÀM TRỌN GÓI: Hàm này sẽ tự lo việc lưu Member + lưu Gói + Rollback nếu lỗi
                     result = regBll.RegisterFullService(newMember, reg);
                 }
                 else
                 {
-                    // TRƯỜNG HỢP MEMBER CŨ: Dùng hàm Save thông thường
                     reg.MemberID = _resolvedMemberID;
                     result = regBll.Save(reg, _isAdd);
                 }
@@ -688,7 +653,6 @@ namespace desktopapp_GYM
         {
             if (_isAdd)
             {
-                // Add mode → clear hết như cũ
                 ToggleEvents(false);
 
                 rdoNewMember.Checked = false;
@@ -721,12 +685,11 @@ namespace desktopapp_GYM
             }
             else
             {
-                // Edit mode → hoàn tác về dữ liệu cũ
                 if (MessageBox.Show("Hoàn tác toàn bộ thay đổi về dữ liệu ban đầu?",
                     "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     ToggleEvents(false);
-                    FillForm();           // Đổ lại dữ liệu gốc từ _dto
+                    FillForm();           
                     ToggleEvents(true);
                     isDataChanged = false;
                 }
@@ -758,7 +721,6 @@ namespace desktopapp_GYM
                 int? pid = cboPackage.SelectedValue is int p && p > 0 ? p : (int?)null;
                 if (tid == null || pid == null) return;
 
-                // Lấy danh sách thứ có timeslot của trainer + package này
                 var days = slotBll.GetDaysByTrainerPackage(tid.Value, pid.Value);
                 cboDayOfWeek.DataSource = days; // List<string>
                 cboDayOfWeek.SelectedIndex = -1;
@@ -800,7 +762,7 @@ namespace desktopapp_GYM
                     MessageBoxIcon.Warning
                 );
                 if (result == DialogResult.No)
-                    e.Cancel = true; // Ngăn đóng form
+                    e.Cancel = true; 
             }
         }
 
@@ -815,20 +777,17 @@ namespace desktopapp_GYM
         {
             try
             {
-                // 1. Kiểm tra xem đã chọn gói tập chưa
                 if (cboPackage.SelectedValue is int pkgId && pkgId > 0)
                 {
                     var pkg = pkgBll.GetById(pkgId);
                     if (pkg != null)
                     {
-                        // EndDate = RegDate + số tháng thời hạn của gói
                         dtpEndDate.Value = dtpRegDate_New.Value.Date.AddMonths(pkg.DurationMonths);
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Ghi log nhẹ hoặc bỏ qua nếu không quan trọng, tránh hiện message box liên tục gây phiền user
                 Console.WriteLine("Lỗi cập nhật ngày kết thúc: " + ex.Message);
             }
         }
