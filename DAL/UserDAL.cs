@@ -16,7 +16,6 @@ namespace desktopapp_GYM.DAL
             using (SqlConnection conn = GetConnection())
             {
                 conn.Open();
-                // Lấy thêm USERID và các cột cần thiết khác
                 string sql = "SELECT USERID, USERNAME, ROLE FROM USERS WHERE USERNAME=@user AND PASSWORD=@pass";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@user", user);
@@ -53,7 +52,6 @@ namespace desktopapp_GYM.DAL
                         UserID = (int)r["USERID"],
                         Username = r["USERNAME"].ToString(),
                         Role = r["ROLE"].ToString()
-                        // Password không SELECT — bảo mật
                     });
                 }
             }
@@ -108,7 +106,7 @@ namespace desktopapp_GYM.DAL
                 {
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@pwd", newPassword); // Nhớ Hash nếu có dùng mã hóa
+                    cmd.Parameters.AddWithValue("@pwd", newPassword);
                     con.Open();
                     return cmd.ExecuteNonQuery() > 0;
                 }
@@ -121,18 +119,17 @@ namespace desktopapp_GYM.DAL
 
         public bool VerifyOldPassword(string username, string oldPassword)
         {
-            // Chỉ đếm số dòng khớp, không lấy dữ liệu password ra ngoài bộ nhớ C#
             string sql = "SELECT COUNT(*) FROM USERS WHERE USERNAME = @user AND PASSWORD = @pass";
 
             using (SqlConnection con = GetConnection())
             {
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@user", username);
-                cmd.Parameters.AddWithValue("@pass", oldPassword); // Lưu ý: Nếu có Hash mật khẩu thì phải Hash trước khi đưa vào đây
+                cmd.Parameters.AddWithValue("@pass", oldPassword);
 
                 con.Open();
                 int count = (int)cmd.ExecuteScalar();
-                return count > 0; // Nếu tìm thấy 1 dòng khớp thì trả về true
+                return count > 0;
             }
         }
 

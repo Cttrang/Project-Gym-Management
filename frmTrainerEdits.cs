@@ -46,14 +46,14 @@ namespace desktopapp_GYM
                 txtHLV.TextChanged += MarkAsChanged;
                 txtSDT.TextChanged += MarkAsChanged;
                 txtNotes.TextChanged += MarkAsChanged;
-                cboStatus.SelectedIndexChanged += MarkAsChanged; // thêm
+                cboStatus.SelectedIndexChanged += MarkAsChanged; 
             }
             else
             {
                 txtHLV.TextChanged -= MarkAsChanged;
                 txtSDT.TextChanged -= MarkAsChanged;
                 txtNotes.TextChanged -= MarkAsChanged;
-                cboStatus.SelectedIndexChanged -= MarkAsChanged; // thêm
+                cboStatus.SelectedIndexChanged -= MarkAsChanged; 
             }
         }
 
@@ -63,7 +63,7 @@ namespace desktopapp_GYM
             txtHLV.Text = _selectedTr.FullName;
             txtSDT.Text = _selectedTr.Phone;
             txtNotes.Text = _selectedTr.Specialty;
-            cboStatus.Text = _selectedTr.Status;  // thêm
+            cboStatus.Text = _selectedTr.Status;  
 
             List<int> assignedIds = bll.GetPackageIdsByTrainer(_selectedTr.TrainerID);
 
@@ -72,7 +72,7 @@ namespace desktopapp_GYM
                 var pkg = (PackageDTO)clbPackages.Items[i];
                 if (assignedIds.Contains(pkg.PackageID))
                 {
-                    clbPackages.SetItemChecked(i, true); // Tích vào ô tương ứng
+                    clbPackages.SetItemChecked(i, true); 
                 }
             }
 
@@ -82,11 +82,11 @@ namespace desktopapp_GYM
 
         private void frmTrainerEdits_Load(object sender, EventArgs e)
         {
-            cboStatus.Items.AddRange(new string[] { "Active", "Inactive" }); // thêm
+            cboStatus.Items.AddRange(new string[] { "Active", "Inactive" }); 
 
             try
             {
-                var allPackages = pkgBll.GetData(); // Lấy danh sách gói tập
+                var allPackages = pkgBll.GetData();
                 clbPackages.DataSource = allPackages;
                 clbPackages.DisplayMember = "PackageName";
                 clbPackages.ValueMember = "PackageID";
@@ -107,39 +107,44 @@ namespace desktopapp_GYM
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-
-            if (string.IsNullOrWhiteSpace(txtHLV.Text))
+            try
             {
-                MessageBox.Show("Vui lòng nhập tên Huấn luyện viên!",
-                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if (string.IsNullOrWhiteSpace(txtHLV.Text))
+                {
+                    MessageBox.Show("Vui lòng nhập tên Huấn luyện viên!",
+                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                List<int> selectedPackageIds = new List<int>();
+                foreach (var item in clbPackages.CheckedItems)
+                {
+                    var pkg = (PackageDTO)item;
+                    selectedPackageIds.Add(pkg.PackageID);
+                }
+
+                TrainerDTO dto = isAddMode ? new TrainerDTO() : _selectedTr;
+                dto.FullName = txtHLV.Text.Trim();
+                dto.Phone = txtSDT.Text.Trim();
+                dto.Specialty = txtNotes.Text.Trim();
+                dto.Status = cboStatus.Text;
+
+                if (bll.SaveTrainerWithPackages(dto, selectedPackageIds, isAddMode))
+                {
+                    MessageBox.Show("Lưu thành công!");
+                    isDataChanged = false;
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Lưu thất bại! Vui lòng kiểm tra lại.",
+                                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            // Lấy danh sách gói được tick trong CheckedListBox
-            List<int> selectedPackageIds = new List<int>();
-            foreach (var item in clbPackages.CheckedItems)
+            catch (Exception ex)
             {
-                var pkg = (PackageDTO)item;
-                selectedPackageIds.Add(pkg.PackageID);
-            }
-
-            TrainerDTO dto = isAddMode ? new TrainerDTO() : _selectedTr;
-            dto.FullName = txtHLV.Text.Trim();
-            dto.Phone = txtSDT.Text.Trim();
-            dto.Specialty = txtNotes.Text.Trim();
-            dto.Status = cboStatus.Text;
-
-            if (bll.SaveTrainerWithPackages(dto, selectedPackageIds, isAddMode))
-            {
-                MessageBox.Show("Lưu thành công!");
-                isDataChanged = false;
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Lưu thất bại! Vui lòng kiểm tra lại.",
-                                "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Đã xảy ra lỗi hệ thống: " + ex.Message, "Lỗi nghiêm trọng", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
 
@@ -153,14 +158,13 @@ namespace desktopapp_GYM
                 txtNotes.Clear();
                 cboStatus.SelectedIndex = 0;
 
-                // Bỏ tick tất cả gói
                 for (int i = 0; i < clbPackages.Items.Count; i++)
                     clbPackages.SetItemChecked(i, false);
 
                 ToggleEvents(true);
             }
             else
-                FillData(); // Edit thì khôi phục lại data ban đầu
+                FillData();
 
             isDataChanged = false;
             txtHLV.Focus();

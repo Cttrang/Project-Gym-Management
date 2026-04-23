@@ -107,6 +107,14 @@ namespace desktopapp_GYM
                     "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            if (selected.Username == Session.CurrentUsername)
+            {
+                MessageBox.Show("Bạn không thể xóa tài khoản của chính mình khi đang đăng nhập!",
+                                "Cảnh báo bảo mật", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
             if (MessageBox.Show(
                 $"Xác nhận xóa tài khoản: {selected.Username} ({selected.Role})?",
                 "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)

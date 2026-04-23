@@ -15,7 +15,6 @@ namespace desktopapp_GYM.DAL
         public List<TrainerDTO> GetAllTrainers()
         {
             List<TrainerDTO> list = new List<TrainerDTO>();
-            // Câu truy vấn mới: Lấy thông tin HLV + Gộp tên các gói tập thành 1 chuỗi
             string query = @"
         SELECT t.TRAINERID, t.FULLNAME, t.PHONE, t.SPECIALTY, t.STATUS,
                COUNT(DISTINCT r.REGID) AS TotalStudents,
@@ -46,7 +45,6 @@ namespace desktopapp_GYM.DAL
                             Specialty = reader["SPECIALTY"].ToString(),
                             Status = reader["STATUS"].ToString(),
                             TotalStudents = Convert.ToInt32(reader["TotalStudents"]),
-                            // Gán chuỗi các gói tập vào thuộc tính mới
                             AssignedPackages = reader["Packages"].ToString()
                         });
                     }
@@ -57,7 +55,6 @@ namespace desktopapp_GYM.DAL
         }
         public DataTable GetTopTrainers(int topCount)
         {
-            // Thống kê HLV dựa trên số lượng hội viên đang theo tập (bảng REGISTRATIONS)
             string sql = $@"SELECT TOP {topCount} 
                         t.FULLNAME, 
                         t.SPECIALTY,
@@ -67,12 +64,12 @@ namespace desktopapp_GYM.DAL
                     WHERE t.STATUS = 'Active'
                     GROUP BY t.FULLNAME, t.SPECIALTY
                     ORDER BY MemberCount DESC";
-            using (SqlConnection con = GetConnection()) // Dùng kết nối tĩnh của Huy
+            using (SqlConnection con = GetConnection()) 
             {
                 SqlDataAdapter da = new SqlDataAdapter(sql, con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                return dt; // Trả về DataTable chứa Tên gói và Số người
+                return dt;
             }
         }
 
@@ -89,13 +86,10 @@ namespace desktopapp_GYM.DAL
                 {
                     cmd.Parameters.AddWithValue("@id", tr.TrainerID);
                 }
-                //cmd.Parameters.AddWithValue("@id", tr.TrainerID);
                 cmd.Parameters.AddWithValue("@name", tr.FullName);
                 cmd.Parameters.AddWithValue("@phone", tr.Phone ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@spec", tr.Specialty ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@status", tr.Status ?? "Active");
-                //con.Open();
-                //return cmd.ExecuteNonQuery() > 0;
                 try
                 {
                     con.Open();
@@ -103,7 +97,7 @@ namespace desktopapp_GYM.DAL
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString()); // 🔥 lỗi thật sẽ hiện ở đây
+                    MessageBox.Show(ex.ToString());
                     return false;
                 }
             }
@@ -121,7 +115,6 @@ namespace desktopapp_GYM.DAL
             }
         }
 
-        // Thêm hàm này vào TrainerDAL để lấy ID vừa tạo nếu dùng chức năng add new Trainer
         public int SaveAndGetID(TrainerDTO tr)
         {
             string sql = "INSERT INTO TRAINERS (FULLNAME, PHONE, SPECIALTY, STATUS) OUTPUT INSERTED.TRAINERID VALUES (@name, @phone, @spec, @status)";
@@ -133,11 +126,10 @@ namespace desktopapp_GYM.DAL
                 cmd.Parameters.AddWithValue("@spec", tr.Specialty ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@status", tr.Status);
                 con.Open();
-                return (int)cmd.ExecuteScalar(); // Trả về ID vừa tạo
+                return (int)cmd.ExecuteScalar();
             }
         }
 
-        // Hàm lưu chuyên môn vào bảng trung gian
         public bool SaveWithPackages(TrainerDTO tr, List<int> packageIds, bool isAdd)
         {
             using (SqlConnection con = GetConnection())
@@ -150,7 +142,6 @@ namespace desktopapp_GYM.DAL
 
                     if (isAdd)
                     {
-                        // INSERT và lấy ID vừa tạo
                         string insertSql = @"INSERT INTO TRAINERS 
                     (FULLNAME, PHONE, SPECIALTY, STATUS) 
                     OUTPUT INSERTED.TRAINERID 
@@ -164,7 +155,6 @@ namespace desktopapp_GYM.DAL
                     }
                     else
                     {
-                        // UPDATE thông tin HLV
                         string updateSql = @"UPDATE TRAINERS 
                     SET FULLNAME=@name, PHONE=@phone, SPECIALTY=@spec, STATUS=@status 
                     WHERE TRAINERID=@id";
@@ -178,13 +168,11 @@ namespace desktopapp_GYM.DAL
                         trainerId = tr.TrainerID;
                     }
 
-                    // Xóa gói cũ rồi insert lại toàn bộ
                     string deleteSql = "DELETE FROM TRAINER_PACKAGES WHERE TRAINERID = @tid";
                     SqlCommand deleteCmd = new SqlCommand(deleteSql, con, trans);
                     deleteCmd.Parameters.AddWithValue("@tid", trainerId);
                     deleteCmd.ExecuteNonQuery();
 
-                    // Insert các gói mới được chọn
                     foreach (int pkgId in packageIds)
                     {
                         string insertPkgSql = @"INSERT INTO TRAINER_PACKAGES 
@@ -224,7 +212,6 @@ namespace desktopapp_GYM.DAL
 
         public DataTable GetTrainersForCombobox()
         {
-            // Chỉ lấy ID và Tên của những Trainer đang làm việc để lọc
             string sql = "SELECT TRAINERID, FULLNAME FROM TRAINERS WHERE STATUS = 'Active' ORDER BY FULLNAME ASC";
             using (SqlConnection con = GetConnection())
             {
