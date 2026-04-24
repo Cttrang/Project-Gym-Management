@@ -254,9 +254,7 @@ namespace desktopapp_GYM
             }
 
             ToggleEvents(true);
-            isDataChanged = false;
-           
-
+            isDataChanged = false;        
         }
 
         private void rdoNewMember_CheckedChanged(object sender, EventArgs e)
